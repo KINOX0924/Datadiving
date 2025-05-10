@@ -155,7 +155,7 @@ class Vendingmachine :
     
     # 자판기 작동
     def menuStart(self) :
-        menu_list = [None , self.onVending , self.printHistory]
+        menu_list = [None , self.onVending]
         
         while True :
             self.printMenu()
@@ -243,7 +243,6 @@ class Admin :
             data_2 = data.split(",")
             for i in range(0,len(data_2)) :
                 data_2[i] = data_2[i].strip().replace("\n"," ")
-            print(data_2)
             if count >= 1 :
                 admin.goods_list.append(data_2[0])
                 admin.price_list.append(int(data_2[1]))
