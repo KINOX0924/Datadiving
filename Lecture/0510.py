@@ -117,8 +117,8 @@ class Vendingmachine :
         for i , v in enumerate(self.history) :
             if v == customer_list :
                 v.name      = self.goods_list[select_goods]
-                v.price     = self.price_list[select_goods]
-                v.inventory = self.inventory_list[select_goods]
+                v.price     = int(self.price_list[select_goods])
+                v.inventory = int(self.inventory_list[select_goods])
                 v.getInventory()
                 v.printTrade()
                 if v.confirm == True :
@@ -230,9 +230,39 @@ class Admin :
         admin.inventory_list[modify_goods_index]    = (int(input("재고 입력 : ")))
         print(f"{admin.goods_list[modify_goods_index]} 상품이 수정되었습니다.")
     
-    # 시간이 안되어서 CSV 받아서 메뉴 한번에 넣는 건 불가 / 집에서 추가 예정
+    # CSV(엑셀) 파일을 다운 받아서 상품명,금액,재고를 한번에 입력하는 함수
     def loadMenu(self) :
-        pass
+        self.listClear()
+        admin = Vendingmachine()
+        count = 0
+
+        file = open("../../csv/자판기상품목록.csv" , "r" , encoding = "UTF-8")
+        data = file.readline()
+
+        while data != "" :
+            data_2 = data.split(",")
+            for i in range(0,len(data_2)) :
+                data_2[i] = data_2[i].strip().replace("\n"," ")
+            print(data_2)
+            if count >= 1 :
+                admin.goods_list.append(data_2[0])
+                admin.price_list.append(int(data_2[1]))
+                admin.inventory_list.append(int(data_2[2]))
+            
+            data = file.readline()
+            count = 1
+        file.close()
+
+    # CSV 파일을 사용하여 입력 시 미리 초기화를 진행하지 않으면 제대로 데이터가 안 들어가서 초기화 시켜주는 함수
+    def listClear(self) :
+        admin = Vendingmachine()
+        admin.goods_list.clear()
+        admin.price_list.clear()
+        admin.inventory_list.clear()
+        
+        admin.goods_list.append("")
+        admin.price_list.append(int(0))
+        admin.inventory_list.append(int(0))
     
     # 관리자 프로그램 메뉴 출력
     def printAdminmenu(self) :
@@ -240,12 +270,13 @@ class Admin :
         print("[1] 상품 추가")
         print("[2] 상품 삭제")
         print("[3] 상품 수정")
+        print("[4] 상품 목록 로드")
         print("[0] 관리자 프로그램 종료")
         print("====== 관리자 메뉴 ======")
     
     # 자판기 작동
     def menuAdminStart(self) :
-        menu_list = [None , self.addGoods , self.delGoods , self.modifyGoods]
+        menu_list = [None , self.addGoods , self.delGoods , self.modifyGoods , self.loadMenu]
         
         while True :
             self.printAdminmenu()
