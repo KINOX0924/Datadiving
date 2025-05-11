@@ -10,6 +10,8 @@ import pickle
 
 # 단말기 클래스 생성
 # 고객 정보가 저장되고 고객과 관리자는 해당 단말기를 이용하여 기능 접근이 가능
+# 관리자 접근을 하려고 하는 경우 관리자 아이디와 비밀번호를 사용하여 접근 필요
+
 class BankTerminal :
     # 터미널에는 고객정보가 저장되어 있음 / 고객 정보는 클래스 변수에 저장되며 매번 객체 생성 없이 접근 가능함
     customer_list = [
@@ -20,8 +22,19 @@ class BankTerminal :
         {"ACCOUNT_NUMBER" : "1001-3206020354" , "NAME" : "정하연" , "ID" : "JUNG" , "PASSWORD" : "eeeee5" , "BALANCE" : 159357}
     ]
     
+    administrator_account = {"ADMIN_ID" : "admin" , "ADMIN_PASSWORD" : "admin"}
+    
     def __init__(self) :
         self.customer = {"ACCOUNT_NUMBER" : "" , "NAME" : "" , "ID" : "" , "PASSWORD" : "" , "BALANCE" : 0}
+    
+    def terminalStart(self) :
+        pass
+    
+    def adminStart(self) :
+        pass
+    
+    def customerStart(self) :
+        pass
 
 # 고객 클래스 생성
 # 고객이 터미널을 이용할 때 사용하는 함수
@@ -145,5 +158,6 @@ class Admin :
 
 # 시작 코드
 if __name__ == "__main__" :
-    admin = Admin()
-    admin.searchAcc()
+    def loginTerminal() :
+        select = int(input("메뉴 선택 : "))
+        
