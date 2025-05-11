@@ -35,6 +35,13 @@ class Admin :
     def __init__(self) :
         pass
     
+    # =========================== 관리자가 고객 정보를 출력할 때 사용하는 함수 =========================== #
+    def printAccAdmin(self , account) :
+        print(f"계좌 번호 : {account["ACCOUNT_NUMBER"]}" , end = "\t")
+        print(f"이름 : {account["NAME"]}" , end = "\t")
+        print(f"아이디 : {account["ID"]}" , end = "\t")
+        print(f"잔고 : {account["BALANCE"]}")
+    
     # =========================== 관리자가 고객의 신규 계정을 생성하는 함수 모음 =========================== #
     def creAcc(self) :
         customer = BankTerminal()
@@ -116,15 +123,27 @@ class Admin :
             return False
         return True
     
-    
-    # =========================== 관리자가 고객의 계정을 삭제할때 사용하는 함수들 모음  =========================== #
-    def delAcc(self) :
-        customer_name = input("고객 이름 입력 : ")
-        customer_list = BankTerminal.customer_list
-        found_name    = filter(lambda x : customer_name in customer_list)
-
+    # =========================== 관리자가 고객의 계좌을 검색할 때 사용하는 함수  =========================== #
+    def searchAcc(self) :
+        flag = False
+        
+        while flag == False :
+            account_number = input("고객 계좌번호 검색 : ")
+            if len(account_number) == 15 :
+                account_copy = next(filter(lambda x : account_number == x["ACCOUNT_NUMBER"] , BankTerminal.customer_list) , None)
+                if account_copy == None :
+                    print("은행 데이터베이스에 존재하지 않는 계좌번호입니다.")
+                    flag = False
+                else :
+                    flag = True
+            else :
+                print("잘못된 계좌번호입니다.")
+                flag = False
+            
+        self.printAccAdmin(account_copy)
+        return account_copy
 
 # 시작 코드
 if __name__ == "__main__" :
     admin = Admin()
-    admin.creAcc()
+    admin.searchAcc()
