@@ -27,8 +27,26 @@ class BankTerminal :
     def __init__(self) :
         self.customer = {"ACCOUNT_NUMBER" : "" , "NAME" : "" , "ID" : "" , "PASSWORD" : "" , "BALANCE" : 0}
     
+    # 터미널 접속 후 출력할 메뉴
+    def printTerminalMenu(self) :
+        print("\n== 은행 터미널 접속 완료 ==\n")
+        print("[1] | 사용자 접속")
+        print("[2] | 관리자 접속")
+        print("[0] | 터미널 종료")
+    
+    # 터미널 접속 후 메인 화면에서 메뉴 선택 함수
     def terminalStart(self) :
-        pass
+        terminal_menu_list = [None , self.customerStart , self.adminStart]
+        
+        while True :
+            self.printTerminalMenu()
+            select_menu = int(input("메뉴 선택 : "))
+            if select_menu > 0 and select_menu < len(terminal_menu_list) :
+                terminal_menu_list[select_menu]()
+            elif select_menu == 0 :
+                return
+            else :
+                print("메뉴를 다시 선택해주세요.\n")
     
     def adminStart(self) :
         pass
@@ -158,6 +176,6 @@ class Admin :
 
 # 시작 코드
 if __name__ == "__main__" :
-    def loginTerminal() :
-        select = int(input("메뉴 선택 : "))
+    terminal = BankTerminal()
+    terminal.terminalStart()
         
