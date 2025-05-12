@@ -25,3 +25,8 @@
     git rm -r *
     git commit -m "Delete all files"
     git push origin (Branch name)
+
+[7] 파일명 변경
+    git mv <기존_파일명> <새로운_파일명>
+    git commit -m "Commit all changes"
+    git push origin (Branch name)
