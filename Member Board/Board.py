@@ -20,12 +20,19 @@ class Mainhub :
         {"MEMBER_NUMBER" : "91276" , "ID" : "CHOI" , "PASSWORD" : "mLoKiJ6" , "NAME" : "최수아" , "PHONE" : "010-5555-7777" , "EMAIL" : "sua0000@gmail.com"},
         {"MEMBER_NUMBER" : "28349" , "ID" : "JUNG" , "PASSWORD" : "p1o2I3u" , "NAME" : "정하준" , "PHONE" : "010-4321-8765" , "EMAIL" : "hajun0101@gmail.com"}
     ]
-    post_list     = []
+    post_list     = [
+        {'MEMBER_NUMBER' : '10582' , "ID" : "LEEE" , 'BOARD_NUMBER' : 1 , 'TITLE' : '정보 알려주다 하루' , 'DATEIL' : '정보 관련 짧은 내용입니다.' , 'DATE' : '2024-07-29-03-55' , 'VIEWS' : 632},
+        {'MEMBER_NUMBER' : '73921' , "ID" : "KIMM" , 'BOARD_NUMBER' : 2 , 'TITLE' : '나만의 이야기 쓰다 팁' , 'DATEIL' : '나만의 관련 짧은 내용입니다.' , 'DATE' : '2025-01-15-17-31' , 'VIEWS' : 123},
+        {'MEMBER_NUMBER' : '45603' , "ID" : "PARK" , 'BOARD_NUMBER' : 3 , 'TITLE' : '질문 공유하다 순간들' , 'DATEIL' : '질문 관련 짧은 내용입니다.' , 'DATE' : '2024-11-03-11-01' , 'VIEWS' : 987},
+        {'MEMBER_NUMBER' : '10582' , "ID" : "LEEE" , 'BOARD_NUMBER' : 4 , 'TITLE' : '일상 기록하다 경험' , 'DATEIL' : '일상 관련 짧은 내용입니다.' , 'DATE' : '2025-04-05-08-22' , 'VIEWS' : 55},
+        {'MEMBER_NUMBER' : '91276' , "ID" : "CHOI" , 'BOARD_NUMBER' : 5 , 'TITLE' : '오늘의 생각 궁금하다 노하우' , 'DATEIL' : '오늘의 관련 짧은 내용입니다.' , 'DATE' : '2024-08-21-19-49' , 'VIEWS' : 301}
+    ]
+    
     admin_account = {"ADMIN_ID" : "admin" , "ADMIN_PASSWORD" : "admin"}
         
     def printTerminalMenu(self) :
         print("===== 게시판 이용 프로그램 메뉴 =====")
-        print("[1] | 이용자 접속")  # 현재 이용 불가
+        print("[1] | 이용자 접속")
         print("[2] | 관리자 접속")
         print()
         print("[0] | 프로그램 종료")
@@ -87,7 +94,8 @@ class Member :
         for i , v in enumerate(Mainhub.member_list) :
             if login_mamber_id == v["ID"] and login_mamber_password == v["PASSWORD"] :
                 print(f"{v["ID"]} 로그인 성공")
-                self.startBoardMenu()
+                mamber_information = v
+                self.startBoardMenu(mamber_information)
                 
         print("계정 아이디 또는 비밀번호가 일치하지 않습니다.")
     
@@ -107,7 +115,7 @@ class Member :
                 print("메뉴를 잘못 선택하였습니다.")
     
     # 게시판 메뉴를 실행시킬 함수
-    def startBoardMenu(self) :
+    def startBoardMenu(self , mamber_information) :
         board_menu_list = [None]
         
         while True :
@@ -115,7 +123,7 @@ class Member :
             select_menu = int(input("메뉴 선택 : "))
             
             if select_menu > 0 and select_menu <= len(board_menu_list) :
-                board_menu_list[select_menu]()
+                board_menu_list[select_menu](mamber_information)
             elif select_menu == 0 :
                 return
             else :
