@@ -243,7 +243,7 @@ print(add(5,7))
 """
 
 # 데코레이터 만들기 문제
-# 함수를 sigma 매개변수 를 받아서
+# 함수를 sigma 매개변수 를 받아서 LOG 를 출력하기
 
 # s = sigma(10)
 # [LOG] 함수이름 : sigma 2
@@ -270,3 +270,10 @@ def sigma2(args) :
     return sum
 
 sigma2(1000)
+
+
+@myLog
+def sub(a , b) :
+    return a - b
+
+sub(99,66)
