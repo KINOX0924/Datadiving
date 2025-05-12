@@ -22,9 +22,6 @@ class Mainhub :
     ]
     post_list     = []
     admin_account = {"ADMIN_ID" : "admin" , "ADMIN_PASSWORD" : "admin"}
-    
-    def __init__(self) :
-        self.member = {"MEMBER_NUMBER" : "" , "ID" : "" , "PASSWORD" : "" , "NAME" : "" , "PHONE" : "" , "EMAIL" : ""}
         
     def printTerminalMenu(self) :
         print("===== 게시판 이용 프로그램 메뉴 =====")
@@ -35,9 +32,9 @@ class Mainhub :
     
     def terminalStart(self) :
         terminal_menu_list = [None , self.memberStart , self.adminStart]
-        self.printTerminalMenu()
         
         while True :
+            self.printTerminalMenu()
             select_menu = int(input("메뉴 선택 : "))
             if select_menu > 0 and select_menu <= len(terminal_menu_list) :
                 terminal_menu_list[select_menu]()
@@ -47,7 +44,8 @@ class Mainhub :
                 print("메뉴를 잘못 선택하였습니다.")
     
     def memberStart(self) :
-        pass
+        terminal = Member()
+        terminal.startMember()
     
     def adminStart(self) :
         admin_login_id       = input("관리자 접속 계정을 입력하세요 : ")
@@ -55,33 +53,89 @@ class Mainhub :
         
         if self.admin_account["ADMIN_ID"] == admin_login_id and self.admin_account["ADMIN_PASSWORD"] == admin_login_password :
             terminal = Admin()
+            terminal.startAdmin()
         else :
             print("관리자 아이디 또는 비밀번호가 잘못 입력되었습니다.")
 
 # 회원이 접속하여 사용할 수 있는 클래스
 class Member :
-    def __init__ (self) :
-        pass
+    # 처음 사용자 클래스에 접속하면 보여줄 메뉴 항목 함수
+    def printMemberTerminalMenu(self) :
+        print("===== 사용자 접속 완료 =====")
+        print("[1] | 회원 로그인")
+        print("[2] | 회원 가입")
+        print("[3] | 정보 수정")
+        print("[4] | 회원 탈퇴")
+        print()
+        print("[0] | 사용자 접속 종료")
     
-    pass
+    # 로그인이 성공하고 나면 보여줄 메뉴 항목 함수
+    def printMemberMenu(self) :
+        print("==== 회원 메뉴 =====")
+        print("[1] | 게시물 등록")
+        print("[2] | 게시물 조회")
+        print("[3] | 게시물 수정")
+        print("[4] | 게시물 삭제")
+        print()
+        print("[0] | 로그아웃")
+    
+    # 로그인 함수
+    def loginMember(self) :
+        login_mamber_id       = input("아이디 입력 : ")
+        login_mamber_password = input("비밀번호 입력 : ")
+        
+        for i , v in enumerate(Mainhub.member_list) :
+            if login_mamber_id == v["ID"] and login_mamber_password == v["PASSWORD"] :
+                print(f"{v["ID"]} 로그인 성공")
+                self.startBoardMenu()
+                
+        print("계정 아이디 또는 비밀번호가 일치하지 않습니다.")
+    
+    # 메뉴를 실행시킬 함수
+    def startMember(self) :
+        member_menu_list = [None , self.loginMember]
+        
+        while True :
+            self.printMemberTerminalMenu()
+            select_menu = int(input("메뉴 선택 : "))
+            
+            if select_menu > 0 and select_menu <= len(member_menu_list) :
+                member_menu_list[select_menu]()
+            elif select_menu == 0 :
+                return
+            else :
+                print("메뉴를 잘못 선택하였습니다.")
+    
+    # 게시판 메뉴를 실행시킬 함수
+    def startBoardMenu(self) :
+        board_menu_list = [None]
+        
+        while True :
+            self.printMemberTerminalMenu()
+            select_menu = int(input("메뉴 선택 : "))
+            
+            if select_menu > 0 and select_menu <= len(board_menu_list) :
+                board_menu_list[select_menu]()
+            elif select_menu == 0 :
+                return
+            else :
+                print("메뉴를 잘못 선택하였습니다.")
 
 # 관리자가 접속하여 사용할 수 있는 클래스
 class Admin :
-    def __init__(self) :
-        pass
-    
     # 회원 가입을 위한 함수
     # 회원 가입의 경우 멤버 클래스에서도 동일하게 사용할 수 있어야 함
     def upSign(self) :
-        member = Mainhub()
-        member.member["MEMBER_NUMBER"] = self.creNumber()
-        member.member["ID"]            = input("사용할 아이디 입력 : ")
-        member.member["PASSWORD"]      = input("사용할 패스워드 입력 : ")
-        member.member["NAME"]          = input("본인 이름 입력 : ")
-        member.member["PHONE"]         = input("연락처 입력(예시 : 010-0000-0000) : ")
-        member.member["EMAIL"]         = input("이메일 입력 : ")
+        member = {"MEMBER_NUMBER" : "" , "ID" : "" , "PASSWORD" : "" , "NAME" : "" , "PHONE" : "" , "EMAIL" : ""}
+        
+        member["MEMBER_NUMBER"] = self.creNumber()
+        member["ID"]            = input("생성할 아이디 입력 : ")
+        member["PASSWORD"]      = input("사용할 패스워드 입력 : ")
+        member["NAME"]          = input("계정 이름 입력 : ")
+        member["PHONE"]         = input("연락처 입력(예시 : 010-0000-0000) : ")
+        member["EMAIL"]         = input("이메일 입력 : ")
         Mainhub.member_list.append(member)
-        print(f"{member.member["NAME"]} 님의 {member.member["ID"]} 계정이 정상적으로 생성되었습니다.")
+        print(f"{member["NAME"]} 님의 {member["ID"]} 계정이 정상적으로 생성되었습니다.")
     
     # 회원 가입 시 회원 번호를 랜덤으로 생성하기 위한 함수
     # 회원 번호만 가지고는 삭제 및 수정을 할 수 없음
@@ -162,9 +216,21 @@ class Admin :
     def startAdmin(self) :
         admin_menu_list = [None , self.upSign , self.searchMember , self.delMember , self.modifyMember]
         
+        while True :
+            self.printAdminMenu()
+            select_menu = int(input("메뉴 선택 : "))
+            
+            if select_menu > 0 and select_menu <= len(admin_menu_list) :
+                if select_menu == 2 :
+                    admin_menu_list[select_menu](True)
+                else :
+                    admin_menu_list[select_menu]()
+            elif select_menu == 0 :
+                return
+            else :
+                print("메뉴를 잘못 선택하였습니다.")
         
 
 if __name__ == "__main__" :
-    member = Admin()
-    member.modifyMember()
-    member.searchMember(True)
+    user = Mainhub()
+    user.terminalStart()
