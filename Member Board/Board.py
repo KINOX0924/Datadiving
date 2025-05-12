@@ -1,3 +1,5 @@
+# 금요일 자정까지 완료
+
 # 회원관리 - 회원번호 , 회원아이디 , 패스워드 , 이름 , 전화번호 , 이메일    = 관리자
 # 게시판   - 회원번호 , 글번호 , 제목 , 내용 , 작성일 , 조회수             = 이용자
 
@@ -11,6 +13,7 @@
 # 랜덤 회원번호 생성을 위한 랜덤 모듈 호출
 import random
 import pickle   # 추후 추가 예정
+import datetime
 
 class Mainhub :
     member_list   = [
@@ -21,14 +24,15 @@ class Mainhub :
         {"MEMBER_NUMBER" : "28349" , "ID" : "JUNG" , "PASSWORD" : "p1o2I3u" , "NAME" : "정하준" , "PHONE" : "010-4321-8765" , "EMAIL" : "hajun0101@gmail.com"}
     ]
     post_list     = [
-        {'MEMBER_NUMBER' : '10582' , "ID" : "LEEE" , 'BOARD_NUMBER' : 1 , 'TITLE' : '정보 알려주다 하루' , 'DATEIL' : '정보 관련 짧은 내용입니다.' , 'DATE' : '2024-07-29-03-55' , 'VIEWS' : 632},
-        {'MEMBER_NUMBER' : '73921' , "ID" : "KIMM" , 'BOARD_NUMBER' : 2 , 'TITLE' : '나만의 이야기 쓰다 팁' , 'DATEIL' : '나만의 관련 짧은 내용입니다.' , 'DATE' : '2025-01-15-17-31' , 'VIEWS' : 123},
-        {'MEMBER_NUMBER' : '45603' , "ID" : "PARK" , 'BOARD_NUMBER' : 3 , 'TITLE' : '질문 공유하다 순간들' , 'DATEIL' : '질문 관련 짧은 내용입니다.' , 'DATE' : '2024-11-03-11-01' , 'VIEWS' : 987},
-        {'MEMBER_NUMBER' : '10582' , "ID" : "LEEE" , 'BOARD_NUMBER' : 4 , 'TITLE' : '일상 기록하다 경험' , 'DATEIL' : '일상 관련 짧은 내용입니다.' , 'DATE' : '2025-04-05-08-22' , 'VIEWS' : 55},
-        {'MEMBER_NUMBER' : '91276' , "ID" : "CHOI" , 'BOARD_NUMBER' : 5 , 'TITLE' : '오늘의 생각 궁금하다 노하우' , 'DATEIL' : '오늘의 관련 짧은 내용입니다.' , 'DATE' : '2024-08-21-19-49' , 'VIEWS' : 301}
+        {"MEMBER_NUMBER" : "10582" , "ID" : "LEEE" , "BOARD_NUMBER" : 1 , "TITLE" : "이거 만들다가" , "DETAIL" : "오늘 하루가 지나갔네" , "DATE" : "2024-07-29 03 : 55" , "VIEWS" : 632},
+        {"MEMBER_NUMBER" : "73921" , "ID" : "KIMM" , "BOARD_NUMBER" : 2 , "TITLE" : "저 사람 이름들" , "DETAIL" : "제미니가 만들 사람들" , "DATE" : "2025-01-15 17 : 31" , "VIEWS" : 123},
+        {"MEMBER_NUMBER" : "45603" , "ID" : "PARK" , "BOARD_NUMBER" : 3 , "TITLE" : "하준이가 누굴까" , "DETAIL" : "궁금하네" , "DATE" : "2024-11-03 11 : 01" , "VIEWS" : 987},
+        {"MEMBER_NUMBER" : "10582" , "ID" : "LEEE" , "BOARD_NUMBER" : 4 , "TITLE" : "빈 속에 커피 마시면" , "DETAIL" : "하루 종일 속이 쓰리다" , "DATE" : "2025-04-05 08 : 22" , "VIEWS" : 55},
+        {"MEMBER_NUMBER" : "91276" , "ID" : "CHOI" , "BOARD_NUMBER" : 5 , "TITLE" : "내가 산 주식은" , "DETAIL" : "언제나 항상 파란색" , "DATE" : "2024-08-21 19 : 49" , "VIEWS" : 301}
     ]
     
     admin_account = {"ADMIN_ID" : "admin" , "ADMIN_PASSWORD" : "admin"}
+    board_number_count = 0
         
     def printTerminalMenu(self) :
         print("===== 게시판 이용 프로그램 메뉴 =====")
@@ -73,6 +77,7 @@ class Member :
         print("[2] | 회원 가입")
         print("[3] | 정보 수정")
         print("[4] | 회원 탈퇴")
+        print("[5] | 게시물 목록")
         print()
         print("[0] | 사용자 접속 종료")
     
@@ -88,15 +93,15 @@ class Member :
     
     # 로그인 함수
     def loginMember(self) :
-        login_mamber_id       = input("아이디 입력 : ")
-        login_mamber_password = input("비밀번호 입력 : ")
+        login_member_id       = input("아이디 입력 : ")
+        login_member_password = input("비밀번호 입력 : ")
         
         for i , v in enumerate(Mainhub.member_list) :
-            if login_mamber_id == v["ID"] and login_mamber_password == v["PASSWORD"] :
+            if login_member_id == v["ID"] and login_member_password == v["PASSWORD"] :
                 print(f"{v["ID"]} 로그인 성공")
-                mamber_information = v
-                self.startBoardMenu(mamber_information)
-                
+                member_information = v
+                self.startBoardMenu(member_information)
+                return
         print("계정 아이디 또는 비밀번호가 일치하지 않습니다.")
     
     # 메뉴를 실행시킬 함수
@@ -115,28 +120,66 @@ class Member :
                 print("메뉴를 잘못 선택하였습니다.")
     
     # 게시판 메뉴를 실행시킬 함수
-    def startBoardMenu(self , mamber_information) :
-        board_menu_list = [None]
+    def startBoardMenu(self , member_information) :
+        board_menu_list = [None , self.postingBoard , self.viewPost]
         
         while True :
-            self.printMemberTerminalMenu()
+            self.printMemberMenu()
             select_menu = int(input("메뉴 선택 : "))
             
             if select_menu > 0 and select_menu <= len(board_menu_list) :
-                board_menu_list[select_menu](mamber_information)
+                board_menu_list[select_menu](member_information)
             elif select_menu == 0 :
                 return
             else :
                 print("메뉴를 잘못 선택하였습니다.")
+    
+    # 게시판에 게시글을 등록할 수 있는 메뉴
+    def postingBoard(self , member_information) :
+        Mainhub.board_number_count += 1
+        new_post = {"MEMBER_NUMBER" : member_information["MEMBER_NUMBER"] , "ID" : member_information["ID"] , "BOARD_NUMBER" : Mainhub.board_number_count , "TITLE" : "" , "DETAIL" : "" , "DATE" : self.getNowDate() , "VIEWS" : 0}
+        new_post["TITLE"]         = input("제목 입력 : ")
+        new_post["DETAIL"]        = input("내용 입력 : ")
+        
+        Mainhub.post_list.append(new_post)
+        print("게시글이 성공적으로 저장되었습니다.")
+    
+    # 현재 연/월/일/시/분 을 가져오는 함수
+    def getNowDate(self) :
+        now        = datetime.datetime.now()
+        format_now = now.strftime("%Y-%m-%d %H : %M")
+        return format_now
+    
+    # 자신이 작성한 게시물을 확인할 수 있는 메뉴
+    def viewPost(self , member_information) :
+        post_number_list = []
+        
+        for i , v in enumerate(Mainhub.post_list) :
+            if member_information["MEMBER_NUMBER"] == v["MEMBER_NUMBER"] and member_information["ID"] == v["ID"] :
+                print(f"게시글 번호 [{v["BOARD_NUMBER"]}] | 제목 : [{v["TITLE"]}]")
+                post_number_list.append(v["BOARD_NUMBER"])
+        
+        select_post = int(input("조회할 게시글 번호 입력 : "))
+        if select_post not in post_number_list :
+            print("조회할 수 없는 게시글 번호 입니다.")
+        else :
+            for i , v in enumerate(Mainhub.post_list) :
+                if select_post == v["BOARD_NUMBER"] :
+                    self.printPost(v)
+
+    # 게시글 내용을 출력하는 함수
+    def printPost(self , post) :
+        print(f"제목 : [{post["TITLE"]}]")
+        print(f"내용\n{post["DETAIL"]}")
+        print(f"게시글 번호 : [{post["BOARD_NUMBER"]}] | 작성자 : {post["ID"]}\t | 게시일 : {post["DATE"]}\t | 조회수 : {post["VIEWS"]}")
 
 # 관리자가 접속하여 사용할 수 있는 클래스
 class Admin :
     # 회원 가입을 위한 함수
     # 회원 가입의 경우 멤버 클래스에서도 동일하게 사용할 수 있어야 함
     def upSign(self) :
-        member = {"MEMBER_NUMBER" : "" , "ID" : "" , "PASSWORD" : "" , "NAME" : "" , "PHONE" : "" , "EMAIL" : ""}
+        member = {"MEMBER_NUMBER" : self.creNumber() , "ID" : "" , "PASSWORD" : "" , "NAME" : "" , "PHONE" : "" , "EMAIL" : ""}
         
-        member["MEMBER_NUMBER"] = self.creNumber()
         member["ID"]            = input("생성할 아이디 입력 : ")
         member["PASSWORD"]      = input("사용할 패스워드 입력 : ")
         member["NAME"]          = input("계정 이름 입력 : ")
