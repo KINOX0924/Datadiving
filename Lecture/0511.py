@@ -249,6 +249,7 @@ print(add(5,7))
 # [LOG] 함수이름 : sigma 2
 # [LOG] 입력값   : args = (10) , kwargs = {}
 # [LOG] 반환값   : 55
+"""
 def myLog(callback) :
     def innerfunc(*args , **kwargs) :
         result = callback(*args , **kwargs)
@@ -277,3 +278,4 @@ def sub(a , b) :
     return a - b
 
 sub(99,66)
+"""
