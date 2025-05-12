@@ -141,6 +141,7 @@ SelfCount.printCount()
 # 근데 이 때 사용시간 보다 연결 - 끊기 시간이 더 많은 시간을 소요
 # 따라서 미리 연결자를 많이 만들어두고 연결자를 돌려가며 사용 - 풀 기법
 # 이 풀은 객체 하나만 만들게 해야 하는데 이를 두고 싱글톤 패턴이라고 함
+"""
 class Singleton :
     # 객체를 하나만 만들어야 함
     __instance = None   # 객체를 만들라고 하면 None 이 아닐때만 객체를 만들고 None 이면 있던 객체를 반환함
@@ -163,12 +164,109 @@ class Singleton :
 s = Singleton.getInstance()
 s.display()
 
-s2 = Singleton.getInstance()
+s2 = Singleton()
 s2.display()
-
+"""
 # 파이썬에서는 클래스 외부에서 객체를 만드는 것을 파이썬이 막을 방법이 없음
 # 다른 언어들은 생성자한테도 접근권한이 있어서 이걸 private 로 만들면 외부에서 객체 생성을 못 함
 # 파이썬 생성자에 이미 __ 붙어있어서 별도로 접근 권한을 건드릴 수 없음 = 그래서 편법을 사용해야함
 
 # 데이터 없이 일을 하는 클래스들을 만들때는 쓰레드풀로 만들면 좋다
 # 쓸데없이 객체가 만들어졌다 없어졌다를 하는 것을 방지할 수 있음
+
+
+# 데코레이터
+# @staticmethod 처럼 '@' 으로 시작하는 것들을 데코레이터라고 함
+# 함수의 전후 동작을 감싸서 함수 가로채기를 하여 특정 작업을 진행/처리하고 원래의 함수를 호출하는 것
+
+# 데코레이터 만들기
+# 함수 안에 또 다른 함수를 만드는 것(중첩함수)
+# 매개번수로 함수를 받아가서 중첩함수 안에서 받아간 함수를 호출함
+# 파이썬에서는 주로 웹에서 많이 사용
+# 예 : 반드시 로그인을 해야 접근이 가능한 함수를 만들고자 할 때
+# 예 : 함수를 중간에 가로채서 실행시간 체크같은 것도 가능함
+
+"""
+import time
+
+# 기본 구조
+def decorator1(func) :  # 호출할 매개변수 (중첩함수 안에서 호출될 함수)
+    def wrapper() :
+        print("함수 호출 전")
+        func()
+        print("함수 호출 후")
+    return wrapper  # 중첩 함수의 참조를 반환해야 함
+
+@decorator1
+def hello() :
+    print("Hello")
+    
+hello() #decorator1 에게 납치당함 >> wrapper >> func() 를 통해서 함수 호출
+
+def timeDecorator(callback) :
+    def innerfunc() :
+        start = time.time()
+        callback()
+        end   = time.time()
+        print(f"{callback.__name__} 실행시간 : {end - start} 초")
+    return innerfunc
+
+@timeDecorator
+def goodbye() :
+    sum = 0
+    for i in range(0,10000000) :
+        sum += i
+    print(sum)
+    
+goodbye()
+"""
+
+# 매개변수 있고 반환값이 있는 경우의 데코레이터 만들기
+
+# callback = 뒤에서 호출하는 것을 의미하며 보통 호출자가 시스템임 , 직접 호출은 불가능함
+
+"""
+# 가장 기본이 되는 코드 형태
+def myDecorator(callback) :
+    # 호출된 함수가 어떤 매개변수를 갖고 있는 지 알 수 없을 경우에
+    # tuple 타입 하나 , dict 타입하나 만들면 왠만한 것들은 다 받음
+    def wrapper(*args , **kwargs) :
+        result = callback(*args , **kwargs)
+        return result
+    return wrapper
+
+@myDecorator
+def add(x,y) :
+    return x + y
+
+print(add(5,7))
+"""
+
+# 데코레이터 만들기 문제
+# 함수를 sigma 매개변수 를 받아서
+
+# s = sigma(10)
+# [LOG] 함수이름 : sigma 2
+# [LOG] 입력값   : args = (10) , kwargs = {}
+# [LOG] 반환값   : 55
+def myLog(callback) :
+    def innerfunc(*args , **kwargs) :
+        result = callback(*args , **kwargs)
+        print(f"[LOG] 함수 이름 : {callback.__name__}")
+        if len(args) == 1 :
+            print(f"[LOG] 입력값    : args = ({args[0]}) , kwargs = {kwargs}")
+        else : 
+            print(f"[LOG] 입력값    : args = {args} , kwargs = {kwargs}")
+        print(f"[LOG] 반환값    : {result}")
+        return result       # 리턴을 안 해주면 함수값 반환이 안되어서 반드시 작성 필요
+    return innerfunc
+
+@myLog
+def sigma2(args) :
+    sum = 0
+    
+    for v in range(0 , args+1) :
+        sum += v
+    return sum
+
+sigma2(1000)
