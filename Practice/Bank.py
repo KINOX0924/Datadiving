@@ -24,9 +24,6 @@ class BankTerminal :
     
     administrator_account = {"ADMIN_ID" : "admin" , "ADMIN_PASSWORD" : "admin"}
     
-    def __init__(self) :
-        self.customer = {"ACCOUNT_NUMBER" : "" , "NAME" : "" , "ID" : "" , "PASSWORD" : "" , "BALANCE" : 0}
-    
     # 터미널 접속 후 출력할 메뉴
     def printTerminalMenu(self) :
         print("\n== 은행 터미널 접속 완료 ==\n")
@@ -57,15 +54,11 @@ class BankTerminal :
 # 고객 클래스 생성
 # 고객이 터미널을 이용할 때 사용하는 함수
 class Customer :
-    def __init__(self) :
-        pass
+    pass
 
 # 관리자 클래스 생성
 # 관리자가 터미널을 이용할 때 사용하는 함수
 class Admin :
-    def __init__(self) :
-        pass
-    
     # =========================== 관리자가 고객 정보를 출력할 때 사용하는 함수 =========================== #
     def printAccAdmin(self , account) :
         print(f"계좌 번호 : {account["ACCOUNT_NUMBER"]}" , end = "\t")
@@ -75,12 +68,13 @@ class Admin :
     
     # =========================== 관리자가 고객의 신규 계정을 생성하는 함수 모음 =========================== #
     def creAcc(self) :
-        customer = BankTerminal()
-        customer.customer["ACCOUNT_NUMBER"] = self.creAccnum()
-        customer.customer["NAME"]           = input("고객 이름 입력 : ")
-        customer.customer["ID"]             = self.creId()
-        customer.customer["PASSWORD"]       = self.crePwd()
-        customer.customer["BALANCE"]        = 100  # 100 원은 계좌 생성을 확인하는 것과 축하하는 의미에서 지급
+        customer = {"ACCOUNT_NUMBER" : "" , "NAME" : "" , "ID" : "" , "PASSWORD" : "" , "BALANCE" : 0}
+        customer["ACCOUNT_NUMBER"] = self.creAccnum()
+        customer["NAME"]           = input("고객 이름 입력 : ")
+        customer["ID"]             = self.creId()
+        customer["PASSWORD"]       = self.crePwd()
+        customer["BALANCE"]        = 100  # 100 원은 계좌 생성을 확인하는 것과 축하하는 의미에서 지급
+        BankTerminal.customer_list.append(customer)
         print(f"{customer.customer["NAME"]} 님의 계좌가 성공적으로 생성되었습니다.")
         print(f"계좌 생성을 축하하는 의미에서 {customer.customer["NAME"]} 님의 계좌에 100 원을 입금해드렸습니다.")
     
