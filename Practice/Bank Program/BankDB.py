@@ -27,13 +27,14 @@ class BankDatabase :
     # ===== 관리자 전용 함수 모음
     # 고객 가입
     @classmethod
-    def insertCustomer(self , customer_information) :
-        for index , value in enumerate(self.__customer_ist) :
+    def insertCustomer(cls , customer_information) :
+        for index , value in enumerate(cls.__customer_ist) :
             if customer_information["customer_name"]   == value["customer_name"] and \
                customer_information["resident_number"] == value["resident_number"] :
                  print(f"{customer_information["customer_name"]} 님은 이미 생성된 계정이 존재합니다.")
                  return
-        self.__customer_list.append(customer_information)
+        cls.__customer_list.append(customer_information)
+        print(f"{customer_information["customer_name"]} 님의 계정이 정상적으로 생성되었습니다.")
 
 # 시작
 if __name__ == "__main__" :

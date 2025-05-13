@@ -223,6 +223,8 @@ po_lsit = list(filter(lambda x : x > 0 , a))
 print(po_lsit)
 """
 
+"""
+# 말일까지 남은 날짜 구하기
 import datetime
 day1 = datetime.date(2021,12,14)
 day2 = datetime.date(2024,7,25)
@@ -232,8 +234,42 @@ print(day1)
 print(day2)
 print(calDay.days)
 
-day1 = datetime.date(2025,5,31)
-day2 = datetime.date(2025,5,13)
+import calendar
+from datetime import date
 
-calDay = day1 - day2
-print(calDay.days)
+today = date.today()
+year  = today.year
+month = today.month
+
+last_day = calendar.monthrange(year , month)[1]
+
+print(last_day)
+
+day1 = datetime.date(year , month , last_day)
+print((day1 - today).days)
+
+# 오늘이 무슨 요일 인지 확인
+print(today.weekday())
+"""
+
+"""
+# 날짜를 입력을 받아서 그 날이 무슨 요일인지 반환하는 함수
+# 문자열로 입력 받을 것 : "2025-05-11"
+import datetime
+
+def whatDay(date) :
+    day_list = ["월요일" , "화요일" , "수요일" , "목요일" , "금요일" , "토요일" , "일요일"]
+    now_day = datetime.datetime.strptime(date , '%Y-%m-%d')
+    
+    day_index = now_day.weekday()
+    
+    return day_list[day_index]
+
+today = '2025-05-13'
+print(whatDay(today))
+"""
+
+# 딥러닝 때 shutil 을 주로 사용함
+import shutil
+
+shutil.copy("0513.py" , "0515.py")
