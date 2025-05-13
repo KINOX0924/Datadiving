@@ -135,3 +135,105 @@ print(isinstance(d,object))
 print(isinstance(d,str))
 print(isinstance(d,int))
 """
+
+# 예외처리 try
+# except 구역은 에러ㅏ 발생 시 실행되는 코드 / error 부분에는 에러 구문이 저장됨
+# finally 구역은 에러가 발생하든 않든 반드시 실행되어야 하는 코드를 작성 / 파일 처리 , 데이터베이스 , 네트워크 처리 등에 사용됨
+# : 왜냐하면 파일 , 데이터베이스 , 네트워크는 연결 도중 오류가 발생 시 close 가 실행되어야 하는데 이 close 를 finally 에 넣어줌
+"""
+try :
+    x = int(input("정수 : "))
+    y = int(input("정수 : "))
+
+    z = x / y
+    print(f'x = {x} , y = {y} , z = {z}')
+except ZeroDivisionError as error :
+    print("0 으로는 숫자를 나눌 수 없습니다.")
+finally :
+    print("이 부분은 반드시 실행된다.")
+"""
+
+"""
+try :
+    f = open("file1.txt" , "r")
+    lines = f.readlines()
+    
+    for line in lines :
+        print(line)
+except FileNotFoundError as Error :
+    print(Error)
+except NameError as Error :
+    print(Error)
+except Exception as Error :
+    print(Error)
+finally :
+    f.close()
+"""
+
+"""
+# 폭포수(케스케이드 기법)
+try :
+    a = [1,2,3,4,5]
+    b = a[5]
+except ZeroDivisionError as Error :
+    print(Error)
+except IndexError as Error :
+    print(Error)
+except Exception as Error :
+    print(Error)
+"""
+
+# raise
+# 강제 예외 발생 코드
+# 원래 함수 종료 구문은 return
+# return 이 하는 일 : 값 반환 , 함수가 끝날 때 마무리 작업
+# return 이 명시되어 있지 않을 때(생성자에 주로 return 대신 raise 를 사용) / raise 가 함수의 정리도 진행함
+
+"""
+class Test :
+    def __init__(self) :
+        raise Exception("객체 생성 오류")
+
+try :
+    t1 = Test()
+except Exception as Error :
+    print(Error)
+
+
+print(dir(Test))
+print(divmod(98,9))
+
+result = eval('1+2+3')
+print(result)
+
+result = eval('(4+3) * (55-61)')
+print(result)
+"""
+
+"""
+a = [1,4,-2, 5,-5,8,-6,7,0]
+po_lsit = []
+
+def isPositive(x) :
+    if x > 0 :
+        return True
+    return False
+
+po_lsit = list(filter(lambda x : x > 0 , a))
+print(po_lsit)
+"""
+
+import datetime
+day1 = datetime.date(2021,12,14)
+day2 = datetime.date(2024,7,25)
+
+calDay = day2 - day1    # timedelta 객체로 바뀌고 날짜를 가지고 있음
+print(day1)
+print(day2)
+print(calDay.days)
+
+day1 = datetime.date(2025,5,31)
+day2 = datetime.date(2025,5,13)
+
+calDay = day1 - day2
+print(calDay.days)
