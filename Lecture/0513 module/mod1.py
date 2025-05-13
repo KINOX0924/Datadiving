@@ -1,3 +1,4 @@
+"""
 def add(x , y) :
     return x + y
 
@@ -18,3 +19,12 @@ if __name__ == "__main__" :
 
     p1 = Person("강태풍" , 12)
     p1.print()
+"""
+
+def isEven(args) :
+    if args % 2 == 0 :
+        return True
+    return False
+
+def toUpper(char) :
+    return char.upper()
