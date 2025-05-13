@@ -11,3 +11,10 @@ class Person :
         
     def print(self) :
         print(f"name = {self.name} | age = {self.age}")
+
+if __name__ == "__main__" :
+    print(add(3,4))
+    print(sub(3,4))
+
+    p1 = Person("강태풍" , 12)
+    p1.print()
