@@ -21,10 +21,20 @@ if __name__ == "__main__" :
     p1.print()
 """
 
+"""
 def isEven(args) :
     if args % 2 == 0 :
         return True
     return False
 
 def toUpper(char) :
-    return char.upper()
+    chars = [x for x in char]
+    upperChars  = ''
+    
+    for v in chars :
+        if ord(v) >= ord('a') and ord(v) <= ord('z') :
+            temp = chr(ord(v) - 32)
+        upperChars += temp
+    
+    return upperChars
+"""
