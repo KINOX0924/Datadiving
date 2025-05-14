@@ -13,19 +13,59 @@
 # 직원 계정 삭제(관리팀 및 인사팀만 가능)
 # 직원 계정 비밀번호 초기화
 
+# p   = 출력 함수
+# cus = 고객 계정 관련 함수
+# acc = 고객 계좌 관련 함수
+# em  = 직원 계정 관련 함수
+
 import BankDB
 import random
 import datetime
 
 class Bankmanager :
-    # 직원 계정 로그인
+    # ===== 직원 계정 로그인
     def loginEmployee(self) :
         login_employee_id       = input("직원 계정 아이디 입력 : ")
         login_employee_password = input("직원 계정 비밀번호 입력 : ")
-        flag = BankDB.BankDatabase.loginEmployee(login_employee_id , login_employee_password)
+        flag , employee_rank = BankDB.BankDatabase.loginEmployee(login_employee_id , login_employee_password)
         if flag == True :
-            pass
+            self.employeeMenu(employee_rank)
         return
+    
+    # ===== 직원 메뉴 [메인 화면]
+    def p_employeeMenu(self , employee_rank) :
+        print("===== 직원 메뉴 =====")
+        print("[1] | 고객 계정 관련 작업")
+        print("[2] | 고객 계좌 관련 작업")
+        if employee_rank == "관리팀" or employee_rank == "인사팀" :
+            print("[3] | 직원 계정 관련 작업")
+        print("[0] | 로그아웃")
+    
+    # ===== 직원 메뉴 [고객 계정 관련 작업]
+    def p_cus_employeeMenu(self) :
+        print("===== 고객 계정 관련 작업 메뉴 =====")
+        print("[1] | 고객 계정 생성")
+        print("[2] | 고객 계정 삭제")
+        print("[3] | 고객 계정 수정")
+        print("[4] | 고객 계정 비밀번호 초기화")
+        print("[0] | 로그아웃")
+        
+    # 직원 로그인 후 메뉴 선택
+    def employeeMenu(self , employee_rank) :
+        employeemenu_list = [None , self.addCustomer]
+        while True :
+            self.p_employeeMenu(employee_rank)
+            try :
+                select_menu = int(input("메뉴 선택 : "))
+                if select_menu > 0 and select_menu <= len(employeemenu_list) :
+                    employeemenu_list[select_menu]()
+                elif select_menu == 0 :
+                    print("로그아웃 되었습니다.")
+                    return
+                else :
+                    print("메뉴에 있는 숫자만 입력하세요.")
+            except ValueError :
+                print("숫자만 입력해주세요.")
     
     # ===== 고객 계정 생성
     # 고객을 추가하기 위해서 고객의 정보를 입력받아서 DB 에 전송할 함수

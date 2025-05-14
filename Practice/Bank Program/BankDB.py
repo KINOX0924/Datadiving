@@ -26,7 +26,7 @@ class BankDatabase :
     # 계좌 종류 , 계좌 번호 , 이름 , 입금/출금 구분 , 거래된 금액 , 이체 된 곳
     
     __employee_accout_list    = [
-        {"employee_name" : "마스터 계정" , "employee_id" : "master" , "employee_password" : "q1w2e3" , "department" : "관리팀" , "rank" : "마스터 계정"}
+        {"employee_name" : "마스터 계정" , "employee_id" : "master" , "employee_password" : "q1w2e3" , "employee_department" : "관리팀" , "employee_rank" : "마스터 계정"}
     ]
     # 직원 계정 리스트
     # 은행의 직원 계정이 저장되는 리스트
@@ -39,7 +39,7 @@ class BankDatabase :
         for account in cls.__employee_accout_list :
             if login_employee_id == account["employee_id"] and login_employee_password == account["employee_password"] :
                 print(f"[{account["department"]}] 의 [{account["employee_name"]}] 님이 로그인되었습니다.")
-                return True
+                return True , account["employee_rank"]
         print("아이디 또는 비밀번호가 틀렸습니다.")
         return False   
     
