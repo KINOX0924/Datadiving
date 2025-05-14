@@ -143,15 +143,16 @@ class Bankmanager :
     
     # 고객의 연락처를 입력받아서 유효성 체크 후 반환하는 함수
     # 현재 대한민국에서 가운데 네 자리는 4 자리를 사용함 / 하지만 3 자리가 있을 수도 있음
-    # //FIXME [1] 정규식 패턴을 사용해서 숫자가 7 자리 또는 8 자리만 들어올 수 있도록 수정
-    # //FIXME [2] 변수를 사용하지 않고 리턴값에서 계산해서 나가도록 수정
+    # //FIXME [1] 정규식 패턴을 사용해서 숫자가 7 자리 또는 8 자리만 들어올 수 있도록 수정 //TODO [1] 수정 완료
+    # //FIXME [2] 변수를 사용하지 않고 리턴값에서 계산해서 나가도록 수정 //TODO [2] 수정 완료
     def getPhoneNumber(self) :
-        phone_number = None
+        flag = False
         
-        while phone_number == None :
+        while flag == False :
             phone_number = input("[-] 를 포함한 휴대전화 번호 입력 : ")
-            phone_number = PatternList.checkPhoneNumber(phone_number)
-            if phone_number != None :
+            
+            flag = PatternList.checkPhoneNumber(phone_number)
+            if flag == True :
                 return phone_number
             print("유효하지 않는 휴대폰 번호 형식입니다.")
         
