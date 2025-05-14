@@ -76,9 +76,12 @@ class Bankmanager :
         customer["customer_gender"] = self.getGender(customer["resident_number"])
         customer["customer_birthday"] , customer["customer_age"] = self.getBirthAge(customer["resident_number"])
         customer["customer_phone"]  = self.getPhoneNumber()
+        print(customer)
         BankDB.BankDatabase.insertCustomer(customer)
     
     # 고객의 주민번호를 받아서 유효성 체크 후 반환하는 함수
+    # //OPTIMIZE 유효성 확인 필요 //TODO 확인 완료
+    # //OPTIMIZE return 값 수정했음 >> 제대로 들어가는 지 확인 필요
     def getResidentNumber(self) :
         while True :
             flag = False
@@ -91,26 +94,25 @@ class Bankmanager :
             except ValueError :
                 print("숫자만 입력해주세요.")
 
-    # 고객에게 입력받은 주민번호가 올바른 유효한 주민번호인지 확인하는 함수 //TODO: 수정 필요
+    # 고객에게 입력받은 주민번호가 올바른 유효한 주민번호인지 확인하는 함수
+    # //FIXME 수정 필요 //TODO 수정 완료
+    # //FIXME 이미 int 타입으로 들어온 것이라 int 전환은 필요 없음 >> 코드를 더 짧게 줄일 수 있음 >> 최외부 try - except 구문 필요 없을 듯
     def checkResidentNumber(self , resident_number) :
-        year_number  = str(resident_number)[:2]
-        month_number = str(resident_number)[2:4]
-        day_number   = str(resident_number)[4:6]
+        year  = int(str(resident_number)[:2])
+        month = int(str(resident_number)[2:4])
+        day   = int(str(resident_number)[4:6])
+        
+        if str(resident_number)[6] == 1 or str(resident_number)[6] == 2 :
+            year = 1900 + year
+        else :
+            year = 2000 + year
         
         try :
-            month = int(month_number)
-            day   = int(day_number)
-            for century in [1900 , 2000] :
-                year = century + int(year_number)
-                try :
-                    datetime.date(year , month , day)
-                    return True
-                except ValueError :
-                    return False
-            return False
+            datetime.date(year , month , day)
+            return True
         except ValueError :
-            return False     
-    
+            return False
+  
     # 고객의 주민번호를 확인하여 남성인지 여성인지 확인하고 성별을 반환하는 함수
     def getGender(self , resident_number) :
         if resident_number[7] == "1" or resident_number[7] == "3" :
@@ -118,26 +120,26 @@ class Bankmanager :
         return "female"
     
     # 고객의 주민번호를 사용하여 생일과 나이를 반환하는 함수
+    # //FIXME 수정 필요 //TODO 수정 완료
+    # //FIXME 이것도 좀 더 짧게 줄일 수 없는 지 확인 필요
     def getBirthAge(self , resident_number) :
-        birth_year_list = [None , "19" , "20"]
         if resident_number[7] == "1" or resident_number[7] == "2" :
-            year = int(birth_year_list[1] + resident_number[:2])
+            year = 1900 + int(str(resident_number)[:2])
         else :
-            year = int(birth_year_list[2] + resident_number[:2])
-        if resident_number[2] == "0" :
-            month = int(resident_number[3:4])
-        else :
-            month = int(resident_number[2:4])
-        if resident_number[4] == "0" :
-            day   = int(resident_number[5:6])
-        else :
-            day   = int(resident_number[4:6])
+            year = 2000 + int(str(resident_number)[:2])
+
+        month = int(str(resident_number)[2:4])
+        day   = int(str(resident_number)[4:6])
+        
         now             = datetime.datetime.today()
         birthday        = datetime.date(year , month , day)
         format_birthday = birthday.strftime("%Y-%m-%d")
         return format_birthday , (now.year - birthday.year)
     
     # 고객의 연락처를 입력받아서 유효성 체크 후 반환하는 함수
+    # //FIXME 수정필요
+    # //FIXME 정규식 패턴을 사용해서 숫자가 7자리 들어왔는 지 아닌 지하고 리턴값 수정
+    # //FIXME 현재 휴대폰 번호 가운데 숫자는 모두 4자리를 사용함
     def getPhoneNumber(self) :
         while True :
             try :
@@ -158,4 +160,4 @@ class Bankmanager :
 # 시작
 if __name__ == "__main__" :
     manager = Bankmanager()
-    manager.loginEmployee()
+    manager.addCustomer()
