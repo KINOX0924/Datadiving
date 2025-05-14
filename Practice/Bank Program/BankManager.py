@@ -18,7 +18,10 @@
 # acc = 고객 계좌 관련 함수
 # em  = 직원 계정 관련 함수
 
+# 모듈 호출 모음
 import BankDB
+import PatternList
+
 import random
 import datetime
 
@@ -53,6 +56,7 @@ class Bankmanager :
     # 직원 로그인 후 메뉴 선택
     def employeeMenu(self , employee_rank) :
         employeemenu_list = [None , self.addCustomer]
+        
         while True :
             self.p_employeeMenu(employee_rank)
             try :
@@ -80,8 +84,7 @@ class Bankmanager :
         BankDB.BankDatabase.insertCustomer(customer)
     
     # 고객의 주민번호를 받아서 유효성 체크 후 반환하는 함수
-    # //OPTIMIZE 유효성 확인 필요 //TODO 확인 완료
-    # //OPTIMIZE return 값 수정했음 >> 제대로 들어가는 지 확인 필요
+    # //OPTIMIZE return 값 수정했음 >> 제대로 들어가는 지 확인 필요(유효성 확인 필요)  //TODO 확인 완료 (0514 | 12:40)
     def getResidentNumber(self) :
         while True :
             flag = False
@@ -95,8 +98,8 @@ class Bankmanager :
                 print("숫자만 입력해주세요.")
 
     # 고객에게 입력받은 주민번호가 올바른 유효한 주민번호인지 확인하는 함수
-    # //FIXME 수정 필요 //TODO 수정 완료
-    # //FIXME 이미 int 타입으로 들어온 것이라 int 전환은 필요 없음 >> 코드를 더 짧게 줄일 수 있음 >> 최외부 try - except 구문 필요 없을 듯
+    # 이 함수로 입력되는 resident_number 는 int 타입
+    # //FIXME [1] 이미 int 타입으로 들어온 것이라 int 전환은 필요 없음 >> 코드를 더 짧게 줄일 수 있음 >> 최외부 try - except 구문 필요 없을 듯 //TODO [1] 수정 완료
     def checkResidentNumber(self , resident_number) :
         year  = int(str(resident_number)[:2])
         month = int(str(resident_number)[2:4])
@@ -114,22 +117,23 @@ class Bankmanager :
             return False
   
     # 고객의 주민번호를 확인하여 남성인지 여성인지 확인하고 성별을 반환하는 함수
+    # 이 함수로 입력되는 resident_number 는 str 타입
     def getGender(self , resident_number) :
         if resident_number[7] == "1" or resident_number[7] == "3" :
             return "male"
         return "female"
     
     # 고객의 주민번호를 사용하여 생일과 나이를 반환하는 함수
-    # //FIXME 수정 필요 //TODO 수정 완료
-    # //FIXME 이것도 좀 더 짧게 줄일 수 없는 지 확인 필요
+    # 이 함수로 입력되는 resident_number 는 str 타입
+    # //FIXME [1] 코드 더 짧게 수정 필요 //TODO [1] 수정 완료
     def getBirthAge(self , resident_number) :
         if resident_number[7] == "1" or resident_number[7] == "2" :
-            year = 1900 + int(str(resident_number)[:2])
+            year = 1900 + int(resident_number[:2])
         else :
-            year = 2000 + int(str(resident_number)[:2])
+            year = 2000 + int(resident_number[:2])
 
-        month = int(str(resident_number)[2:4])
-        day   = int(str(resident_number)[4:6])
+        month = int(resident_number[2:4])
+        day   = int(resident_number[4:6])
         
         now             = datetime.datetime.today()
         birthday        = datetime.date(year , month , day)
@@ -137,13 +141,25 @@ class Bankmanager :
         return format_birthday , (now.year - birthday.year)
     
     # 고객의 연락처를 입력받아서 유효성 체크 후 반환하는 함수
-    # //FIXME 수정필요
-    # //FIXME 정규식 패턴을 사용해서 숫자가 7자리 들어왔는 지 아닌 지하고 리턴값 수정
-    # //FIXME 현재 휴대폰 번호 가운데 숫자는 모두 4자리를 사용함
+    # 현재 대한민국에서 가운데 네 자리는 4 자리를 사용함 / 하지만 3 자리가 있을 수도 있음
+    # //FIXME [1] 정규식 패턴을 사용해서 숫자가 7 자리 또는 8 자리만 들어올 수 있도록 수정
+    # //FIXME [2] 변수를 사용하지 않고 리턴값에서 계산해서 나가도록 수정
     def getPhoneNumber(self) :
+        phone_number = None
+        
+        while phone_number == None :
+            phone_number = input("[-] 를 포함한 휴대전화 번호 입력 : ")
+            phone_number = PatternList.checkPhoneNumber(phone_number)
+            if phone_number != None :
+                return phone_number
+            print("유효하지 않는 휴대폰 번호 형식입니다.")
+        
+        """
+        기존 코드 :
+        
         while True :
             try :
-                phone_number = int(input("(010) 과 (-) 를 제외한 휴대전화 번호 입력 : "))
+                phone_number = int(input("(-) 를 포함한 휴대전화 번호 입력 : "))
                 if   len(str(phone_number)) == 7 :
                     first_phone_number  = str(phone_number)[:3]
                     second_phone_number = str(phone_number)[3:7]
@@ -156,6 +172,7 @@ class Bankmanager :
                     print("올바른 전화번호가 아닙니다. 다시 입력하세요.")
             except ValueError :
                 print("숫자만 입력해주세요.")
+        """
                 
 # 시작
 if __name__ == "__main__" :
