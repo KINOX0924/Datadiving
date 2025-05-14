@@ -1,6 +1,6 @@
 # 관리자가 할 수 있는 기능
 # 고객 계정 생성 - 구현 완료
-# 고객 계정 삭제 (생성되어 있는 계좌가 없어야 함)
+# 고객 계정 삭제 (생성되어 있는 계좌가 없어야 함) - 구현 완료
 # 고객 계정 수정
 # 고객 계정 비밀번호 초기화
 
@@ -172,8 +172,24 @@ class Bankmanager :
             if flag == True :
                 return phone_number
             print("유효하지 않는 휴대폰 번호 형식입니다.")
-                
+    
+    # ===== 고객 계정 삭제
+    def delCustomer(self) :
+        flag = False
+        
+        while flag == False :
+            customer_name = input("고객 이름 입력 : ")
+            customer_birthday = input("생년월일 입력 (예 : 990101) : ")
+            flag = PatternList.checkBirthday(customer_birthday)
+            if flag == True :
+                customer_information = BankDB.BankDatabase.searchCustomer(customer_name , customer_birthday)
+                if customer_information != None :
+                    BankDB.BankDatabase.deleteCustomer(customer_information)
+                    return
+                flag = False
+            print("이름과 생년월일을 다시 확인해주세요.")
+        
 # 시작
 if __name__ == "__main__" :
     manager = Bankmanager()
-    manager.addCustomer()
+    manager.delCustomer()
