@@ -85,6 +85,7 @@ class Bankmanager :
     
     # 고객의 주민번호를 받아서 유효성 체크 후 반환하는 함수
     # //OPTIMIZE return 값 수정했음 >> 제대로 들어가는 지 확인 필요(유효성 확인 필요)  //TODO 확인 완료 (0514 | 12:40)
+    # //FIXME [1] 주민등록번호를 받아오는 것을 정규식을 사용하여 다시 작성 할 것
     def getResidentNumber(self) :
         while True :
             flag = False
