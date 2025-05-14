@@ -86,14 +86,12 @@ class Bankmanager :
                 resident_number = int(input("(-) 를 제외한 주민번호 입력 : "))
                 flag = self.checkResidentNumber(resident_number)
                 if flag == True :
-                    first_resident_number  = str(resident_number)[:6]
-                    second_resident_number = str(resident_number)[6:]
-                    return (first_resident_number + "-" + second_resident_number)
+                    return (str(resident_number)[:6] + "-" + str(resident_number)[6:])
                 print("올바른 주민번호가 아닙니다. 다시 입력해주세요.")
             except ValueError :
                 print("숫자만 입력해주세요.")
-    
-    # 고객에게 입력받은 주민번호가 올바른 유효한 주민번호인지 확인하는 함수
+
+    # 고객에게 입력받은 주민번호가 올바른 유효한 주민번호인지 확인하는 함수 //TODO: 수정 필요
     def checkResidentNumber(self , resident_number) :
         year_number  = str(resident_number)[:2]
         month_number = str(resident_number)[2:4]

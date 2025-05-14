@@ -30,3 +30,8 @@
     git mv <기존_파일명> <새로운_파일명>
     git commit -m "Commit all changes"
     git push origin (Branch name)
+
+
+사용해볼만한 파이썬 코드
+[1] .isdigit()
+    문자열을 확인하여 전부 숫자라면 True / 아니라면 False
