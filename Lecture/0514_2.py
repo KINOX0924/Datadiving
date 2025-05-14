@@ -13,4 +13,4 @@
 # 가상환경 실행 : conda activate 가상환경이름
 # 가상환경에서 모듈 설치 : pip install 모듈이름
 
-print("Python 3.8 , Hello")
+print("Python 3.8 , Hello Hello")
