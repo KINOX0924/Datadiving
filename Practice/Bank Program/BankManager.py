@@ -17,6 +17,7 @@
 # cus = 고객 계정 관련 함수
 # acc = 고객 계좌 관련 함수
 # em  = 직원 계정 관련 함수
+# val = 유효성 검사 함수
 
 # 모듈 호출 모음
 import BankDB
@@ -73,40 +74,48 @@ class Bankmanager :
     
     # ===== 고객 계정 생성
     # 고객을 추가하기 위해서 고객의 정보를 입력받아서 DB 에 전송할 함수
+    # //FIXME [1] [국적] 항목에 외국인이 가입하였을 경우를 추가 //TODO [1] 추가 완료
     def addCustomer(self) :
-        customer = {"customer_name" : "" , "resident_number" : "" , "customer_gender" : "" , "customer_age" : 0 , "customer_birthday" : "" , "customer_nationality" : "대한민국" , "customer_phone" : "" , "customer_account" : []}
+        customer = {"customer_name" : "" , "resident_number" : "" , "customer_gender" : "" , "customer_age" : 0 , "customer_birthday" : "" , "customer_nationality" : "" , "customer_phone" : "" , "customer_account" : []}
         customer["customer_name"]   = input("고객 이름 입력 : ")
         customer["resident_number"] = self.getResidentNumber()
         customer["customer_gender"] = self.getGender(customer["resident_number"])
         customer["customer_birthday"] , customer["customer_age"] = self.getBirthAge(customer["resident_number"])
+        customer["customer_nationality"] = self.getNationality(customer["resident_number"])
         customer["customer_phone"]  = self.getPhoneNumber()
         print(customer)
         BankDB.BankDatabase.insertCustomer(customer)
     
     # 고객의 주민번호를 받아서 유효성 체크 후 반환하는 함수
     # //OPTIMIZE return 값 수정했음 >> 제대로 들어가는 지 확인 필요(유효성 확인 필요)  //TODO 확인 완료 (0514 | 12:40)
-    # //FIXME [1] 주민등록번호를 받아오는 것을 정규식을 사용하여 다시 작성 할 것
+    # //FIXME [1] 주민등록번호를 받아오는 것을 정규식을 사용하여 다시 작성 할 것 //TODO [1] 수정 완료 | 정규식과 유효검증을 하는 함수 두 개로 나눔
     def getResidentNumber(self) :
-        while True :
-            flag = False
-            try :
-                resident_number = int(input("(-) 를 제외한 주민번호 입력 : "))
-                flag = self.checkResidentNumber(resident_number)
-                if flag == True :
-                    return (str(resident_number)[:6] + "-" + str(resident_number)[6:])
-                print("올바른 주민번호가 아닙니다. 다시 입력해주세요.")
-            except ValueError :
-                print("숫자만 입력해주세요.")
-
-    # 고객에게 입력받은 주민번호가 올바른 유효한 주민번호인지 확인하는 함수
-    # 이 함수로 입력되는 resident_number 는 int 타입
-    # //FIXME [1] 이미 int 타입으로 들어온 것이라 int 전환은 필요 없음 >> 코드를 더 짧게 줄일 수 있음 >> 최외부 try - except 구문 필요 없을 듯 //TODO [1] 수정 완료
-    def checkResidentNumber(self , resident_number) :
-        year  = int(str(resident_number)[:2])
-        month = int(str(resident_number)[2:4])
-        day   = int(str(resident_number)[4:6])
+        flag = [False , False]
         
-        if str(resident_number)[6] == 1 or str(resident_number)[6] == 2 :
+        while flag[0] == False or flag[1] == False :
+            resident_number = input("[-] 를 포함한 주민등록번호 입력 : ")
+            flag[0] = self.val_residentNumber(resident_number)
+            flag[1] = PatternList.checkResidentNumber(resident_number)
+            if flag[0] == True and flag[1] == True :
+                return resident_number
+            print("유효하지 않는 주민등록번호입니다.")
+
+    # 고객에게 입력받은 주민등록번호의 앞자리가 만들어질 수 있는 날짜의 숫자인지 확인하는 함수
+    # 이 함수로 입력되는 resident_number 는 str 타입
+    # //FIXME [1] 이미 int 타입으로 들어온 것이라 int 전환은 필요 없음 >> 코드를 더 짧게 줄일 수 있음 >> 최외부 try - except 구문 필요 없을 듯 //TODO [1] 수정 완료
+    # //FIXME [2] 기존 int 타입으로 들어오던 주민번호를 정규식 사용을 위해서 str 타입으로 변경 >> 따라서 str 로 주민번호를 감쌀 필요가 사라짐 //TODO [2] 수정 완료
+    # //FIXME [3] 숫자가 아닌 문자가 들어올 경우 오류가 발생됨 //TODO [3] 수정 완료
+    # //FIXME [4] 외국인이 가입하였을 경우를 추가 //TODO [4] 추가 완료
+    def val_residentNumber(self , resident_number) :
+        try :
+            year  = int(resident_number[:2])
+            month = int(resident_number[2:4])
+            day   = int(resident_number[4:6])
+        except ValueError :
+            return False
+        
+        if resident_number[7] == "1" or resident_number[7] == "2" or \
+           resident_number[7] == "5" or resident_number[7] == "6" :
             year = 1900 + year
         else :
             year = 2000 + year
@@ -120,15 +129,17 @@ class Bankmanager :
     # 고객의 주민번호를 확인하여 남성인지 여성인지 확인하고 성별을 반환하는 함수
     # 이 함수로 입력되는 resident_number 는 str 타입
     def getGender(self , resident_number) :
-        if resident_number[7] == "1" or resident_number[7] == "3" :
+        if int(resident_number[7]) % 2 == 1 :
             return "male"
         return "female"
     
     # 고객의 주민번호를 사용하여 생일과 나이를 반환하는 함수
     # 이 함수로 입력되는 resident_number 는 str 타입
     # //FIXME [1] 코드 더 짧게 수정 필요 //TODO [1] 수정 완료
+    # //FIXME [2] 외국인이 가입하였을 경우를 추가 //TODO [2] 추가 완료
     def getBirthAge(self , resident_number) :
-        if resident_number[7] == "1" or resident_number[7] == "2" :
+        if resident_number[7] == "1" or resident_number[7] == "2" or \
+           resident_number[7] == "5" or resident_number[7] == "6" :
             year = 1900 + int(resident_number[:2])
         else :
             year = 2000 + int(resident_number[:2])
@@ -140,6 +151,12 @@ class Bankmanager :
         birthday        = datetime.date(year , month , day)
         format_birthday = birthday.strftime("%Y-%m-%d")
         return format_birthday , (now.year - birthday.year)
+    
+    # 고객의 주민번호를 사용하여 국적이 '대한민국' 인지 , '외국' 인지 확인하여 반환하는 함수
+    def getNationality(self , resident_number) :
+        if int(resident_number[7]) <= 4 :
+            return "대한민국"
+        return "외국인"
     
     # 고객의 연락처를 입력받아서 유효성 체크 후 반환하는 함수
     # 현재 대한민국에서 가운데 네 자리는 4 자리를 사용함 / 하지만 3 자리가 있을 수도 있음
@@ -155,26 +172,6 @@ class Bankmanager :
             if flag == True :
                 return phone_number
             print("유효하지 않는 휴대폰 번호 형식입니다.")
-        
-        """
-        기존 코드 :
-        
-        while True :
-            try :
-                phone_number = int(input("(-) 를 포함한 휴대전화 번호 입력 : "))
-                if   len(str(phone_number)) == 7 :
-                    first_phone_number  = str(phone_number)[:3]
-                    second_phone_number = str(phone_number)[3:7]
-                    return ("010-" + first_phone_number + "-" + second_phone_number)
-                elif len(str(phone_number)) == 8 :
-                    first_phone_number  = str(phone_number)[:4]
-                    second_phone_number = str(phone_number)[4:8]
-                    return ("010-" + first_phone_number + "-" + second_phone_number)
-                else :
-                    print("올바른 전화번호가 아닙니다. 다시 입력하세요.")
-            except ValueError :
-                print("숫자만 입력해주세요.")
-        """
                 
 # 시작
 if __name__ == "__main__" :
