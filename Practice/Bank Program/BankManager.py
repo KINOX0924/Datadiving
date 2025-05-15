@@ -9,8 +9,9 @@
 # 고객 계좌 정지
 # 고객 계좌 비밀번호 초기화
 
-# 직원 계정 생성(관리팀 및 인사팀만 가능)
-# 직원 계정 삭제(관리팀 및 인사팀만 가능)
+# (관리팀 및 인사팀만 가능)
+# 직원 계정 생성
+# 직원 계정 삭제
 # 직원 계정 비밀번호 초기화
 
 # p   = 출력 함수
@@ -32,17 +33,17 @@ class Bankmanager :
     def loginEmployee(self) :
         login_employee_id       = input("직원 계정 아이디 입력 : ")
         login_employee_password = input("직원 계정 비밀번호 입력 : ")
-        flag , employee_rank = BankDB.BankDatabase.loginEmployee(login_employee_id , login_employee_password)
+        flag , employee_department = BankDB.BankDatabase.loginEmployee(login_employee_id , login_employee_password)
         if flag == True :
-            self.employeeMenu(employee_rank)
+            self.employeeMenu(employee_department)
         return
     
     # ===== 직원 메뉴 [메인 화면]
-    def p_employeeMenu(self , employee_rank) :
+    def p_employeeMenu(self , employee_department) :
         print("===== 직원 메뉴 =====")
         print("[1] | 고객 계정 관련 작업")
         print("[2] | 고객 계좌 관련 작업")
-        if employee_rank == "관리팀" or employee_rank == "인사팀" :
+        if employee_department == "관리팀" or employee_department == "인사팀" :
             print("[3] | 직원 계정 관련 작업")
         print("[0] | 로그아웃")
     
@@ -53,20 +54,37 @@ class Bankmanager :
         print("[2] | 고객 계정 삭제")
         print("[3] | 고객 계정 수정")
         print("[4] | 고객 계정 비밀번호 초기화")
-        print("[0] | 로그아웃")
+        print("[0] | 이전 메뉴")
         
-    # 직원 로그인 후 메뉴 선택
-    def employeeMenu(self , employee_rank) :
-        employeemenu_list = [None , self.addCustomer , self.delCustomer , self.modCustomer]
+    # 직원 로그인 후 메뉴 선택 [메인 화면]
+    def employeeMenu(self , employee_department) :
+        employeemenu_list = [None , self.cus_employeeMenu]
         
         while True :
-            self.p_employeeMenu(employee_rank)
+            self.p_employeeMenu(employee_department)
             try :
                 select_menu = int(input("메뉴 선택 : "))
                 if select_menu > 0 and select_menu <= len(employeemenu_list) :
                     employeemenu_list[select_menu]()
                 elif select_menu == 0 :
                     print("로그아웃 되었습니다.")
+                    return
+                else :
+                    print("메뉴에 있는 숫자만 입력하세요.")
+            except ValueError :
+                print("숫자만 입력해주세요.")
+    
+    # 직원 로그인 후 고객 계정 관련 작업 메뉴를 선택 후 메뉴 선택 [고객 계정 관련 작업]
+    def cus_employeeMenu(self) :
+        employeemenu_list = [None , self.addCustomer , self.delCustomer , self.modCustomer , self.resetCustomerPwd]
+        
+        while True :
+            self.p_cus_employeeMenu()
+            try :
+                select_menu = int(input("메뉴 선택 : "))
+                if select_menu > 0 and select_menu <= len(employeemenu_list) :
+                    employeemenu_list[select_menu]()
+                elif select_menu == 0 :
                     return
                 else :
                     print("메뉴에 있는 숫자만 입력하세요.")
@@ -254,8 +272,19 @@ class Bankmanager :
                    print("메뉴에 있는 숫자만 입력하세요.")
             except ValueError :
                 print("숫자만 입력하세요.")
+    
+    # 고객 계정 비밀번호 초기화
+    def resetCustomerPwd(self) :
+        while True :
+            customer_name     = input("고객 이름 입력 : ")
+            customer_password = input("계정 비밀번호 입력 : ")
+            customer_information = BankDB.BankDatabase.searchCustomer(customer_name , customer_password)
+            if customer_information != None :
+                BankDB.BankDatabase.resetCustomerPassword(customer_information)
+                return
+            print("이름과 계정 비밀번호를 다시 확인해주세요.")
         
 # 시작
 if __name__ == "__main__" :
     manager = Bankmanager()
-    manager.modCustomer()
+    manager.loginEmployee()

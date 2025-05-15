@@ -55,7 +55,7 @@ class BankDatabase :
                 print(f"[{employee["employee_department"]}] 의 [{employee["employee_name"]}] 님이 로그인되었습니다.")
                 employee_login = {"emlopyee_name" : employee["employee_name"] , "employee_department" : employee["employee_department"] , "employee_rank" : employee["employee_rank"] , "login_time" : datetime.datetime.now().strftime("%Y%m%d-%H%M") , "active" : "LOGIN"}
                 cls.__employee_account_active_history.append(employee_login)
-                return True , employee["employee_rank"]
+                return True , employee["employee_department"]
         print("아이디 또는 비밀번호가 틀렸습니다.")
         return False
     
@@ -125,6 +125,17 @@ class BankDatabase :
                 elif select_menu == 3 :
                     customer["customer_phone"] = new_customer.getPhoneNumber()
         print(f"[{customer_information["customer_name"]}] 님의 계정이 성공적으로 수정되었습니다.")
+        
+    # 고객 계정 비밀번호 초기화
+    @classmethod
+    def resetCustomerPassword(cls , customer_information) :
+        for index , customer in enumerate(cls.__customer_list) :
+            if customer_information == customer :
+                customer["customer_password"] = PatternList.createPassword()
+                print(f"[{customer["customer_name"]}] 님의 비밀번호가 초기화 되었습니다.")
+                print(f"초기화된 비밀번호 : [{customer["customer_password"]}]")
+                return
+        
 # 시작
 if __name__ == "__main__" :
     terminal = BankDatabase()
