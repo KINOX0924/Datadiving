@@ -24,7 +24,7 @@ import BankDB
 import PatternList
 
 import random
-# //TODO 현재 사용이 안되고 있는 중
+# //TODO 계좌 생성 시에 사용 예정
 import datetime
 
 class Bankmanager :
