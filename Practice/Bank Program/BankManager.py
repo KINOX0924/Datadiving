@@ -1,7 +1,7 @@
 # 관리자가 할 수 있는 기능
 # 고객 계정 생성 - 구현 완료
 # 고객 계정 삭제 (생성되어 있는 계좌가 없어야 함) - 구현 완료
-# 고객 계정 수정
+# 고객 계정 수정 - 구현 완료
 # 고객 계정 비밀번호 초기화
 
 # 고객 계좌 생성 
@@ -44,7 +44,6 @@ class Bankmanager :
         print("[2] | 고객 계좌 관련 작업")
         if employee_rank == "관리팀" or employee_rank == "인사팀" :
             print("[3] | 직원 계정 관련 작업")
-        print()
         print("[0] | 로그아웃")
     
     # ===== 직원 메뉴 [고객 계정 관련 작업]
@@ -54,12 +53,11 @@ class Bankmanager :
         print("[2] | 고객 계정 삭제")
         print("[3] | 고객 계정 수정")
         print("[4] | 고객 계정 비밀번호 초기화")
-        print()
         print("[0] | 로그아웃")
         
     # 직원 로그인 후 메뉴 선택
     def employeeMenu(self , employee_rank) :
-        employeemenu_list = [None , self.addCustomer]
+        employeemenu_list = [None , self.addCustomer , self.delCustomer , self.modCustomer]
         
         while True :
             self.p_employeeMenu(employee_rank)
@@ -78,16 +76,42 @@ class Bankmanager :
     # ===== 고객 계정 생성
     # 고객을 추가하기 위해서 고객의 정보를 입력받아서 DB 에 전송할 함수
     # //FIXME [1] [국적] 항목에 외국인이 가입하였을 경우를 추가 //TODO [1] 추가 완료
+    # //FIXME [2] 아이디와 비밀번호를 받아서 유효성 체크 후 반환하도록 추가 //TODO [2] 추가 완료
     def addCustomer(self) :
-        customer = {"customer_name" : "" , "resident_number" : "" , "customer_gender" : "" , "customer_age" : 0 , "customer_birthday" : "" , "customer_nationality" : "" , "customer_phone" : "" , "customer_account" : []}
-        customer["customer_name"]   = input("고객 이름 입력 : ")
-        customer["resident_number"] = self.getResidentNumber()
-        customer["customer_gender"] = self.getGender(customer["resident_number"])
+        customer = {"customer_name" : "" , "customer_id" : "" , "customer_password" : "" , "resident_number" : "" , "customer_gender" : "" , "customer_age" : 0 , "customer_birthday" : "" , "customer_nationality" : "" , "customer_phone" : "" , "customer_account" : []}
+        customer["customer_name"]        = input("고객 이름 입력 : ")
+        customer["customer_id"]          = self.getId()
+        customer["customer_password"]    = self.getPassword()
+        customer["resident_number"]      = self.getResidentNumber()
+        customer["customer_gender"]      = self.getGender(customer["resident_number"])
         customer["customer_birthday"] , customer["customer_age"] = self.getBirthAge(customer["resident_number"])
         customer["customer_nationality"] = self.getNationality(customer["resident_number"])
-        customer["customer_phone"]  = self.getPhoneNumber()
-        print(customer)
+        customer["customer_phone"]       = self.getPhoneNumber()
+        print(customer) # //TODO//FIXME 추후 삭제 필요
         BankDB.BankDatabase.insertCustomer(customer)
+        
+    # 고객 계정에 사용할 아이디를 받아서 유효성 체크 후 반환하는 함수
+    def getId(self) :
+        flag = [False , False]
+        
+        while flag[0] == False or flag[1] == False :
+            customer_id = input("계정에 사용할 아이디 입력 : ")
+            flag[0] = PatternList.checkId(customer_id)
+            flag[1] = BankDB.BankDatabase.searchCustomerId(customer_id)
+            if flag[0] == True and flag[1] == True :
+                return customer_id
+            print("사용할 수 없는 아이디입니다.")
+            
+    # 고객 계정에 사용할 비밀번호를 받아서 유효성 체크 후 반환하는 함수
+    def getPassword(self) :
+        flag = False
+        
+        while flag == False :
+            customer_password = input("계정에 사용할 비밀번호 입력 : ")
+            flag = PatternList.checkPassword(customer_password)
+            if flag == True :
+                return customer_password
+            print("사용할 수 없는 비밀번호입니다.")
     
     # 고객의 주민번호를 받아서 유효성 체크 후 반환하는 함수
     # //OPTIMIZE return 값 수정했음 >> 제대로 들어가는 지 확인 필요(유효성 확인 필요)  //TODO 확인 완료 (0514 | 12:40)
@@ -177,57 +201,61 @@ class Bankmanager :
             print("유효하지 않는 휴대폰 번호 형식입니다.")
     
     # 고객 계정 삭제 함수
+    # //FIXME [1] 생년월일이 아닌 계정 비밀번호를 받아서 삭제할 수 있도록 수정 필요 //TODO [1] 수정 완료
     def delCustomer(self) :
-        flag = False
-        
-        while flag == False :
+        while True :
             customer_name     = input("고객 이름 입력 : ")
-            customer_birthday = input("생년월일 입력 (예 : 990101) : ")
-            flag = PatternList.checkBirthday(customer_birthday)
-            if flag == True :
-                customer_information = BankDB.BankDatabase.searchCustomer(customer_name , customer_birthday)
-                if customer_information != None :
-                    BankDB.BankDatabase.deleteCustomer(customer_information)
-                    return
-                flag = False
-            print("이름과 생년월일을 다시 확인해주세요.")
+            customer_password = input("계정 비밀번호 입력 : ")
+            customer_information = BankDB.BankDatabase.searchCustomer(customer_name , customer_password)
+            if customer_information != None :
+                BankDB.BankDatabase.deleteCustomer(customer_information)
+                return
+            print("이름과 계정 비밀번호를 다시 확인해주세요.")
     
-    # //FIXME [1] 수정하고 싶은 항목을 선택해서 수정할 수 있도록 변경 필요
-    # 고객 계정 수정 함수
+    # //FIXME [1] 수정하고 싶은 항목을 선택해서 수정할 수 있도록 변경 필요 //TODO [1] 변경 완료
+    # //FIXME [2] 생년월일이 아닌 계정 비밀번호를 받아서 수정할 수 있도록 수정 필요 //TODO [2] 수정 완료
+    # 고객 계정 정보 수정 함수
     def modCustomer(self) :
-        flag = False
-        
-        while flag == False :
+        while True :
             customer_name     = input("고객 이름 입력 : ")
-            customer_birthday = input("생년월일 입력 (예 : 990101) : ")
-            flag = PatternList.checkBirthday(customer_birthday)
-            if flag == True :
-                customer_information = BankDB.BankDatabase.searchCustomer(customer_name , customer_birthday)
-                if customer_information != None :
-                    BankDB.BankDatabase.modifyCustomer(customer_information)
-                    return
-                flag = False
-            print("이름과 생년월일을 다시 확인해주세요.")
+            customer_password = input("계정 비밀번호 입력 : ")
+            customer_information = BankDB.BankDatabase.searchCustomer(customer_name , customer_password)
+            if customer_information != None :
+                self.modCustomerDetail(customer_information)
+                return
+            print("이름과 계정 비밀번호를 다시 확인해주세요.")
     
     # 고객 계정 정보 수정 메뉴
+    # 주민등록번호 변경 시 생일 , 성별 , 나이 , 국적 등 관련된 정보가 바로 같이 변경이 되어야 함
     def p_modCustomer(self , customer_name) :
         print(f"[{customer_name}] 님 계정의 수정할 항목 선택")
         print("===== 항목 =====")
         print("[1] | 이름 변경")
         print("[2] | 주민등록번호 변경")
         print("[3] | 연락처 변경")
-        print("[4] | 이메일 변경")
+        print("[0] | 메뉴 종료")
     
     # 고객 계정 정보 수정 함수(상세)
     def modCustomerDetail(self , customer_information) :
-        modify_menu_list = [None]
-        flag = False
+        modify_menu_list = [None , 1 , 2 , 3]
         
-        while flag == False :
+        while True :
             self.p_modCustomer(customer_information["customer_name"])
-            select_menu = int(input("수정 항목 선택 : "))
+            try :
+                select_menu = int(input("수정 항목 선택 : "))
+                if select_menu > 0 and select_menu <= len(modify_menu_list) :
+                    BankDB.BankDatabase.modifyCustomer(customer_information , select_menu)
+                    if select_menu == 1 or select_menu == 2 :
+                        return
+                elif select_menu == 0 :
+                    print("계정 정보 수정을 종료합니다.")
+                    return
+                else :
+                   print("메뉴에 있는 숫자만 입력하세요.")
+            except ValueError :
+                print("숫자만 입력하세요.")
         
 # 시작
 if __name__ == "__main__" :
     manager = Bankmanager()
-    manager.delCustomer()
+    manager.modCustomer()

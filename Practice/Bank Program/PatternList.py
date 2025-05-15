@@ -20,8 +20,9 @@ def checkBirthday(customer_birthday) :
         return False
     return True
 
+# //FIXME [1] 뒤 7자리 숫자 중 첫번째 숫자가 1 에서 8 사이의 숫자만 들어갈 수 있도록 수정 //TODO [1] 수정 완료
 def checkResidentNumber(resident_number) :
-    resident_number_pattern = r"^\d{6}-\d{7}\b"
+    resident_number_pattern = r"^\d{6}-[1-8]{1}\d{6}\b"
     checked_resident_number = re.match(resident_number_pattern , resident_number)
     
     if checked_resident_number == None :
@@ -29,10 +30,26 @@ def checkResidentNumber(resident_number) :
     return True
 
 def checkAnswer(answer) :
-    Answer_pattern = r"^\w\b"
-    checked_Answer = re.match(Answer_pattern , answer)
+    answer_pattern = r"^\w\b"
+    checked_Answer = re.match(answer_pattern , answer)
     
     if checked_Answer == None :
+        return False
+    return True
+
+def checkId(id) :
+    id_pattern = r"^[a-zA-Z0-9_]{5,10}$"
+    checked_Id = re.match(id_pattern , id)
+    
+    if checked_Id == None :
+        return False
+    return True
+
+def checkPassword(password) :
+    password_pattern = r"^[0-9A-aZ-z.?!@#$%^&*]{8,20}\b"
+    checked_Password = re.match(password_pattern , password)
+    
+    if checked_Password == None :
         return False
     return True
 

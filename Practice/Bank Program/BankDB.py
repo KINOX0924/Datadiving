@@ -7,18 +7,18 @@ import datetime
 
 class BankDatabase :
     __customer_list = [
-        {"customer_name" : "김민준" , "resident_number" : "950315-1827345" , "customer_gender" : "male"   , "customer_age" : 30 , "customer_birthday" : "1995-03-15" , "customer_nationality" : "대한민국" , "customer_phone" : "010-8765-4321" , "customer_account" : []} ,
-        {"customer_name" : "이서윤" , "resident_number" : "021122-2765901" , "customer_gender" : "female" , "customer_age" : 23 , "customer_birthday" : "2002-11-22" , "customer_nationality" : "대한민국" , "customer_phone" : "010-1234-5678" , "customer_account" : []} ,
-        {"customer_name" : "박지훈" , "resident_number" : "880607-1592038" , "customer_gender" : "male"   , "customer_age" : 37 , "customer_birthday" : "1988-06-07" , "customer_nationality" : "대한민국" , "customer_phone" : "010-9876-5432" , "customer_account" : []} ,
-        {"customer_name" : "정수아" , "resident_number" : "990910-2481635" , "customer_gender" : "female" , "customer_age" : 26 , "customer_birthday" : "1999-09-10" , "customer_nationality" : "대한민국" , "customer_phone" : "010-5555-1212" , "customer_account" : []} ,
-        {"customer_name" : "최현우" , "resident_number" : "050128-3094756" , "customer_gender" : "male"   , "customer_age" : 20 , "customer_birthday" : "2005-01-28" , "customer_nationality" : "대한민국" , "customer_phone" : "010-3333-9999" , "customer_account" : []}
+        {"customer_name" : "김민준" , "customer_id" : "Kim_mj" , "customer_password" : "kim950315"  , "resident_number" : "950315-1827345" , "customer_gender" : "male"   , "customer_age" : 30 , "customer_birthday" : "1995-03-15" , "customer_nationality" : "대한민국" , "customer_phone" : "010-8765-4321" , "customer_account" : []} ,
+        {"customer_name" : "이서윤" , "customer_id" : "Lee_sy" , "customer_password" : "lee021122"  , "resident_number" : "021122-2765901" , "customer_gender" : "female" , "customer_age" : 23 , "customer_birthday" : "2002-11-22" , "customer_nationality" : "대한민국" , "customer_phone" : "010-1234-5678" , "customer_account" : []} ,
+        {"customer_name" : "박지훈" , "customer_id" : "Park_jh" , "customer_password" : "park880607"  , "resident_number" : "880607-1592038" , "customer_gender" : "male"   , "customer_age" : 37 , "customer_birthday" : "1988-06-07" , "customer_nationality" : "대한민국" , "customer_phone" : "010-9876-5432" , "customer_account" : []} ,
+        {"customer_name" : "정수아" , "customer_id" : "Jung_sa" , "customer_password" : "jung990910"  , "resident_number" : "990910-2481635" , "customer_gender" : "female" , "customer_age" : 26 , "customer_birthday" : "1999-09-10" , "customer_nationality" : "대한민국" , "customer_phone" : "010-5555-1212" , "customer_account" : []} ,
+        {"customer_name" : "최현우" , "customer_id" : "Choi_hw" , "customer_password" : "choi050128"  , "resident_number" : "050128-3094756" , "customer_gender" : "male"   , "customer_age" : 20 , "customer_birthday" : "2005-01-28" , "customer_nationality" : "대한민국" , "customer_phone" : "010-3333-9999" , "customer_account" : []}
         ]
     # 고객 리스트
     # 고객 정보
     # 이름 , 성별 , 주민등록번호 , 나이 , 생년월일 , 국적 , 휴대폰 번호 , 계좌
 
     # 고객이 수정을 원한다고 하였을 때 수정할 수 있는 정보
-    # 이름 , 주민번호 , 연락처 , 이메일
+    # 이름 , 주민번호 , 연락처
 
     # 계좌 정보 (계좌 안에서 또 다른 딕셔너리로 구분)
     # 계좌 정보 (형태 : 일반계좌(1001) , 적금계좌(1002) , 예금계좌(1003) , 청약계좌(2001)) , 계좌 번호
@@ -69,14 +69,23 @@ class BankDatabase :
                  return
         cls.__customer_list.append(customer_information)
         print(f"[{customer_information["customer_name"]}] 님의 계정이 정상적으로 생성되었습니다.")
-
+    
+    @classmethod
+    def searchCustomerId(cls , customer_id) :
+        for index , customer in enumerate(cls.__customer_list) :
+            if customer_id == customer["customer_id"] :
+                print("동일한 아이디가 이미 존재합니다.")
+                return False
+        return True
+    
+    # //FIXME [1] 생년월일이 아닌 비밀번호를 가지고 삭제가 진행될 수 있도록 변경 //TODO [1] 변경 완료
     # 고객 정보 전달 함수
     @classmethod
-    def searchCustomer(cls , customer_name , customer_birthday) :
+    def searchCustomer(cls , customer_name , customer_password) :
         for customer in cls.__customer_list :
-            if customer_name == customer["customer_name"] and customer_birthday == customer["resident_number"][:6] :
+            if customer_name == customer["customer_name"] and customer_password == customer["customer_password"] :
                 return customer
-        print("고객 계정 정보를 찾을 수 없습니다.")
+        print("고객 정보를 찾을 수 없습니다.")
         return None
     
     # 고객 계정 삭제 함수
@@ -101,8 +110,21 @@ class BankDatabase :
     
     # 고객 계정 수정 함수
     @classmethod
-    def modifyCustomer(cls , customer_information) :
-        pass
+    def modifyCustomer(cls , customer_information , select_menu) :
+        for index , customer in enumerate(cls.__customer_list) :
+            if customer_information == customer :
+                new_customer = BankManager.Bankmanager()
+                if select_menu   == 1 :
+                    customer["customer_name"]   = input("변경할 이름 입력 : ")
+                elif select_menu == 2 :
+                    customer["resident_number"] = new_customer.getResidentNumber()
+                    customer["customer_gender"] = new_customer.getGender(customer["resident_number"])
+                    customer["customer_birthday"] , customer["customer_age"] = new_customer.getBirthAge(customer["resident_number"])
+                    customer["customer_nationality"] = new_customer.getNationality(customer["resident_number"])
+                    print(customer) # //TODO//FIXME 추후 삭제 필요
+                elif select_menu == 3 :
+                    customer["customer_phone"] = new_customer.getPhoneNumber()
+        print(f"[{customer_information["customer_name"]}] 님의 계정이 성공적으로 수정되었습니다.")
 # 시작
 if __name__ == "__main__" :
     terminal = BankDatabase()
