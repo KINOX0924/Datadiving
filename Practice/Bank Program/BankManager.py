@@ -4,7 +4,7 @@
 # 고객 계정 수정 - 구현 완료
 # 고객 계정 비밀번호 초기화 - 구현 완료
 
-# 고객 계좌 생성 
+# 고객 계좌 생성
 # 고객 계좌 삭제
 # 고객 계좌 정지
 # 고객 계좌 비밀번호 초기화
@@ -283,6 +283,21 @@ class Bankmanager :
                 BankDB.BankDatabase.resetCustomerPassword(customer_information)
                 return
             print("이름과 계정 비밀번호를 다시 확인해주세요.")
+    
+    # ===== 직원 메뉴 [고객 계좌 관련 작업]
+    def p_acc_employeeMenu(self) :
+        print("===== 고객 계좌 관련 작업 메뉴 =====")
+        print("[1] | 일반계좌 생성")
+        print("[2] | 적금계좌 생성")
+        print("[3] | 예금계좌 생성")
+        print("[4] | 청약계좌 생성")
+        print("[5] | 주식계좌 생성")
+        print("[0] | 이전 메뉴")
+    
+    #//FIXME [1] 제작 진행 중
+    # ===== 고객 계좌 생성
+    def addAccountMenu(self) :
+        pass
         
 # 시작
 if __name__ == "__main__" :
