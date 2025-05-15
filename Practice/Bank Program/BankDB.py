@@ -16,6 +16,10 @@ class BankDatabase :
     # 고객 리스트
     # 고객 정보
     # 이름 , 성별 , 주민등록번호 , 나이 , 생년월일 , 국적 , 휴대폰 번호 , 계좌
+
+    # 고객이 수정을 원한다고 하였을 때 수정할 수 있는 정보
+    # 이름 , 주민번호 , 연락처 , 이메일
+
     # 계좌 정보 (계좌 안에서 또 다른 딕셔너리로 구분)
     # 계좌 정보 (형태 : 일반계좌(1001) , 적금계좌(1002) , 예금계좌(1003) , 청약계좌(2001)) , 계좌 번호
     
@@ -53,7 +57,7 @@ class BankDatabase :
                 cls.__employee_account_active_history.append(employee_login)
                 return True , employee["employee_rank"]
         print("아이디 또는 비밀번호가 틀렸습니다.")
-        return False   
+        return False
     
     # 고객 계정 생성 함수
     @classmethod
@@ -95,6 +99,10 @@ class BankDatabase :
                 print("다시 입력해주세요.")
         print("생성되어 있는 계좌가 존재합니다. 계좌를 모두 해지 후 삭제를 진행하세요.")
     
+    # 고객 계정 수정 함수
+    @classmethod
+    def modifyCustomer(cls , customer_information) :
+        pass
 # 시작
 if __name__ == "__main__" :
     terminal = BankDatabase()

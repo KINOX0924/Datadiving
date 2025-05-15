@@ -24,6 +24,7 @@ import BankDB
 import PatternList
 
 import random
+# //TODO 현재 사용이 안되고 있는 중
 import datetime
 
 class Bankmanager :
@@ -43,6 +44,7 @@ class Bankmanager :
         print("[2] | 고객 계좌 관련 작업")
         if employee_rank == "관리팀" or employee_rank == "인사팀" :
             print("[3] | 직원 계정 관련 작업")
+        print()
         print("[0] | 로그아웃")
     
     # ===== 직원 메뉴 [고객 계정 관련 작업]
@@ -52,6 +54,7 @@ class Bankmanager :
         print("[2] | 고객 계정 삭제")
         print("[3] | 고객 계정 수정")
         print("[4] | 고객 계정 비밀번호 초기화")
+        print()
         print("[0] | 로그아웃")
         
     # 직원 로그인 후 메뉴 선택
@@ -173,12 +176,12 @@ class Bankmanager :
                 return phone_number
             print("유효하지 않는 휴대폰 번호 형식입니다.")
     
-    # ===== 고객 계정 삭제
+    # 고객 계정 삭제 함수
     def delCustomer(self) :
         flag = False
         
         while flag == False :
-            customer_name = input("고객 이름 입력 : ")
+            customer_name     = input("고객 이름 입력 : ")
             customer_birthday = input("생년월일 입력 (예 : 990101) : ")
             flag = PatternList.checkBirthday(customer_birthday)
             if flag == True :
@@ -188,6 +191,41 @@ class Bankmanager :
                     return
                 flag = False
             print("이름과 생년월일을 다시 확인해주세요.")
+    
+    # //FIXME [1] 수정하고 싶은 항목을 선택해서 수정할 수 있도록 변경 필요
+    # 고객 계정 수정 함수
+    def modCustomer(self) :
+        flag = False
+        
+        while flag == False :
+            customer_name     = input("고객 이름 입력 : ")
+            customer_birthday = input("생년월일 입력 (예 : 990101) : ")
+            flag = PatternList.checkBirthday(customer_birthday)
+            if flag == True :
+                customer_information = BankDB.BankDatabase.searchCustomer(customer_name , customer_birthday)
+                if customer_information != None :
+                    BankDB.BankDatabase.modifyCustomer(customer_information)
+                    return
+                flag = False
+            print("이름과 생년월일을 다시 확인해주세요.")
+    
+    # 고객 계정 정보 수정 메뉴
+    def p_modCustomer(self , customer_name) :
+        print(f"[{customer_name}] 님 계정의 수정할 항목 선택")
+        print("===== 항목 =====")
+        print("[1] | 이름 변경")
+        print("[2] | 주민등록번호 변경")
+        print("[3] | 연락처 변경")
+        print("[4] | 이메일 변경")
+    
+    # 고객 계정 정보 수정 함수(상세)
+    def modCustomerDetail(self , customer_information) :
+        modify_menu_list = [None]
+        flag = False
+        
+        while flag == False :
+            self.p_modCustomer(customer_information["customer_name"])
+            select_menu = int(input("수정 항목 선택 : "))
         
 # 시작
 if __name__ == "__main__" :
