@@ -304,7 +304,7 @@ class Bankmanager :
     #//FIXME [1] 제작 진행 중
     # ===== 고객 계좌 생성
     def addAccountMenu(self) :
-        
+        pass
         
 # 시작
 if __name__ == "__main__" :
