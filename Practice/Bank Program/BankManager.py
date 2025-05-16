@@ -217,14 +217,21 @@ class Bankmanager :
             if flag == True :
                 return phone_number
             print("유효하지 않는 휴대폰 번호 형식입니다.")
+            
+    # 고객의 이름과 고객 계정의 비밀번호를 입력 받아서 고객 정보를 받아오는 함수
+    def searchCustomerInformation(self) :
+        customer_name        = input("고객 이름 입력 : ")
+        customer_password    = input("계정 비밀번호 입력 : ")
+        customer_information = BankDB.BankDatabase.searchCustomer(customer_name , customer_password)
+        
+        return customer_information
     
     # 고객 계정 삭제 함수
     # //FIXME [1] 생년월일이 아닌 계정 비밀번호를 받아서 삭제할 수 있도록 수정 필요 //TODO [1] 수정 완료
+    # //FIXME [2] 고객 이름과 계정 비밀번호를 입력받아서 고객 정보를 받아오는 행위가 자주 사용될 듯 하여 별도 함수로 제작하기
     def delCustomer(self) :
         while True :
-            customer_name     = input("고객 이름 입력 : ")
-            customer_password = input("계정 비밀번호 입력 : ")
-            customer_information = BankDB.BankDatabase.searchCustomer(customer_name , customer_password)
+            customer_information = self.searchCustomerInformation
             if customer_information != None :
                 BankDB.BankDatabase.deleteCustomer(customer_information)
                 return
@@ -297,7 +304,7 @@ class Bankmanager :
     #//FIXME [1] 제작 진행 중
     # ===== 고객 계좌 생성
     def addAccountMenu(self) :
-        pass
+        
         
 # 시작
 if __name__ == "__main__" :
