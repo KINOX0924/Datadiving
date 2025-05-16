@@ -156,3 +156,5 @@
     MySQL 은 auto_increment 속성이 있는 필드가 Primary key 이어야함
 
     * Oracle 에서는 시퀀스라는 객체
+
+# 챗GPT 사용해서 world.sql 문제 10개 풀고 오기
