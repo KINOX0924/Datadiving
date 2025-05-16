@@ -29,6 +29,7 @@ import random
 import datetime
 
 class Bankmanager :
+    # //FIXME [1] 입력값 오류 시 에러 발생됨 //TODO [1] 계정 확인 후 로그인 실패 시 반환값과 변수의 값이 일치하지 않아서 생긴 오류로 수정 완료
     # ===== 직원 계정 로그인
     def loginEmployee(self) :
         login_employee_id       = input("직원 계정 아이디 입력 : ")
@@ -228,10 +229,10 @@ class Bankmanager :
     
     # 고객 계정 삭제 함수
     # //FIXME [1] 생년월일이 아닌 계정 비밀번호를 받아서 삭제할 수 있도록 수정 필요 //TODO [1] 수정 완료
-    # //FIXME [2] 고객 이름과 계정 비밀번호를 입력받아서 고객 정보를 받아오는 행위가 자주 사용될 듯 하여 별도 함수로 제작하기
+    # //FIXME [2] 고객 이름과 계정 비밀번호를 입력받아서 고객 정보를 받아오는 행위가 자주 사용될 듯 하여 별도 함수로 제작하기 //TODO [2] 추가 함수를 제작하여 완료
     def delCustomer(self) :
         while True :
-            customer_information = self.searchCustomerInformation
+            customer_information = self.searchCustomerInformation()
             if customer_information != None :
                 BankDB.BankDatabase.deleteCustomer(customer_information)
                 return
@@ -242,9 +243,7 @@ class Bankmanager :
     # 고객 계정 정보 수정 함수
     def modCustomer(self) :
         while True :
-            customer_name     = input("고객 이름 입력 : ")
-            customer_password = input("계정 비밀번호 입력 : ")
-            customer_information = BankDB.BankDatabase.searchCustomer(customer_name , customer_password)
+            customer_information = self.searchCustomerInformation()
             if customer_information != None :
                 self.modCustomerDetail(customer_information)
                 return

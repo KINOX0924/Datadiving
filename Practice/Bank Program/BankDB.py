@@ -57,7 +57,7 @@ class BankDatabase :
                 cls.__employee_account_active_history.append(employee_login)
                 return True , employee["employee_department"]
         print("아이디 또는 비밀번호가 틀렸습니다.")
-        return False
+        return False , None
     
     # 고객 계정 생성 함수
     @classmethod
