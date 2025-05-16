@@ -1,7 +1,20 @@
 
--- emp 테이블 생성
 use mydb;
 
+-- dept 테이블 생성
+CREATE TABLE dept (
+    deptno INT PRIMARY KEY,
+    dname VARCHAR(14),
+    loc VARCHAR(13)
+);
+
+-- dept 데이터 삽입
+INSERT INTO dept VALUES (10, 'ACCOUNTING', 'NEW YORK');
+INSERT INTO dept VALUES (20, 'RESEARCH',   'DALLAS');
+INSERT INTO dept VALUES (30, 'SALES',      'CHICAGO');
+INSERT INTO dept VALUES (40, 'OPERATIONS', 'BOSTON');
+
+-- emp 테이블 생성
 CREATE TABLE emp (
     empno INT PRIMARY KEY,
     ename VARCHAR(10),
@@ -10,10 +23,11 @@ CREATE TABLE emp (
     hiredate DATE,
     sal DECIMAL(7, 2),
     comm DECIMAL(7, 2),
-    deptno INT
+    deptno INT,
+    FOREIGN KEY (deptno) REFERENCES dept(deptno)
 );
 
--- 예제 데이터 삽입
+-- emp 데이터 삽입
 INSERT INTO emp VALUES (7369, 'SMITH',  'CLERK',     7902, '1980-12-17',  800.00, NULL, 20);
 INSERT INTO emp VALUES (7499, 'ALLEN',  'SALESMAN',  7698, '1981-02-20', 1600.00, 300.00, 30);
 INSERT INTO emp VALUES (7521, 'WARD',   'SALESMAN',  7698, '1981-02-22', 1250.00, 500.00, 30);

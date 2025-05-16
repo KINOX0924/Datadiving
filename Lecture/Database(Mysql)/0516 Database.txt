@@ -1,0 +1,17 @@
+-- Mysql 접속
+[1] mysql -u root -p
+
+-- Mysql 나오기
+[1] exit; 또는 quit;
+
+-- 새로운 계정 만들기
+    기본적으로 mysql 은 로컬(local) 에서만 접근이 가능
+    로컬에서만 가능하다는 말은 DB 서버(MySQL84) 와 DB 클라이언트가 같은(동일한) 컴퓨터 안에 존재할때 접근 가능함을 의미
+    실무에서는 보통 phpmyadmin 이라는 웹사이트를 설치하여 이 사이트를 통해 접근함
+
+-- .spl 파일 복원 명령어
+[1] cmd 일반 사용시
+    mysql -u root -p mydb(DB 파일명) < (spl 파일명).spl
+
+[2] powershell 사용시
+    cmd /c "mysql -u root -p mydb(DB 파일명) < (spl 파일명).spl"
