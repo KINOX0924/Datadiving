@@ -92,7 +92,7 @@ class Bankmanager :
             except ValueError :
                 print("숫자만 입력해주세요.")
     
-    # ===== 고객 계정 생성
+    # ===== 고객 계정 관련 작업 함수
     # 고객을 추가하기 위해서 고객의 정보를 입력받아서 DB 에 전송할 함수
     # //FIXME [1] [국적] 항목에 외국인이 가입하였을 경우를 추가 //TODO [1] 추가 완료
     # //FIXME [2] 아이디와 비밀번호를 받아서 유효성 체크 후 반환하도록 추가 //TODO [2] 추가 완료
@@ -300,10 +300,36 @@ class Bankmanager :
         print("[5] | 주식계좌 생성")
         print("[0] | 이전 메뉴")
     
-    #//FIXME [1] 제작 진행 중
-    # ===== 고객 계좌 생성
+    # ===== 고객 계좌 생성 관련 함수
+    #//FIXME 제작 진행 중
+    # 고객 계좌 생성 메뉴 선택 함수
     def addAccountMenu(self) :
-        pass
+        account_menu_list = [None]
+        
+        while True :
+            try :
+                self.p_acc_employeeMenu()
+                select_menu = int(input("메뉴 선택 : "))
+                if select_menu > 0 and select_menu <= len(account_menu_list) :
+                    account_menu_list[select_menu](select_menu)
+                    return
+                elif select_menu == 0 :
+                    return
+                else :
+                    print("메뉴에 있는 숫자만 입력하세요.")
+            except ValueError :
+                print("숫자만 입력하세요.")
+    
+    #//FIXME 제작 진행 중
+    # 고객 계좌 생성 함수
+    def addAccount(self , account_type) :
+        account_type_list = [None , "일반계좌" , "적금계좌" , "예금계좌" , "청약계좌" , "주식계좌" , "1001" , "1002" , "1003" , "2001" , "7077"]
+        
+        customer_information = self.searchCustomerInformation()
+        if len(customer_information["customer_account"]) >= 5 :
+            print(f"[{customer_information["customer_name"]}] 님은 계좌 생성 한도에 도달하여 더 이상 계좌를 생성할 수 없습니다.")
+            return
+        BankDB.BankDatabase.AddCustomerAccountNumber(customer_information , account_type_list[account_type] , account_type_list[account_type + 5])
         
 # 시작
 if __name__ == "__main__" :

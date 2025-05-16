@@ -4,6 +4,7 @@ import BankManager
 import PatternList
 
 import datetime
+import random
 
 class BankDatabase :
     __customer_list = [
@@ -78,7 +79,7 @@ class BankDatabase :
                 return False
         return True
     
-    # //FIXME [1] 생년월일이 아닌 비밀번호를 가지고 삭제가 진행될 수 있도록 변경 //TODO [1] 변경 완료
+    # //FIXME [1] 생년월일이 아닌 비밀번호를 가지고 고객정보 조회가 진행될 수 있도록 변경 //TODO [1] 변경 완료
     # 고객 정보 전달 함수
     @classmethod
     def searchCustomer(cls , customer_name , customer_password) :
@@ -135,6 +136,25 @@ class BankDatabase :
                 print(f"[{customer["customer_name"]}] 님의 비밀번호가 초기화 되었습니다.")
                 print(f"초기화된 비밀번호 : [{customer["customer_password"]}]")
                 return
+    
+    #//FIXME 제작 진행 중
+    # 고객 계좌 정보 조회 함수
+    # 계좌 종류 , 계좌 번호 , 계좌 소유자명 , 계좌 비밀번호 , 개설일 , 잔액 , 계좌 상태
+    @classmethod
+    def AddCustomerAccountNumber(cls , customer_information , account_type , account_type_name) :
+        new_account = {"account_name" : account_type_name , "account_number" : "" , "account_owner_name" : customer_information["customer_name"] , "account_password" : "" , ""}
+        
+        new_account["account_number"] = account_type + cls.getAccountNumber()
+        
+    # 고객 계좌 번호에 들어갈 숫자를 랜덤 생성하는 함수
+    def getAccountNumber(self) :
+        new_number = []
+        
+        for number in range(0,11) :
+            new_number.append(str(random.randint(0,9)))
+        
+        new_number = "".join(new_number)
+        return new_number
         
 # 시작
 if __name__ == "__main__" :
