@@ -100,7 +100,7 @@ class Bankmanager :
         customer = {"customer_name" : "" , "customer_id" : "" , "customer_password" : "" , "resident_number" : "" , "customer_gender" : "" , "customer_age" : 0 , "customer_birthday" : "" , "customer_nationality" : "" , "customer_phone" : "" , "customer_account" : []}
         customer["customer_name"]        = input("고객 이름 입력 : ")
         customer["customer_id"]          = self.getId()
-        customer["customer_password"]    = self.getPassword()
+        customer["customer_password"]    = self.getPassword(0)
         customer["resident_number"]      = self.getResidentNumber()
         customer["customer_gender"]      = self.getGender(customer["resident_number"])
         customer["customer_birthday"] , customer["customer_age"] = self.getBirthAge(customer["resident_number"])
@@ -122,11 +122,13 @@ class Bankmanager :
             print("사용할 수 없는 아이디입니다.")
             
     # 고객 계정에 사용할 비밀번호를 받아서 유효성 체크 후 반환하는 함수
-    def getPassword(self) :
+    #//FIXME [1] 계정과 계좌 비밀번호를 받을 때 구분해서 출력이 다르도록 수정 //TODO [1] 수정 완료
+    def getPassword(self , select_type) :
         flag = False
+        type_list = ["계정" , "계좌"]
         
         while flag == False :
-            customer_password = input("계정에 사용할 비밀번호 입력 : ")
+            customer_password = input(f"{type_list[select_type]}에 사용할 비밀번호 입력 : ")
             flag = PatternList.checkPassword(customer_password)
             if flag == True :
                 return customer_password

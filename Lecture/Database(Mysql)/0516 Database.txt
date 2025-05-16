@@ -53,6 +53,9 @@
     # select (필드명) from (테이블명) order by (필드명) asc;  - 일반정렬 (defalut)
     # select (필드명) from (테이블명) order by (필드명) desc; - 역정렬
 
+    # 문자열을 자르는 함수
+    substring(데이터명 , 시작자리 숫자(1부터 시작) , 끝자리 숫자)
+
     [1] select *
         from (테이블명);
         : 선택한 테이블의 모든 데이터를 보여달라는 명령어 / 데이터량이 많은 경우에는 사용하지 말것
@@ -121,3 +124,35 @@
 * NVl    = Oracle 함수
 * ISNULL
 * IFNULL = (필드명 , 기본값) 만일 필드에서 값이 Null 이 아닌 값이 오면 그 값을 주고 Null 이면 기본값을 반환
+
+-- 데이터베이스의 특징
+    [1] 무결성 - 결함이 없는 성격
+    [2] 중복성 베제 - 데이터의 중복 배제
+    [3] 일관성 - 데이터가 중복도 없고 일관성이 있음
+
+    이러한 DB 의 특징을 유지하기 위해서 DB 에서는 Primary key 라는 기능을 제공함
+
+    ** 일부 데이터를 먼저 테이블에 넣어두고(초기화 값) Primary key 를 지정할 때 이미 들어가 있는 데이터가 중복이 되거나 Null 이 있으면 Primary key 를 지정할 수 없음
+    ** Primary key 는 한 테이블 당 하나만 있음
+    ** 여러개의 필드를 묶어서 하나의 Primary key 를 지정할 수 있음 , 단 하나의 테이블에 한 개만 지정가능
+
+    MySQL 은 기본적으로 검색이 순차 검색으로 한 개씩 읽어서 검색
+    색인 순차 검색 , 색인표를 만들어서 검색하며 Primary Key 를 지정하면 자동으로 색인(INDEX) 를 만들어줌
+
+    Oracle 은 병행처리(검색) 으로 한 번에 여러개씩 읽어서 검색
+
+    Primary key = 특정 필드 또는 여러 개의 필드를 묶어서 중복성을 배제하고 Null 값을 갖지 못하도록 제약하는 특성을 갖음
+    예시 :)) 사번 , 학번 , 주민번호 등(단 현재 주민번호는 중복되는 것이 존재해서 현재는 사용 불가)
+
+    ** empno 는 프라이머리키로 정해져 있어서 동일한 값이 입력될 수 없음
+    mysql> insert into emp (empno, ename) value (8000, "홍길동");
+    Query OK, 1 row affected (0.01 sec)
+
+    mysql> insert into emp (empno, ename) value (8000, "임꺽정");
+    ERROR 1062 (23000): Duplicate entry '8000' for key 'emp.PRIMARY'
+
+    MySQL DB 필드 성격
+    auto_increment : 자동 증가
+    MySQL 은 auto_increment 속성이 있는 필드가 Primary key 이어야함
+
+    * Oracle 에서는 시퀀스라는 객체
