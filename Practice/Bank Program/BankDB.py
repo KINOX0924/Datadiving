@@ -142,7 +142,7 @@ class BankDatabase :
     # 계좌 종류 , 계좌 번호 , 계좌 소유자명 , 계좌 비밀번호 , 개설일 , 잔액 , 계좌 상태
     @classmethod
     def AddCustomerAccountNumber(cls , customer_information , account_type , account_type_name) :
-        new_account = {"account_name" : account_type_name , "account_number" : "" , "account_owner_name" : customer_information["customer_name"] , "account_password" : ""}
+        new_account = {"account_name" : account_type_name , "account_number" : "" , "account_owner_name" : customer_information["customer_name"] , "account_password" : "" , "account_date" : "" , "account_balance" : 100 , "account_condition" : "acitve"}
         
         new_account["account_number"]   = account_type + cls.getAccountNumber()
         new_account["account_password"] = BankManager.Bankmanager.getPassword(1)
@@ -151,7 +151,7 @@ class BankDatabase :
     def getAccountNumber(self) :
         new_number = []
         
-        for number in range(0,11) :
+        for round in range(0,11) :
             new_number.append(str(random.randint(0,9)))
         
         new_number = "".join(new_number)
