@@ -144,18 +144,16 @@ class BankDatabase :
     def AddCustomerAccountNumber(cls , customer_information , account_type , account_type_name) :
         new_account = {"account_name" : account_type_name , "account_number" : "" , "account_owner_name" : customer_information["customer_name"] , "account_password" : "" , "account_date" : "" , "account_balance" : 100 , "account_condition" : "acitve"}
         
-        new_account["account_number"]   = account_type + cls.getAccountNumber()
+        new_account["account_number"]   = account_type + PatternList.getAccountNumber()
         new_account["account_password"] = BankManager.Bankmanager.getPassword(1)
+        new_account["account_date"]     = datetime.datetime.today().strftime("%Y-%m-%d")
         
-    # 고객 계좌 번호에 들어갈 숫자를 랜덤 생성하는 함수
-    def getAccountNumber(self) :
-        new_number = []
-        
-        for round in range(0,11) :
-            new_number.append(str(random.randint(0,9)))
-        
-        new_number = "".join(new_number)
-        return new_number
+        for index , customer in enumerate(cls.__customer_list) :
+            if customer_information == customer :
+                customer["customer_account"].append(new_account)
+                print(customer) # //TODO//FIXME 추후 삭제 필요
+        print(f"[{customer_information["customer_name"]}] 님의 [{account_type_name}] 계좌가 정상적으로 생성되었습니다.")
+        print(new_account) # //TODO//FIXME 추후 삭제 필요
         
 # 시작
 if __name__ == "__main__" :

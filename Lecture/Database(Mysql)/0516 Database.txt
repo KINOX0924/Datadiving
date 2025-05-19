@@ -1,3 +1,5 @@
+5월 16일 강의
+
 -- Mysql 접속
 [1] mysql -u root -p
 [2] mysql -u (사용자명) -p

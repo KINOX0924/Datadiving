@@ -75,5 +75,14 @@ def createPassword() :
     new_password = "".join(new_password)
     return new_password
 
+def getAccountNumber() :
+    new_number = []
+        
+    for round in range(0,11) :
+        new_number.append(str(random.randint(0,9)))
+        
+    new_number = "".join(new_number)
+    return new_number
+
 if __name__ == "__main__" :
     pass

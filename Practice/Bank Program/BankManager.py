@@ -306,7 +306,7 @@ class Bankmanager :
     #//FIXME 제작 진행 중
     # 고객 계좌 생성 메뉴 선택 함수
     def addAccountMenu(self) :
-        account_menu_list = [None]
+        account_menu_list = [None , self.addAccount , self.addAccount , self.addAccount , self.addAccount , self.addAccount]
         
         while True :
             try :
@@ -336,4 +336,4 @@ class Bankmanager :
 # 시작
 if __name__ == "__main__" :
     manager = Bankmanager()
-    manager.loginEmployee()
+    manager.addAccountMenu()
