@@ -32,8 +32,8 @@ class Bankmanager :
     # //FIXME [1] 입력값 오류 시 에러 발생됨 //TODO [1] 계정 확인 후 로그인 실패 시 반환값과 변수의 값이 일치하지 않아서 생긴 오류로 수정 완료
     # ===== 직원 계정 로그인
     def loginEmployee(self) :
-        login_employee_id       = input("직원 계정 아이디 입력 : ")
-        login_employee_password = input("직원 계정 비밀번호 입력 : ")
+        login_employee_id          = input("직원 계정 아이디 입력 : ")
+        login_employee_password    = input("직원 계정 비밀번호 입력 : ")
         flag , employee_department = BankDB.BankDatabase.loginEmployee(login_employee_id , login_employee_password)
         if flag == True :
             self.employeeMenu(employee_department)
@@ -59,13 +59,13 @@ class Bankmanager :
         
     # 직원 로그인 후 메뉴 선택 [메인 화면]
     def employeeMenu(self , employee_department) :
-        employeemenu_list = [None , self.cus_employeeMenu]
+        employeemenu_list = [None , self.cus_employeeMenu , self.accountMenu]
         
         while True :
             self.p_employeeMenu(employee_department)
             try :
                 select_menu = int(input("메뉴 선택 : "))
-                if select_menu > 0 and select_menu <= len(employeemenu_list) :
+                if select_menu > 0 and select_menu < len(employeemenu_list) :
                     employeemenu_list[select_menu]()
                 elif select_menu == 0 :
                     print("로그아웃 되었습니다.")
@@ -83,7 +83,7 @@ class Bankmanager :
             self.p_cus_employeeMenu()
             try :
                 select_menu = int(input("메뉴 선택 : "))
-                if select_menu > 0 and select_menu <= len(employeemenu_list) :
+                if select_menu > 0 and select_menu < len(employeemenu_list) :
                     employeemenu_list[select_menu]()
                 elif select_menu == 0 :
                     return
@@ -269,7 +269,7 @@ class Bankmanager :
             self.p_modCustomer(customer_information["customer_name"])
             try :
                 select_menu = int(input("수정 항목 선택 : "))
-                if select_menu > 0 and select_menu <= len(modify_menu_list) :
+                if select_menu > 0 and select_menu < len(modify_menu_list) :
                     BankDB.BankDatabase.modifyCustomer(customer_information , select_menu)
                     if select_menu == 1 or select_menu == 2 :
                         return
@@ -294,7 +294,15 @@ class Bankmanager :
     
     # ===== 직원 메뉴 [고객 계좌 관련 작업]
     def p_acc_employeeMenu(self) :
-        print("===== 고객 계좌 관련 작업 메뉴 =====")
+        print("==== 고객 계좌 관련 작업 메뉴 =====")
+        print("[1] | 계좌 생성")
+        print("[2] | 계좌 삭제")
+        print("[3] | 계좌 정지")
+        print("[4] | 계좌 비밀번호 초기화")
+        print("[0] | 이전 메뉴")
+    
+    def p_acc_add_employeeMenu(self) :
+        print("===== 생성 계좌 선택 메뉴 =====")
         print("[1] | 일반계좌 생성")
         print("[2] | 적금계좌 생성")
         print("[3] | 예금계좌 생성")
@@ -303,17 +311,15 @@ class Bankmanager :
         print("[0] | 이전 메뉴")
     
     # ===== 고객 계좌 생성 관련 함수
-    #//FIXME 제작 진행 중
-    # 고객 계좌 생성 메뉴 선택 함수
-    def addAccountMenu(self) :
-        account_menu_list = [None , self.addAccount , self.addAccount , self.addAccount , self.addAccount , self.addAccount]
+    def accountMenu(self) :
+        account_menu_list = [None , self.addAccountMenu , self.delAccount]
         
         while True :
             try :
                 self.p_acc_employeeMenu()
                 select_menu = int(input("메뉴 선택 : "))
-                if select_menu > 0 and select_menu <= len(account_menu_list) :
-                    account_menu_list[select_menu](select_menu)
+                if select_menu > 0 and select_menu < len(account_menu_list) :
+                    account_menu_list[select_menu]()
                     return
                 elif select_menu == 0 :
                     return
@@ -322,18 +328,63 @@ class Bankmanager :
             except ValueError :
                 print("숫자만 입력하세요.")
     
-    #//FIXME 제작 진행 중
+    # 고객 계좌 생성 메뉴 선택 함수
+    def addAccountMenu(self) :
+        add_account_menu_list = [ 1 , 2 , 3 , 4 , 5 ]
+        
+        while True :
+            try :
+                self.p_acc_add_employeeMenu()
+                select_menu = int(input("메뉴 선택 : "))
+                if select_menu in add_account_menu_list :
+                    self.addAccount(select_menu)
+                    return
+                elif select_menu == 0 :
+                    return
+                else :
+                    print("메뉴에 있는 숫자만 입력하세요.")
+            except ValueError :
+                print("숫자만 입력하세요.")
+    
+    # //FIXME [1] customer_information["customer_account"] 가 빈 항목일경우 if 에서 오류 발생됨 //TODO [1] 수정 완료
     # 고객 계좌 생성 함수
     def addAccount(self , account_type) :
         account_type_list = [None , "일반계좌" , "적금계좌" , "예금계좌" , "청약계좌" , "주식계좌" , "1001" , "1002" , "1003" , "2001" , "7077"]
         
         customer_information = self.searchCustomerInformation()
-        if len(customer_information["customer_account"]) >= 5 :
+        if len(customer_information["customer_account"]) >= 5 and customer_information["customer_account"] != [] :
             print(f"[{customer_information["customer_name"]}] 님은 계좌 생성 한도에 도달하여 더 이상 계좌를 생성할 수 없습니다.")
             return
-        BankDB.BankDatabase.AddCustomerAccountNumber(customer_information , account_type_list[account_type] , account_type_list[account_type + 5])
+        BankDB.BankDatabase.addCustomerAccount(customer_information , account_type_list[account_type + 5] , account_type_list[account_type])
+    
+    # //FIXME 제작 진행 중
+    # 고객 계좌 삭제 함수
+    def delAccount(self) :
+        customer_information = self.searchCustomerInformation()
+        if len(customer_information["customer_account"]) == 0 :
+            print(f"[{customer_information["customer_name"]}] 님은 생성된 계좌가 없습니다.")
+            return
+        select_account_number = self.selDelAccount(customer_information)
+        # BankDB.BankDatabase.delCustomerAccount(select_account_number)
+        
+    def selDelAccount(self , customer_information) :
+        index_list = []
+        
+        for index , account in enumerate(customer_information["customer_account"]) :
+            print("===== ===== ===== ===== ===== =====")
+            print(f"[{index + 1}] | 계좌 종류 : [{account["account_name"]}]")
+            print(f"계좌 잔액 : [{account["account_balance"]}]")
+            print(f"계좌 상태 : [{account["account_condition"]}]\n")
+            index_list.append(int(index))
+        
+        while True :
+            select_account_number = int(input("삭제 계좌 번호 입력 : ")) - 1
+            if select_account_number not in index_list :
+                print("선택할 수 없는 번호거나 오입력되었습니다.")
+            else :
+                return select_account_number
         
 # 시작
 if __name__ == "__main__" :
     manager = Bankmanager()
-    manager.addAccountMenu()
+    manager.loginEmployee()

@@ -8,7 +8,7 @@ import random
 
 class BankDatabase :
     __customer_list = [
-        {"customer_name" : "김민준" , "customer_id" : "Kim_mj" , "customer_password" : "kim950315"  , "resident_number" : "950315-1827345" , "customer_gender" : "male"   , "customer_age" : 30 , "customer_birthday" : "1995-03-15" , "customer_nationality" : "대한민국" , "customer_phone" : "010-8765-4321" , "customer_account" : []} ,
+        {"customer_name" : "김민준" , "customer_id" : "Kim_mj" , "customer_password" : "kim950315"  , "resident_number" : "950315-1827345" , "customer_gender" : "male"   , "customer_age" : 30 , "customer_birthday" : "1995-03-15" , "customer_nationality" : "대한민국" , "customer_phone" : "010-8765-4321" , "customer_account" : [{'account_name': '예금계좌', 'account_number': '100346164219146', 'account_owner_name': '김민준', 'account_password': '15442154', 'account_date': '2025-05-19', 'account_balance': 100, 'account_condition': 'acitve'}]} ,
         {"customer_name" : "이서윤" , "customer_id" : "Lee_sy" , "customer_password" : "lee021122"  , "resident_number" : "021122-2765901" , "customer_gender" : "female" , "customer_age" : 23 , "customer_birthday" : "2002-11-22" , "customer_nationality" : "대한민국" , "customer_phone" : "010-1234-5678" , "customer_account" : []} ,
         {"customer_name" : "박지훈" , "customer_id" : "Park_jh" , "customer_password" : "park880607"  , "resident_number" : "880607-1592038" , "customer_gender" : "male"   , "customer_age" : 37 , "customer_birthday" : "1988-06-07" , "customer_nationality" : "대한민국" , "customer_phone" : "010-9876-5432" , "customer_account" : []} ,
         {"customer_name" : "정수아" , "customer_id" : "Jung_sa" , "customer_password" : "jung990910"  , "resident_number" : "990910-2481635" , "customer_gender" : "female" , "customer_age" : 26 , "customer_birthday" : "1999-09-10" , "customer_nationality" : "대한민국" , "customer_phone" : "010-5555-1212" , "customer_account" : []} ,
@@ -137,23 +137,29 @@ class BankDatabase :
                 print(f"초기화된 비밀번호 : [{customer["customer_password"]}]")
                 return
     
-    #//FIXME 제작 진행 중
-    # 고객 계좌 정보 조회 함수
+    # 고객 계좌 생성 함수
     # 계좌 종류 , 계좌 번호 , 계좌 소유자명 , 계좌 비밀번호 , 개설일 , 잔액 , 계좌 상태
     @classmethod
-    def AddCustomerAccountNumber(cls , customer_information , account_type , account_type_name) :
+    def addCustomerAccount(cls , customer_information , account_type , account_type_name) :
+        new_account_password = BankManager.Bankmanager()
         new_account = {"account_name" : account_type_name , "account_number" : "" , "account_owner_name" : customer_information["customer_name"] , "account_password" : "" , "account_date" : "" , "account_balance" : 100 , "account_condition" : "acitve"}
         
         new_account["account_number"]   = account_type + PatternList.getAccountNumber()
-        new_account["account_password"] = BankManager.Bankmanager.getPassword(1)
+        new_account["account_password"] = new_account_password.getPassword(1)
         new_account["account_date"]     = datetime.datetime.today().strftime("%Y-%m-%d")
         
         for index , customer in enumerate(cls.__customer_list) :
             if customer_information == customer :
                 customer["customer_account"].append(new_account)
                 print(customer) # //TODO//FIXME 추후 삭제 필요
-        print(f"[{customer_information["customer_name"]}] 님의 [{account_type_name}] 계좌가 정상적으로 생성되었습니다.")
+        print(f"[{customer_information["customer_name"]}] 님의 [{account_type_name[:2]}] 계좌가 정상적으로 생성되었습니다.")
         print(new_account) # //TODO//FIXME 추후 삭제 필요
+    
+    # //FIXME 제작 진행 중
+    # 고객 계좌 삭제 함수
+    @classmethod
+    def delCustomerAccount(cls , customer_information , select_account_number) :
+        pass
         
 # 시작
 if __name__ == "__main__" :
