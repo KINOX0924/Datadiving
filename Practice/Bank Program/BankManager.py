@@ -371,10 +371,13 @@ class Bankmanager :
         index_list = []
         
         for index , account in enumerate(customer_information["customer_account"]) :
+            account_condition = "활성화"
+            if account["account_condition"] == "inactive" :
+                account_condition = "비활성화"
             print("===== ===== ===== ===== ===== =====")
             print(f"[{index + 1}] | 계좌 종류 : [{account["account_name"]}]")
             print(f"계좌 잔액 : [{account["account_balance"]}]")
-            print(f"계좌 상태 : [{account["account_condition"]}]\n")
+            print(f"계좌 상태 : [{account_condition}]\n")
             index_list.append(int(index))
         
         while True :

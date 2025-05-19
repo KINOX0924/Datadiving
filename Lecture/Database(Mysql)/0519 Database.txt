@@ -42,16 +42,17 @@
 
 서브 쿼리
 - 메인 쿼리의 옆에서 메인 쿼리보다 먼저 실행되서 결과를 가져온 다음에 메인 쿼리가 실행됨
-- 스칼라 서브 쿼리 : 결과값이 Null 이거나 한 개만 가져오는 쿼리
+- select 절 : 스칼라 서브 쿼리 : 결과값이 Null 이거나 한 개만 가져오는 쿼리
                    : join 을 대체할 수 있고 사용자가 보기에는 편해보이나 join 보다 속도는 느림
                    : 가급적 join 으로 해결하고 join 으로 해결할 수 없는 상황에서 서브 쿼리를 사용
                    * select 절
                    예:)) select A.empno , A.ename , (select B.dname from dept B where A.deptno = B.deptno) as dname
                          from emp A;
                   * 스칼라 서브 쿼리는 한 번에 한 항목 밖에 가져올 수 없어서 추가 항목을 가져오려면 스칼라 서브 쿼리 한 줄 자체를 더 추가해야함
-- 다중행 서브 쿼리 : 다중 행을 반환하는 서브 쿼리 , 인라인뷰
+- from 점 : 다중행 서브 쿼리 : 다중 행을 반환하는 서브 쿼리 , 인라인뷰
                    예:)) select A.ename , B.dname
                          from (
                               select * from emp where deptno in (10, 20)
                          ) as A
                          join dept B on A.deptno = B.deptno;
+- where 절 : 
