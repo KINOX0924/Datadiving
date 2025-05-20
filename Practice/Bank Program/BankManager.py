@@ -223,9 +223,14 @@ class Bankmanager :
             
     # 고객의 이름과 고객 계정의 비밀번호를 입력 받아서 고객 정보를 받아오는 함수
     def searchCustomerInformation(self) :
-        customer_name        = input("고객 이름 입력 : ")
-        customer_password    = input("계정 비밀번호 입력 : ")
-        customer_information = BankDB.BankDatabase.searchCustomer(customer_name , customer_password)
+        customer_information = None
+        
+        while customer_information == None :
+            customer_name        = input("고객 이름 입력 : ")
+            customer_password    = input("계정 비밀번호 입력 : ")
+            customer_information = BankDB.BankDatabase.searchCustomer(customer_name , customer_password)
+            if customer_information == None :
+                print("고객 이름 또는 비밀번호를 다시 확인해주세요.")
         
         return customer_information
     
@@ -297,8 +302,9 @@ class Bankmanager :
         print("==== 고객 계좌 관련 작업 메뉴 =====")
         print("[1] | 계좌 생성")
         print("[2] | 계좌 삭제")
-        print("[3] | 계좌 정지")
-        print("[4] | 계좌 비밀번호 초기화")
+        print("[3] | 계좌 비활성화")
+        print("[4] | 계좌 활성화")
+        print("[5] | 계좌 비밀번호 초기화")
         print("[0] | 이전 메뉴")
     
     def p_acc_add_employeeMenu(self) :
@@ -312,7 +318,7 @@ class Bankmanager :
     
     # ===== 고객 계좌 생성 관련 함수
     def accountMenu(self) :
-        account_menu_list = [None , self.addAccountMenu , self.delAccount]
+        account_menu_list = [None , self.addAccountMenu , self.delAccount , self.inActiveAccount , self.activeAccount]
         
         while True :
             try :
@@ -357,31 +363,54 @@ class Bankmanager :
             return
         BankDB.BankDatabase.addCustomerAccount(customer_information , account_type_list[account_type + 5] , account_type_list[account_type])
     
-    # 고객 계좌 정보를 확인 받고 삭제하는 함수
+    # //FIXME [1] 고객 정보를 오입력하여 로그인이 정상적으로 이루어지지 않은 경우 오류 발생됨 //TODO [1] 수정 완료 - 고객 정보를 받는 함수에 반복문 사용
+    # 고객 계좌 정보를 확인받고 삭제하는 함수
     def delAccount(self) :
         customer_information = self.searchCustomerInformation()
         if len(customer_information["customer_account"]) == 0 :
             print(f"[{customer_information["customer_name"]}] 님은 생성된 계좌가 없습니다.")
             return
-        select_account_number = self.selDelAccount(customer_information)
+        select_account_number = self.selAccount(customer_information , 0)
         BankDB.BankDatabase.delCustomerAccount(customer_information , select_account_number)
     
+    # 고객 계좌 정보를 확인받고 비활성화하는 함수
+    def inActiveAccount(self) :
+        customer_information = self.searchCustomerInformation()
+        if len(customer_information["customer_account"]) == 0 :
+            print(f"[{customer_information["customer_name"]}] 님은 생성된 계좌가 없습니다.")
+            return
+        select_account_number = self.selAccount(customer_information , 1)
+        BankDB.BankDatabase.inActiveCustomerAccount(customer_information , select_account_number)
+        
+    # 고객 계좌 정보를 확인받고 활성화하는 함수
+    def activeAccount(self) :
+        customer_information = self.searchCustomerInformation()
+        if len(customer_information["customer_account"]) == 0 :
+            print(f"[{customer_information["customer_name"]}] 님은 생성된 계좌가 없습니다.")
+            return
+        select_account_number = self.selAccount(customer_information , 2)
+        BankDB.BankDatabase.activeCustomerAccount(customer_information , select_account_number)
+                
     # //FIXME [1] 더 짧게 함수를 쪼개서 만들어야함 //TODO [1] 별도 출력만 하는 함수를 만들어서 수정 완료
     # //FIXME [2] 숫자가 아닌 값이 입력될 때 오류는 안 나오지만 반복이 풀리고 메뉴를 나오게 됨 //TODO [2] 수정 완료
-    # 고객이 삭제할 계좌를 확인하고 선택하는 함수
-    def selDelAccount(self , customer_information) :
+    # //FIXME [3] 메뉴 리스트를 사용하여 동일한 함수를 여러번 작성되지 않게 함 //TODO [3] 수정 완료
+    # 고객이 계좌를 선택하고 선택한 숫자를 리턴하는 함수
+    def selAccount(self , customer_information , select_menu) :
         index_list = self.p_customerAccount(customer_information , 1)
+        menu_list  = ["삭제" , "비설성화" , "활성화"]
         
         while True :
             try :
-                select_account_number = int(input("삭제 계좌 번호 입력 : ")) - 1
+                select_account_number = int(input(f"{menu_list[select_menu]} 계좌 번호 입력 : ")) - 1
                 if select_account_number not in index_list :
                     print("선택할 수 없는 번호입니다.")
                 else :
                     return select_account_number
             except ValueError :
                 print("숫자만 입력해주세요.")
-                
+    
+    # //FIXME [1] 계좌가 inacitve 상태인데 비활성화라고 뜨지 않음 //TODO [1] 수정완료 - DB 모듈에서 부등호가 잘못됨
+    # 고객의 계좌를 조회하고 필요에 따라 필요 정보를 리턴하는 함수
     def p_customerAccount(self , customer_information , pls_return) :
         index_list = []
         

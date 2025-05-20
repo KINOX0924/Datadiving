@@ -8,7 +8,7 @@ import random
 
 class BankDatabase :
     __customer_list = [
-        {"customer_name" : "김민준" , "customer_id" : "Kim_mj" , "customer_password" : "kim950315"  , "resident_number" : "950315-1827345" , "customer_gender" : "male"   , "customer_age" : 30 , "customer_birthday" : "1995-03-15" , "customer_nationality" : "대한민국" , "customer_phone" : "010-8765-4321" , "customer_account" : [{'account_name': '예금계좌', 'account_number': '100346164219146', 'account_owner_name': '김민준', 'account_password': '15442154', 'account_date': '2025-05-19', 'account_balance': 100, 'account_condition': 'acitve'}]} ,
+        {"customer_name" : "김민준" , "customer_id" : "Kim_mj" , "customer_password" : "kim950315"  , "resident_number" : "950315-1827345" , "customer_gender" : "male"   , "customer_age" : 30 , "customer_birthday" : "1995-03-15" , "customer_nationality" : "대한민국" , "customer_phone" : "010-8765-4321" , "customer_account" : [{'account_name': '예금계좌', 'account_number': '100346164219146', 'account_owner_name': '김민준', 'account_password': '15442154', 'account_date': '2025-05-19', 'account_balance': 100, 'account_condition': 'active'}]} ,
         {"customer_name" : "이서윤" , "customer_id" : "Lee_sy" , "customer_password" : "lee021122"  , "resident_number" : "021122-2765901" , "customer_gender" : "female" , "customer_age" : 23 , "customer_birthday" : "2002-11-22" , "customer_nationality" : "대한민국" , "customer_phone" : "010-1234-5678" , "customer_account" : []} ,
         {"customer_name" : "박지훈" , "customer_id" : "Park_jh" , "customer_password" : "park880607"  , "resident_number" : "880607-1592038" , "customer_gender" : "male"   , "customer_age" : 37 , "customer_birthday" : "1988-06-07" , "customer_nationality" : "대한민국" , "customer_phone" : "010-9876-5432" , "customer_account" : []} ,
         {"customer_name" : "정수아" , "customer_id" : "Jung_sa" , "customer_password" : "jung990910"  , "resident_number" : "990910-2481635" , "customer_gender" : "female" , "customer_age" : 26 , "customer_birthday" : "1999-09-10" , "customer_nationality" : "대한민국" , "customer_phone" : "010-5555-1212" , "customer_account" : []} ,
@@ -23,8 +23,7 @@ class BankDatabase :
 
     # 계좌 정보 (계좌 안에서 또 다른 딕셔너리로 구분)
     # 계좌 정보 (형태 : 일반계좌(1001) , 적금계좌(1002) , 예금계좌(1003) , 청약계좌(2001)) , 계좌 번호
-    
-    __account_list  = []
+
     account_type    = {"일반계좌" : "1001" , "적금계좌" : "1002" , "예금계좌" : "1003" , "청약계좌" : "2001" , "주식계좌" : "7077"}
     # 계좌 리스트 정보
     # 계좌 종류 , 계좌 번호 , 계좌 소유자명 , 계좌 비밀번호 , 개설일 , 잔액 , 계좌 상태
@@ -142,7 +141,7 @@ class BankDatabase :
     @classmethod
     def addCustomerAccount(cls , customer_information , account_type , account_type_name) :
         new_account_password = BankManager.Bankmanager()
-        new_account = {"account_name" : account_type_name , "account_number" : "" , "account_owner_name" : customer_information["customer_name"] , "account_password" : "" , "account_date" : "" , "account_balance" : 100 , "account_condition" : "acitve"}
+        new_account = {"account_name" : account_type_name , "account_number" : "" , "account_owner_name" : customer_information["customer_name"] , "account_password" : "" , "account_date" : "" , "account_balance" : 100 , "account_condition" : "active"}
         
         new_account["account_number"]   = account_type + PatternList.getAccountNumber()
         new_account["account_password"] = new_account_password.getPassword(1)
@@ -155,14 +154,45 @@ class BankDatabase :
         print(f"[{customer_information["customer_name"]}] 님의 [{account_type_name[:2]}] 계좌가 정상적으로 생성되었습니다.")
         print(new_account) # //TODO//FIXME 추후 삭제 필요
     
+    # //FIXME [1] 계좌에 잔액이 남아있는 경우 제거를 할 수 없어야함 //TODO [1] 수정 완료
     # 고객 계좌 삭제 함수
     @classmethod
     def delCustomerAccount(cls , customer_information , select_account_number) :
         for index , customer in enumerate(cls.__customer_list) :
-            if customer_information == customer :
+            if customer_information == customer and customer_information["customer_account"][select_account_number]["account_balance"] >= 1 :
+                print("선택한 계좌는 잔액이 남아있어서 제거를 할 수 없습니다.")
+                return
+            elif customer_information == customer :
                 print(f"[{customer["customer_name"]}] 님의 [{customer["customer_account"][select_account_number]["account_name"]}] 계좌가 정상적으로 제거되었습니다.")
                 del customer["customer_account"][select_account_number]
                 return
+    
+    # 고객 계좌 비활성화 함수
+    @classmethod
+    def inActiveCustomerAccount(cls , customer_information , select_account_number) :
+        for index , customer in enumerate(cls.__customer_list) :
+            if customer_information == customer and customer_information["customer_account"][select_account_number]["account_condition"] == "inactive" :
+                print("선택한 계좌는 이미 비활성화된 상태입니다.")
+                return
+            elif customer_information == customer and customer_information["customer_account"][select_account_number]["account_balance"] >= 1 :
+                print("선택한 계좌는 잔액이 남아있어서 정지를 할 수 없습니다.")
+                return
+            elif customer_information == customer :
+                print(f"[{customer["customer_name"]}] 님의 [{customer["customer_account"][select_account_number]["account_name"]}] 계좌가 정상적으로 정지되었습니다.")
+                customer["customer_account"][select_account_number]["account_condition"] = "inactive"
+                return
+    
+    # 고객 계좌 활성화 함수
+    @classmethod
+    def activeCustomerAccount(cls , customer_information , select_account_number) :
+        for index , customer in enumerate(cls.__customer_list) :
+            if customer_information == customer and customer_information["customer_account"][select_account_number]["account_condition"] == "active" :
+                print("선택한 계좌는 이미 활성화된 상태입니다.")
+                return
+            elif customer_information == customer :
+                print(f"[{customer["customer_name"]}] 님의 [{customer["customer_account"][select_account_number]["account_name"]}] 계좌가 정상적으로 활성화되었습니다.")
+                customer["customer_account"][select_account_number]["account_condition"] = "active"
+                return     
         
 # 시작
 if __name__ == "__main__" :
