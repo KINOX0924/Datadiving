@@ -27,7 +27,87 @@ union 연산자 - 합집합 / 데이터 덧붙이기
 - union 연산자는 실제로 합쳐도 되는 데이터인지는 확인하지 않음 / 필드의 개수와 필드 데이터의 타입만 맞으면 됨
 - 주로 '행' 을 '열' 로 바꾸어야 할 때 사용하거나 '검색' 시 모든 검색하여 정보를 가져올 떄
 [1] union     : 서로의 데이터를 가져온 후 중복을 배제함
-예시:)) select column1 , column2 from table1 union select column1 , column2 from table2
+예:)) select column1 , column2 from table1 union select column1 , column2 from table2
 
 [2] union all : 서로의 데이터를 사져온 후 중복을 배제하지 않음
-예시:)) select column1 , column2 from table1 union all select column1 , column2 from table2
+예:)) select column1 , column2 from table1 union all select column1 , column2 from table2
+
+Group By (그룹함수)
+- 그룹 함수 중에 Null 값 처리 부분은 조금씩 다름
+- count(필드명) 에 Null 값이 존재하면 카운트 하지 않음
+- group by 에 들어간 데이터는 select 절에 표시할 수 있음
+
+- exists
+    : 서브 쿼리의 모든 수행을 기다리지 않고 뭔가 값(데이터) 를 하나 찾으면 바로 끝냄
+    : 조건식이 만족하는 값이 나오면 수행
+    : 서브 쿼리의 수행 결과상 존재 유무만 파악
+예:)) select A.suppliername from suppliers A where exists(select B.productname from products B where B.supplierid = A.supplierid and price < 20);
+
+- any
+    : 서브 쿼리에서 오는 조건에 하나라도 만족하는 데이터가 있으면 실행 (다중 or 문이라고 생각하면 됨)
+
+- all
+    : 서브 쿼리에서 오는 조건을 동시에 다 만족하는 데이터가 있으면 실행 (다중 and 문이라고 생각하면 됨)
+
+- in
+    : 조건에 만족하는 데이터를 찾아서 실행
+
+
+함수
+- MySQL 에도 스크립트가 있어서 함수도 프로시저도 만들 수 있음
+- 함수는 반드시 반환값이 있는 것을 말하며 , 프로시저는 반환값이 없음
+* 대부분의 DBMS 는 select 절에 from 절을 빼뜨릴 수 없지만, MySQL 은 빠져도 괜찮은 때가 있음
+* 그래서 Oracle 같은 경우는 더미 테이블을 만들어서 사용함 ( select sysdate from dummy )
+
+- 함수도 별다른 표준이 없어서 DBMS 마다 유사하지만 다름
+
+자주 사용하는 함수들
+- concat(필드명 , " " , 필드명 , " ") as (별칭) : " " 안에 있는 문자열또는 데이터를 합쳐서 출력 , from 절이 없어도 출력 가능
+- LTRIM() , RTRIM() , TRIM() : 문자열 안에 있는 공백을 제거함
+- substr((문자열 또는 데이터) , 시작 인덱스(1부터) , 시작 인덱스로부터 추출할 글자 수) : 특정한 문자열을 추출하여 출력
+* 대부분의 DBMS 가 문자열 인덱스를 1 부터 시작
+- ceil : 올림 함수
+- floor : 내림 함수
+* ceil 함수와 floor 함수는 주로 데이터 개수를 받아서 페이지 수 계산을 할 때 사용
+- Datediff("날짜_1" , "날짜_2") : 입력된 두 날짜 사이의 차이를 계산
+                                : 날짜_1 이 낮으면 앞에 (-) 가 나오고 , 날짜_1 이 높으면 양수로 나옴
+
+DML - 데이터 조작 명령어
+- 데이터 삽입
+insert into (테이블명) values (데이터 , 데이터 , 데이터)
+- 테이블의 구조가 간단할때는 필드명을 생략할 수 있음
+- insert into 를 사용하여 데이터를 넣을 때는 desc 로 검색한 필드 목록하고 동일한 구조로 저장 필요
+
+insert into (테이블명)((필드명) , (필드명)) values (데이터 , 데이터)
+
+* 한 번에 여러명 데이터 삽입하기
+insert into (테이블명)((필드명) , (필드명)) values(데이터 , 데이터) , (데이터 , 데이터)
+
+- 데이터 삭제
+delete from (테이블명) where (조건절) 
+- 행에 대한 데이터를 삭제함 * drop = 열에 대한 즉, 필드를 날리는 명령어 / 굉장히 위험함
+- 데이터를 삭제할때는 무조건 where (조건절) 을 넣어야함 / 안 그러면 다 삭제됨
+- Oracle 의 경우 별도의 백업 공간이 있어서 안전장치가 있음 / MySQL 은 복원 불가함(백업 없음)
+
+
+
+DDL - 데이터 정의 명령어
+테이블 복사(데이터까지)
+create table (테이블명) as select * from (복사할 테이블명);
+- 직접적인 테이블 복사 명령어는 없고 서브 쿼리를 사용해서 복사할 수 있음
+- 단, 복사된 테이블은 제약조건을 가져올 수 없음(PrimaryKey , ForeignKey)
+
+테이블 복사(구조만/데이터는 없이)
+create table (테이블명) as select * from (복사할 테이블명) where 1 = 0;
+
+특정 필드만 선택된 테이블을 복사
+create table (테이블명) as select (필드명) , (필드명) , (필드명) from (복사할 테이블명) / 필요에 따라 where 조건절
+
+특정 필드의 데이터만 같은 구조의 테이블의 복사
+insert into (테이블명) (필드명 , 필드명 , 필드명) select (필드명) , (필드명) , (필드명) from (복사할 테이블명)
+* 복사받을 필드명과 복사받을 필드명은 동일해야함
+
+테이블 생성
+create table (테이블명) (컬럼1 타입 , 컬럼2 타입)
+
+- Foreign Key 를 제거하는 방법

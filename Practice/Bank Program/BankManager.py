@@ -366,21 +366,11 @@ class Bankmanager :
         select_account_number = self.selDelAccount(customer_information)
         BankDB.BankDatabase.delCustomerAccount(customer_information , select_account_number)
     
-    # //FIXME [1] 더 짧게 함수를 쪼개서 만들어야함
+    # //FIXME [1] 더 짧게 함수를 쪼개서 만들어야함 //TODO [1] 별도 출력만 하는 함수를 만들어서 수정 완료
     # //FIXME [2] 숫자가 아닌 값이 입력될 때 오류는 안 나오지만 반복이 풀리고 메뉴를 나오게 됨 //TODO [2] 수정 완료
     # 고객이 삭제할 계좌를 확인하고 선택하는 함수
     def selDelAccount(self , customer_information) :
-        index_list = []
-        
-        for index , account in enumerate(customer_information["customer_account"]) :
-            account_condition = "활성화"
-            if account["account_condition"] == "inactive" :
-                account_condition = "비활성화"
-            print("===== ===== ===== ===== ===== =====")
-            print(f"[{index + 1}] | 계좌 종류 : [{account["account_name"]}]")
-            print(f"계좌 잔액 : [{account["account_balance"]}]")
-            print(f"계좌 상태 : [{account_condition}]\n")
-            index_list.append(int(index))
+        index_list = self.p_customerAccount(customer_information , 1)
         
         while True :
             try :
@@ -391,6 +381,23 @@ class Bankmanager :
                     return select_account_number
             except ValueError :
                 print("숫자만 입력해주세요.")
+                
+    def p_customerAccount(self , customer_information , pls_return) :
+        index_list = []
+        
+        for index , account in enumerate(customer_information["customer_account"]) :
+            account_condtion = "활성화"
+            if account["account_condition"] == "inactive" :
+                account_condtion = "비활성화"
+            print("===== ===== ===== ===== ===== =====")
+            print(f"[{index + 1}] | 계좌 종류 : [{account["account_name"]}]")
+            print(f"계좌 상태 : [{account["account_balance"]}]")
+            print(f"계좌 상태 : [{account_condtion}]\n")
+            index_list.append(int(index))
+        
+        if pls_return == 1 :
+            return index_list
+        return 
         
 # 시작
 if __name__ == "__main__" :
