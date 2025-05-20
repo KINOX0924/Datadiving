@@ -357,16 +357,18 @@ class Bankmanager :
             return
         BankDB.BankDatabase.addCustomerAccount(customer_information , account_type_list[account_type + 5] , account_type_list[account_type])
     
-    # //FIXME 제작 진행 중
-    # 고객 계좌 삭제 함수
+    # 고객 계좌 정보를 확인 받고 삭제하는 함수
     def delAccount(self) :
         customer_information = self.searchCustomerInformation()
         if len(customer_information["customer_account"]) == 0 :
             print(f"[{customer_information["customer_name"]}] 님은 생성된 계좌가 없습니다.")
             return
         select_account_number = self.selDelAccount(customer_information)
-        # BankDB.BankDatabase.delCustomerAccount(select_account_number)
-        
+        BankDB.BankDatabase.delCustomerAccount(customer_information , select_account_number)
+    
+    # //FIXME [1] 더 짧게 함수를 쪼개서 만들어야함
+    # //FIXME [2] 숫자가 아닌 값이 입력될 때 오류는 안 나오지만 반복이 풀리고 메뉴를 나오게 됨 //TODO [2] 수정 완료
+    # 고객이 삭제할 계좌를 확인하고 선택하는 함수
     def selDelAccount(self , customer_information) :
         index_list = []
         
@@ -381,11 +383,14 @@ class Bankmanager :
             index_list.append(int(index))
         
         while True :
-            select_account_number = int(input("삭제 계좌 번호 입력 : ")) - 1
-            if select_account_number not in index_list :
-                print("선택할 수 없는 번호거나 오입력되었습니다.")
-            else :
-                return select_account_number
+            try :
+                select_account_number = int(input("삭제 계좌 번호 입력 : ")) - 1
+                if select_account_number not in index_list :
+                    print("선택할 수 없는 번호입니다.")
+                else :
+                    return select_account_number
+            except ValueError :
+                print("숫자만 입력해주세요.")
         
 # 시작
 if __name__ == "__main__" :

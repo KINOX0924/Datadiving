@@ -1,0 +1,33 @@
+5월 20일 데이터베이스 강의
+
+join 종류
+[1] inner join - 교집합 조인 / 서로 가지고 있는 필드의 데이터만 조회 가능
+               - inner join 의 경우에는 from 절에 올 테이블과 join 절에 올 테이블을 구분할 필요가 없음
+               - 다만 데이터 개수가 좀 작은 테이블 쪽이 앞쪽에 오는 것이 좋음(권고사항)
+[2] outer join
+    - LEFT 조인  : 프롬절에 가까운 조인
+        예:)) select column_name(s)
+              from table_1
+              left join table_2 on table_1 = table_2
+              left join table_3 on table_2 = table_3
+
+              이 경우 table_2 에 있어서는 table_1 이 Left 에 해당하고 , table_3 에 있어서는 table_2 가 Left 에 해당함
+              Left 조인은 Left 에 해당하는 테이블을 기준으로 값이 출력됨
+    - RIGHT 조인 : 프롬절에서 먼 조인
+[3] cross join - 카테시안곱이라고 하여, 조인 조건이 없을 때 N by M / 주로 가짜(더미) 데이터를 생성할 때 사용 / 일반적으로는 미사용
+[4] self join  - 동일한 테이블 내에서 조인한다고 하여 셀프 조인이라고 함
+               - 국내에서는 자주 사용하며 주로 코드 테이블을 만들 때 사용
+               예:)) select A.ename , A.mgr , B.ename from emp A left outer join emp B on A.mgr = B.empno;
+
+* 기본적으로는 inner join 과 outer join 으로 결과를 만들어봄
+* join 시 where 조건절이 있는 경우 조건절을 통해 데이터를 1차적으로 거른 뒤에 join 이 진행됨
+* full outer join : 합집합 조인으로 ANSI 표준은 있지만 MySQL 에는 없음
+
+union 연산자 - 합집합 / 데이터 덧붙이기
+- union 연산자는 실제로 합쳐도 되는 데이터인지는 확인하지 않음 / 필드의 개수와 필드 데이터의 타입만 맞으면 됨
+- 주로 '행' 을 '열' 로 바꾸어야 할 때 사용하거나 '검색' 시 모든 검색하여 정보를 가져올 떄
+[1] union     : 서로의 데이터를 가져온 후 중복을 배제함
+예시:)) select column1 , column2 from table1 union select column1 , column2 from table2
+
+[2] union all : 서로의 데이터를 사져온 후 중복을 배제하지 않음
+예시:)) select column1 , column2 from table1 union all select column1 , column2 from table2
