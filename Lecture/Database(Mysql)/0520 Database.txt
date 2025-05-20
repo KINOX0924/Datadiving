@@ -111,3 +111,6 @@ insert into (테이블명) (필드명 , 필드명 , 필드명) select (필드명
 create table (테이블명) (컬럼1 타입 , 컬럼2 타입)
 
 - Foreign Key 를 제거하는 방법
+
+distinct - 뒤에 나오는 필드값의 중복을 배제 하는 명령어
+select distinct country , suppliername from suppliers;
