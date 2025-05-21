@@ -33,7 +33,7 @@ class BankDatabase :
     # 계좌 종류 , 계좌 번호 , 이름 , 입금/출금 구분 , 거래된 금액 , 이체 된 곳
     
     __employee_accout_list    = [
-        {"employee_name" : "마스터 계정" , "employee_id" : "master" , "employee_password" : "q1w2e3" , "employee_department" : "관리팀" , "employee_rank" : "마스터 계정"}
+        {"employee_name" : "마스터 계정" , "employee_id" : "master" , "employee_password" : "q1w2e3" , "employee_department" : "관리팀" , "employee_rank" : "마스터 계정" , "employee_resident_number" : "111111-1111111" , "employee_condition" : "재직"}
     ]
     # 직원 계정 리스트
     # 은행의 직원 계정이 저장되는 리스트
@@ -48,6 +48,7 @@ class BankDatabase :
     # ===== 직원 전용 함수 모음
     # 직원 계정 로그인 함수
     # //FIXME [1] 직원 접속 시 로그인 기록이 히스토리에 전송되도록 해야함 //TODO [1] 추가 완료
+    # //FIXME [2] 직원 접속 시 '재직' 상태가 아니라면 접속 할 수 없도록 함
     @classmethod
     def loginEmployee(cls , login_employee_id , login_employee_password) :
         for employee in cls.__employee_accout_list :
@@ -70,6 +71,7 @@ class BankDatabase :
         cls.__customer_list.append(customer_information)
         print(f"[{customer_information["customer_name"]}] 님의 계정이 정상적으로 생성되었습니다.")
     
+    # 고객의 아이디가 중복인지 확인하는 함수
     @classmethod
     def searchCustomerId(cls , customer_id) :
         for index , customer in enumerate(cls.__customer_list) :
@@ -192,8 +194,57 @@ class BankDatabase :
             elif customer_information == customer :
                 print(f"[{customer["customer_name"]}] 님의 [{customer["customer_account"][select_account_number]["account_name"]}] 계좌가 정상적으로 활성화되었습니다.")
                 customer["customer_account"][select_account_number]["account_condition"] = "active"
-                return     
+                return
+    
+    # 고객 계좌 비밀번호 초기화 함수
+    @classmethod
+    def resetCustomerAccountPassword(cls , customer_information , select_account_number) :
+        for index , customer in enumerate(cls.__customer_list) :
+            if customer_information == customer :
+                customer["customer_account"][select_account_number]["account_password"] = PatternList.createPassword()
+                print(f"[{customer["customer_name"]}] 님의 계좌 비밀번호가 초기화 되었습니다.")
+                print(f"초기화된 비밀번호 : [{customer["customer_account"][select_account_number]["account_password"]}]")
+                return
+    
+    # //FIXME 제작 중
+    # 직원 계정을 생성하는 함수
+    @classmethod
+    def insertEmployeeAccount(cls , employee_information) :
+        for index , employee in enumerate(cls.__employee_accout_list) :
+            if employee_information["employee_name"] == employee["employee_name"] and \
+               employee_information["employee_resident_number"] == employee["employee_resident_number"] and \
+               employee_information["employee_condition"] == employee["employee_condition"] :
+                    print(f"[{employee_information["employee_name"]}] 님은 이미 재직 중입니다.")
+                    return
+            
+    
+    # 프로그램을 시작하면 가장 먼저 뜨는 출력 화면 [메인 화면]
+    def p_terminalMenu(self) :
+        print("===== ===== 메뉴 ===== =====")
+        print("[1] | 고객 로그인")
+        print("[2] | 직원 로그인")
+        print("[0] | 프로그램 종료")
+        print("===== ===== ===== ===== ===== =====")
         
+    # 프로그램 시작 및 메뉴 선택
+    def terminalMenu(self) :
+        while True :
+            self.p_terminalMenu()
+            try :
+                select_menu = int(input("메뉴 선택 : "))
+                if   select_menu == 1 :
+                    pass
+                elif select_menu == 2 :
+                    employee = BankManager.Bankmanager()
+                    employee.loginEmployee()
+                elif select_menu == 0 :
+                    return
+                else :
+                    print("메뉴에 있는 숫자만 입력하세요.")
+            except ValueError :
+                print("숫자만 입력해주세요.")
+                
 # 시작
 if __name__ == "__main__" :
     terminal = BankDatabase()
+    terminal.terminalMenu()

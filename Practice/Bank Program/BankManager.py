@@ -41,21 +41,23 @@ class Bankmanager :
     
     # ===== 직원 메뉴 [메인 화면]
     def p_employeeMenu(self , employee_department) :
-        print("===== 직원 메뉴 =====")
+        print("===== ===== 직원 메뉴 ===== =====")
         print("[1] | 고객 계정 관련 작업")
         print("[2] | 고객 계좌 관련 작업")
-        if employee_department == "관리팀" or employee_department == "인사팀" :
+        if employee_department == "관리팀" or employee_department == "개발1팀" or employee_department == "개발2팀" or employee_department == "유지보수팀":
             print("[3] | 직원 계정 관련 작업")
         print("[0] | 로그아웃")
+        print("===== ===== ===== ===== ===== =====")
     
     # ===== 직원 메뉴 [고객 계정 관련 작업]
     def p_cus_employeeMenu(self) :
-        print("===== 고객 계정 관련 작업 메뉴 =====")
+        print("===== ===== 고객 계정 관련 작업 메뉴 ===== =====")
         print("[1] | 고객 계정 생성")
         print("[2] | 고객 계정 삭제")
         print("[3] | 고객 계정 수정")
         print("[4] | 고객 계정 비밀번호 초기화")
         print("[0] | 이전 메뉴")
+        print("===== ===== ===== ===== ===== =====")
         
     # 직원 로그인 후 메뉴 선택 [메인 화면]
     def employeeMenu(self , employee_department) :
@@ -121,11 +123,11 @@ class Bankmanager :
                 return customer_id
             print("사용할 수 없는 아이디입니다.")
             
-    # 고객 계정에 사용할 비밀번호를 받아서 유효성 체크 후 반환하는 함수
+    # 계정 및 계좌에 사용할 비밀번호를 받아서 유효성 체크 후 반환하는 함수
     #//FIXME [1] 계정과 계좌 비밀번호를 받을 때 구분해서 출력이 다르도록 수정 //TODO [1] 수정 완료
     def getPassword(self , select_type) :
         flag = False
-        type_list = ["계정" , "계좌"]
+        type_list = ["고객계정" , "고객계좌" , "직원계정"]
         
         while flag == False :
             customer_password = input(f"{type_list[select_type]}에 사용할 비밀번호 입력 : ")
@@ -260,11 +262,12 @@ class Bankmanager :
     # 주민등록번호 변경 시 생일 , 성별 , 나이 , 국적 등 관련된 정보가 바로 같이 변경이 되어야 함
     def p_modCustomer(self , customer_name) :
         print(f"[{customer_name}] 님 계정의 수정할 항목 선택")
-        print("===== 항목 =====")
+        print("===== ===== 항목 ===== =====")
         print("[1] | 이름 변경")
         print("[2] | 주민등록번호 변경")
         print("[3] | 연락처 변경")
         print("[0] | 메뉴 종료")
+        print("===== ===== ===== ===== ===== =====")
     
     # 고객 계정 정보 수정 함수(상세)
     def modCustomerDetail(self , customer_information) :
@@ -299,30 +302,32 @@ class Bankmanager :
     
     # ===== 직원 메뉴 [고객 계좌 관련 작업]
     def p_acc_employeeMenu(self) :
-        print("==== 고객 계좌 관련 작업 메뉴 =====")
+        print("===== ===== 고객 계좌 관련 작업 메뉴 ===== =====")
         print("[1] | 계좌 생성")
         print("[2] | 계좌 삭제")
         print("[3] | 계좌 비활성화")
         print("[4] | 계좌 활성화")
         print("[5] | 계좌 비밀번호 초기화")
         print("[0] | 이전 메뉴")
+        print("===== ===== ===== ===== ===== =====")
     
     def p_acc_add_employeeMenu(self) :
-        print("===== 생성 계좌 선택 메뉴 =====")
+        print("===== ===== 생성 계좌 선택 메뉴 ===== =====")
         print("[1] | 일반계좌 생성")
         print("[2] | 적금계좌 생성")
         print("[3] | 예금계좌 생성")
         print("[4] | 청약계좌 생성")
         print("[5] | 주식계좌 생성")
         print("[0] | 이전 메뉴")
+        print("===== ===== ===== ===== ===== =====")
     
     # ===== 고객 계좌 생성 관련 함수
     def accountMenu(self) :
-        account_menu_list = [None , self.addAccountMenu , self.delAccount , self.inActiveAccount , self.activeAccount]
+        account_menu_list = [None , self.addAccountMenu , self.delAccount , self.inActiveAccount , self.activeAccount , self.resetPwdAccount]
         
         while True :
+            self.p_acc_employeeMenu()
             try :
-                self.p_acc_employeeMenu()
                 select_menu = int(input("메뉴 선택 : "))
                 if select_menu > 0 and select_menu < len(account_menu_list) :
                     account_menu_list[select_menu]()
@@ -339,8 +344,8 @@ class Bankmanager :
         add_account_menu_list = [ 1 , 2 , 3 , 4 , 5 ]
         
         while True :
+            self.p_acc_add_employeeMenu()
             try :
-                self.p_acc_add_employeeMenu()
                 select_menu = int(input("메뉴 선택 : "))
                 if select_menu in add_account_menu_list :
                     self.addAccount(select_menu)
@@ -390,6 +395,15 @@ class Bankmanager :
             return
         select_account_number = self.selAccount(customer_information , 2)
         BankDB.BankDatabase.activeCustomerAccount(customer_information , select_account_number)
+    
+    # 고객의 계좌를 조회하고 계좌의 비밀번호를 초기화하는 함수
+    def resetPwdAccount(self) :
+        customer_information = self.searchCustomerInformation()
+        if len(customer_information["customer_account"]) == 0 :
+            print(f"[{customer_information["customer_name"]}] 님은 생성된 계좌가 없습니다.")
+            return
+        select_account_number = self.selAccount(customer_information , 3)
+        BankDB.BankDatabase.resetCustomerAccountPassword(customer_information , select_account_number)
                 
     # //FIXME [1] 더 짧게 함수를 쪼개서 만들어야함 //TODO [1] 별도 출력만 하는 함수를 만들어서 수정 완료
     # //FIXME [2] 숫자가 아닌 값이 입력될 때 오류는 안 나오지만 반복이 풀리고 메뉴를 나오게 됨 //TODO [2] 수정 완료
@@ -397,7 +411,7 @@ class Bankmanager :
     # 고객이 계좌를 선택하고 선택한 숫자를 리턴하는 함수
     def selAccount(self , customer_information , select_menu) :
         index_list = self.p_customerAccount(customer_information , 1)
-        menu_list  = ["삭제" , "비설성화" , "활성화"]
+        menu_list  = ["삭제할" , "비설성화할" , "활성화할" , "비밀번호를 초기화할"]
         
         while True :
             try :
@@ -426,7 +440,101 @@ class Bankmanager :
         
         if pls_return == 1 :
             return index_list
-        return 
+        return
+    
+    # ===== 직원 메뉴 [직원 계정 관련 작업]
+    # 직원 계정의 경우 비밀번호 수정이 바로 가능하도록 설정 / 고객 계정은 비밀번호를 불러오지 못하고 초기화만 됨
+    def p_em_employeeMenu(self) :
+        print("===== ===== 직원 계정 관련 작업 메뉴 ===== =====")
+        print("[1] | 직원 계정 생성")
+        print("[2] | 직원 계정 삭제")
+        print("[3] | 직원 계정 수정")
+        print("[0] | 이전 메뉴")
+        print("===== ===== ===== ===== ===== =====")
+    
+    # 직원 계정 관련 메뉴 선택 함수
+    def employeeAccountMenu(self) :
+        employee_account_menu_list = [None]
+        
+        while True :
+            self.p_em_employeeMenu()
+            try :
+                select_menu = int(input(""))
+                if select_menu > 0 and select_menu < len(employee_account_menu_list) :
+                    employee_account_menu_list[select_menu]()
+                elif select_menu == 0 :
+                    return
+                else :
+                    print("메뉴에 있는 숫자만 입력해주세요.")
+            except ValueError :
+                print("숫자만 입력하세요.")
+    
+    # 직원 계정 생성 함수
+    def addemployeeAccount(self) :
+        employee = {"employee_name" : "" , "employee_id" : "" , "employee_password" : "" , "employee_department" : "" , "employee_rank" : "" , "employee_resident_number" : "" , "employee_condition" : "재직"}
+        
+        employee["employee_name"]            = input("사원 이름 입력 : ")
+        employee["employee_id"]              = input("사원 계정 아이디 입력 : ")
+        employee["employee_password"]        = self.getPassword(2)
+        employee["employee_department"]      = self.selDepartment()
+        employee["employee_resident_number"] = self.getResidentNumber()
+        employee["employee_rank"]            = self.selRank()
+    
+    # 부서의 리스트를 출력하는 함수
+    def p_selDepartment(self) :
+        print("===== ===== 부서 리스트 ===== =====")
+        print("[1] | 관리팀")
+        print("[2] | 총무팀")
+        print("[3] | 영업팀")
+        print("[4] | 마케팅팀")
+        print("[5] | 기획팀")
+        print("[6] | 개발1팀")
+        print("[7] | 개발2팀")
+        print("[8] | 유지보수팀")
+        print("===== ===== ===== ===== ===== =====")
+    
+    # 부서 리스트에 대한 값을 입력받아서 반환하는 함수
+    def selDepartment(self) :
+        department_list = [None , "관리팀" , "총무팀" , "영업팀" , "마케팅팀" , "기획팀" , "개발1팀" , "개발2팀" , "유지보수팀"]
+        
+        while True :
+            self.p_selDepartment()
+            try :
+                select_menu = int(input("부서 선택 : "))
+                if select_menu > 0 and len(department_list) :
+                    return department_list[select_menu]
+                else :
+                    print("리스트에 있는 숫자만 입력해주세요.")
+            except ValueError :
+                print("숫자만 입력하세요.")
+    
+    def p_selRank(self) :
+        print("===== ===== 직급 리스트 ===== =====")
+        print("[1] | 인턴")
+        print("[2] | 사원")
+        print("[3] | 주임")
+        print("[4] | 팀장")
+        print("[5] | 부장")
+        print("[6] | 전무")
+        print("[7] | 이사")
+        print("[8] | 사장")
+        print("[9] | 대표")
+        print("===== ===== ===== ===== ===== =====")
+    
+    # 부서 리스트에 대한 값을 입력받아서 반환하는 함수
+    def selRank(self) :
+        rank_list = [None , "인턴" , "사원" , "주임" , "팀장" , "부장" , "전무" , "이사" , "사장" , "대표"]
+        
+        while True :
+            self.p_selRank()
+            try :
+                select_menu = int(input("직급 선택 : "))
+                if select_menu > 0 and len(rank_list) :
+                    return rank_list[select_menu]
+                else :
+                    print("리스트에 있는 숫자만 입력해주세요.")
+            except ValueError :
+                print("숫자만 입력하세요.")
         
 # 시작
 if __name__ == "__main__" :
