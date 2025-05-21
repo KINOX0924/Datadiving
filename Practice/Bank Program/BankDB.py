@@ -216,7 +216,8 @@ class BankDatabase :
                employee_information["employee_condition"] == employee["employee_condition"] :
                     print(f"[{employee_information["employee_name"]}] 님은 이미 재직 중입니다.")
                     return
-            
+        cls.__employee_accout_list.append(employee_information)
+        print(f"[{employee_information["employee_name"]}] 님의 계정이 정상적으로 생성되었습니다.")            
     
     # 프로그램을 시작하면 가장 먼저 뜨는 출력 화면 [메인 화면]
     def p_terminalMenu(self) :

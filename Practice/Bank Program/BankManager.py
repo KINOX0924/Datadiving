@@ -58,7 +58,8 @@ class Bankmanager :
         print("[4] | 고객 계정 비밀번호 초기화")
         print("[0] | 이전 메뉴")
         print("===== ===== ===== ===== ===== =====")
-        
+    
+    # //FIXME [1] 관리팀 , 개발1팀 , 개발2팀 , 유지보수팀이 아니면 직원 계정 관련 작업에 들어가지 못 하게 해야함
     # 직원 로그인 후 메뉴 선택 [메인 화면]
     def employeeMenu(self , employee_department) :
         employeemenu_list = [None , self.cus_employeeMenu , self.accountMenu]
@@ -469,6 +470,7 @@ class Bankmanager :
             except ValueError :
                 print("숫자만 입력하세요.")
     
+    # //FIXME 제작 중
     # 직원 계정 생성 함수
     def addemployeeAccount(self) :
         employee = {"employee_name" : "" , "employee_id" : "" , "employee_password" : "" , "employee_department" : "" , "employee_rank" : "" , "employee_resident_number" : "" , "employee_condition" : "재직"}
@@ -479,6 +481,7 @@ class Bankmanager :
         employee["employee_department"]      = self.selDepartment()
         employee["employee_resident_number"] = self.getResidentNumber()
         employee["employee_rank"]            = self.selRank()
+        BankDB.BankDatabase.insertEmployeeAccount(employee)
     
     # 부서의 리스트를 출력하는 함수
     def p_selDepartment(self) :
@@ -508,6 +511,7 @@ class Bankmanager :
             except ValueError :
                 print("숫자만 입력하세요.")
     
+    # 직급 리스트를 출력하는 함수
     def p_selRank(self) :
         print("===== ===== 직급 리스트 ===== =====")
         print("[1] | 인턴")
