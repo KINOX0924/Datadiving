@@ -1,6 +1,12 @@
 a
 b
 c
+<<<<<<< HEAD
 d
 e
+<<<<<<< HEAD
 f
+=======
+=======
+>>>>>>> parent of 7f0a04d (test3)
+>>>>>>> parent of d07c89b (test7)
