@@ -1,8 +1,5 @@
 a
 b
 c
-<<<<<<< HEAD
 d
 e
-=======
->>>>>>> parent of 7f0a04d (test3)
