@@ -59,17 +59,20 @@ class Bankmanager :
         print("[0] | 이전 메뉴")
         print("===== ===== ===== ===== ===== =====")
     
-    # //FIXME [1] 관리팀 , 개발1팀 , 개발2팀 , 유지보수팀이 아니면 직원 계정 관련 작업에 들어가지 못 하게 해야함
+    # //FIXME [1] 관리팀 , 개발1팀 , 개발2팀 , 유지보수팀이 아니면 직원 계정 관련 작업에 들어가지 못 하게 해야함 //OPTIMIZE [1] 테스트 필요 //TODO [1] 테스트 완료
     # 직원 로그인 후 메뉴 선택 [메인 화면]
     def employeeMenu(self , employee_department) :
-        employeemenu_list = [None , self.cus_employeeMenu , self.accountMenu]
+        employeemenu_list = [None , self.cus_employeeMenu , self.accountMenu , self.employeeAccountMenu]
+        allow_rank_list   = ["관리팀" , "개발1팀" , "개발2팀" , "유지보수팀"]
         
         while True :
             self.p_employeeMenu(employee_department)
             try :
                 select_menu = int(input("메뉴 선택 : "))
-                if select_menu > 0 and select_menu < len(employeemenu_list) :
+                if select_menu > 0 and select_menu <= 2 :
                     employeemenu_list[select_menu]()
+                elif select_menu == 3 and employee_department in allow_rank_list :
+                    employeemenu_list[3]()
                 elif select_menu == 0 :
                     print("로그아웃 되었습니다.")
                     return
@@ -445,22 +448,24 @@ class Bankmanager :
     
     # ===== 직원 메뉴 [직원 계정 관련 작업]
     # 직원 계정의 경우 비밀번호 수정이 바로 가능하도록 설정 / 고객 계정은 비밀번호를 불러오지 못하고 초기화만 됨
+    # 직원 계정의 경우 삭제는 불가(퇴사한 사원 및 재입사 등을 확인하기 위함이며 로그를 남기기 위함)
     def p_em_employeeMenu(self) :
         print("===== ===== 직원 계정 관련 작업 메뉴 ===== =====")
         print("[1] | 직원 계정 생성")
-        print("[2] | 직원 계정 삭제")
+        print("[2] | 직원 계정 정지")
         print("[3] | 직원 계정 수정")
         print("[0] | 이전 메뉴")
         print("===== ===== ===== ===== ===== =====")
     
+    # //FIXME [1] select_menu 항목에 출력 내용이 없었음 //TODO [1] 수정 완료
     # 직원 계정 관련 메뉴 선택 함수
     def employeeAccountMenu(self) :
-        employee_account_menu_list = [None]
+        employee_account_menu_list = [None , self.addemployeeAccount]
         
         while True :
             self.p_em_employeeMenu()
             try :
-                select_menu = int(input(""))
+                select_menu = int(input("메뉴 선택 : "))
                 if select_menu > 0 and select_menu < len(employee_account_menu_list) :
                     employee_account_menu_list[select_menu]()
                 elif select_menu == 0 :
@@ -469,8 +474,7 @@ class Bankmanager :
                     print("메뉴에 있는 숫자만 입력해주세요.")
             except ValueError :
                 print("숫자만 입력하세요.")
-    
-    # //FIXME 제작 중
+
     # 직원 계정 생성 함수
     def addemployeeAccount(self) :
         employee = {"employee_name" : "" , "employee_id" : "" , "employee_password" : "" , "employee_department" : "" , "employee_rank" : "" , "employee_resident_number" : "" , "employee_condition" : "재직"}
@@ -539,8 +543,10 @@ class Bankmanager :
                     print("리스트에 있는 숫자만 입력해주세요.")
             except ValueError :
                 print("숫자만 입력하세요.")
+    
+    # 
         
 # 시작
 if __name__ == "__main__" :
     manager = Bankmanager()
-    manager.loginEmployee()
+    manager.addemployeeAccount()

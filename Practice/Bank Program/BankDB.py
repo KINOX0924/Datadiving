@@ -33,7 +33,7 @@ class BankDatabase :
     # 계좌 종류 , 계좌 번호 , 이름 , 입금/출금 구분 , 거래된 금액 , 이체 된 곳
     
     __employee_accout_list    = [
-        {"employee_name" : "마스터 계정" , "employee_id" : "master" , "employee_password" : "q1w2e3" , "employee_department" : "관리팀" , "employee_rank" : "마스터 계정" , "employee_resident_number" : "111111-1111111" , "employee_condition" : "재직"}
+        {"employee_name" : "마스터 계정" , "employee_id" : "master" , "employee_password" : "q1w2e3r4" , "employee_department" : "관리팀" , "employee_rank" : "마스터 계정" , "employee_resident_number" : "111111-1111111" , "employee_condition" : "재직"}
     ]
     # 직원 계정 리스트
     # 은행의 직원 계정이 저장되는 리스트
@@ -206,7 +206,6 @@ class BankDatabase :
                 print(f"초기화된 비밀번호 : [{customer["customer_account"][select_account_number]["account_password"]}]")
                 return
     
-    # //FIXME 제작 중
     # 직원 계정을 생성하는 함수
     @classmethod
     def insertEmployeeAccount(cls , employee_information) :
