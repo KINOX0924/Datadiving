@@ -35,14 +35,14 @@ class Database :
         self.cursor.execute(query , args)
         rows = self.cursor.fetchall()
         
-        return rows;
+        return rows
     
     # 정해진 레코드 값만 가져오고 싶을 때 사용
-    def executeManay(self , query , count, args = ()) :
+    def executeMany(self , query , count, args = ()) :
         self.curosr.execute(query , args)
         rows = self.cursor.fetchmany(count)
         
-        return rows;
+        return rows
     
     def close(self) :
         if self.db.open :
