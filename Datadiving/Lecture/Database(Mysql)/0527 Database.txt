@@ -1,0 +1,15 @@
+5월 27일 강의
+
+데이터베이스 생성
+create database (DB명);
+
+계정 만들기
+create user '(유저명)'@'localhost' identified by '패스워드';
+
+계정에게 권한 부여
+grant all privileges on project1.* to '(유저명)'@'localhost';
+
+테이블 생성
+* 요즘에는 이메일을 아이디로 사용하는 경우가 많아서 유저 아이디의 길이는 조금 길어야함 (약 40)
+* 패스워드의 경우 암호화를 필요로 하기 때문에 매우 길어야함 (최소 255 이상)
+create table (테이블명) (필드명 속성 속성 속성 , 필드명 속성 속성 , 필드명 속성 속성)
