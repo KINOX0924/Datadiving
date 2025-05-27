@@ -10,14 +10,14 @@ engine = create_engine(
     pool_recycle = 3600
     )
     
-def execute(query , args = []) :
+def execute(query , args) :
     try :
         connection = engine.connect()
     except SQLAlchemyError as error :
         print("데이터베이스 연결 실패")
     
     sql_query = text(query)
-    connection.execute(sql_query , list(args))
+    connection.execute(sql_query , args)
     connection.commit()
     connection.close()
     

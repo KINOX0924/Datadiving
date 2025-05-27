@@ -10,7 +10,7 @@ class StudentManager :
         print("[0] | 프로그램 종료")
 
     def sel_menu(self) :
-        menu_list = [None , self.showAllStudent , self.showOneStudent , self.regiStudent]
+        menu_list = [None , self.showAllStudent , self.showOneStudent , self.regiStudent , self.modifyStudent , self.deleteStudent]
         
         while True :
             self.p_menu()
@@ -46,17 +46,37 @@ class StudentManager :
         student_kor_score   = input("국어 성적 : ")
         student_eng_score   = input("영어 성적 : ")
         student_math_score  = input("수학 성적 : ")
-        student_information = {'sname' : new_student_name , 'kor' : student_kor_score , 'eng' : student_eng_score , 'math' : student_math_score , 'regdate' : 'now()'}
+        student_information = [{'sname' : new_student_name , 'kor' : student_kor_score , 'eng' : student_eng_score , 'math' : student_math_score}]
         
-        regi_student_query = "insert into (sname , kor , eng , math , regdate) values (:sname , :kor , :eng , :math , :regdate)"
-        execute_module_pool.execute(regi_student_query , student_information)        
+        regi_student_query = "insert into tb_score (sname , kor , eng , math , regdate) values (:sname , :kor , :eng , :math , now())"
+        execute_module_pool.execute(regi_student_query , student_information)
         
+        print(f"[{new_student_name}] 님의 성적이 정상적으로 입력되었습니다.")     
     
     def modifyStudent(self) :
-        pass
+        self.showAllStudent()
+        select_student = input("수정할 학생 아이디 입력 : ")
+        
+        modify_student_kor_score   = input("수정 국어 성적 : ")
+        modify_student_eng_score   = input("수정 영어 성적 : ")
+        modify_student_math_score  = input("수정 수학 성적 : ")
+        student_information        = [{'kor' : modify_student_kor_score , 'eng' : modify_student_eng_score , 'math' : modify_student_math_score , 'id' : select_student}]
+        
+        modify_student_query = "update tb_score set kor = :kor , eng = :eng , math = :math where id = :id"
+        execute_module_pool.execute(modify_student_query , student_information)
+        
+        print("데이터가 정상적으로 수정되었습니다.")
     
     def deleteStudent(self) :
-        pass
+        self.showAllStudent()
+        select_student = input("삭제할 학생 아이디 입력 : ")
+        
+        student_information = [{'id' : select_student}]
+        
+        delete_student_query = "delete from tb_score where id = :id"
+        execute_module_pool.execute(delete_student_query , student_information)
+        
+        print("데이터가 정상적으로 삭제되었습니다.")
 
 if __name__ == "__main__" :
     manager = StudentManager()

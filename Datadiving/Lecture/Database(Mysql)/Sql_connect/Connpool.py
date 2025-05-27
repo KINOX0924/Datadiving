@@ -30,6 +30,6 @@ sql = text("""
            insert into emp (empno , ename , sal) values (:empno , :ename , :sal)
            """)
 
-# conn.execute(sql , [{'empno' : 10000 , 'ename' : '우즈' , 'sal' : 8800}])
+conn.execute(sql , [{'empno' : 10000 , 'ename' : '우즈' , 'sal' : 8800}])
 # conn.commit()
 # conn.close()
