@@ -16,8 +16,8 @@ def execute(query , args = []) :
     except SQLAlchemyError as error :
         print("데이터베이스 연결 실패")
     
-    sql_query = text(query , args = [])
-    connection.execute(sql_query , args)
+    sql_query = text(query)
+    connection.execute(sql_query , list(args))
     connection.commit()
     connection.close()
     

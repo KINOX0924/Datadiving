@@ -10,7 +10,7 @@ class StudentManager :
         print("[0] | 프로그램 종료")
 
     def sel_menu(self) :
-        menu_list = [None , self.showAllStudent , self.showOneStudent]
+        menu_list = [None , self.showAllStudent , self.showOneStudent , self.regiStudent]
         
         while True :
             self.p_menu()
@@ -42,15 +42,14 @@ class StudentManager :
             print(dict(recode))
     
     def regiStudent(self) :
-        new_student_name   = input("학생 이름 : ")
-        student_kor_score  = input("국어 성적 : ")
-        student_eng_score  = input("영어 성적 : ")
-        student_math_score = input("수학 성적 : ")
-        student_information = [{}]
+        new_student_name    = input("학생 이름 : ")
+        student_kor_score   = input("국어 성적 : ")
+        student_eng_score   = input("영어 성적 : ")
+        student_math_score  = input("수학 성적 : ")
+        student_information = {'sname' : new_student_name , 'kor' : student_kor_score , 'eng' : student_eng_score , 'math' : student_math_score , 'regdate' : 'now()'}
         
-        regi_student_query = "insert into (sname , kor , eng , math) values (:sname , :kor , :eng , :math)"
-        
-        
+        regi_student_query = "insert into (sname , kor , eng , math , regdate) values (:sname , :kor , :eng , :math , :regdate)"
+        execute_module_pool.execute(regi_student_query , student_information)        
         
     
     def modifyStudent(self) :
