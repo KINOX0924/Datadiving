@@ -28,18 +28,18 @@ class StudentManager :
                 
     def showAllStudent(self) :
         Data = Database()
-        show_query = "select * from tb_score"
+        show_query = "select A.id , A.sname , A.kor , A.eng , A.math , (A.kor + A.eng + A.math) as Total_score , round((A.kor + A.eng + A.math) / 3 , 0) as Aver_score from tb_score A"
         
         recodes = Data.executeAll(show_query)
         
         for recode in recodes :
-            print(recode)
+            print(f"학생 아이디 : [{recode["id"]}] || 성명 : [{recode["sname"]}] 국어성적 : [{recode["kor"]}] 영어성적 : [{recode["eng"]}] 수학성적 : [{recode["math"]}] 총합 : [{recode["Total_score"]}] 평균 : [{recode["Aver_score"]}]")
         
         Data.close()
     
     def showOneStudent(self) :
         Data = Database()
-        select_show_query = "select * from tb_score where sname = %s"
+        select_show_query = "select A.id , A.sname , A.kor , A.eng , A.math , (A.kor + A.eng + A.math) as Total_score , round((A.kor + A.eng + A.math) / 3 , 0) as Aver_score from tb_score A where sname = %s"
         
         search_student_name = input("조회 학생 이름 입력 : ")
         
@@ -48,7 +48,7 @@ class StudentManager :
             print("조회된 학생이 없습니다. 이름을 다시 확인해주세요.")
             Data.close()
             return
-        print(recode)
+        print(f"학생 아이디 : [{recode["id"]}] || 성명 : [{recode["sname"]}] 국어성적 : [{recode["kor"]}] 영어성적 : [{recode["eng"]}] 수학성적 : [{recode["math"]}] 총합 : [{recode["Total_score"]}] 평균 : [{recode["Aver_score"]}]")
         Data.close()
     
     def regiStudent(self) :

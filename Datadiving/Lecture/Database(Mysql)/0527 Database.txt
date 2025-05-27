@@ -13,3 +13,38 @@ grant all privileges on project1.* to '(유저명)'@'localhost';
 * 요즘에는 이메일을 아이디로 사용하는 경우가 많아서 유저 아이디의 길이는 조금 길어야함 (약 40)
 * 패스워드의 경우 암호화를 필요로 하기 때문에 매우 길어야함 (최소 255 이상)
 create table (테이블명) (필드명 속성 속성 속성 , 필드명 속성 속성 , 필드명 속성 속성)
+
+
+
+커넥션 풀
+DB 연결 , 데이터 읽고 쓰기 , DB 연결 끊기
+이렇게 계속 진행되면 데이터를 읽고 쓰는 과정보다 DB 에 연결을 하고 끊는 것이 읽고 쓰는 것보다 시간이 더 오래 걸림
+(물론 대량의 DB 가 있으면 읽고 쓰는게 더 느림)
+
+- DB 연결자를 한 50 개 정도 만들어누도 연결을 돌아가며 사용함(연결을 끊지 않음) * 반드시 싱글톤으로 만들어야함
+- 과거에는 커넥션 풀을 직접 설계해서 사용하였으나 현재는 라이브러리로 기능을 제공함
+
+커넥션풀 클래스는 반드시 싱글톤 방식으로 만들어야함
+- 싱글톤 : 객체를 반드시 하나만 생성 가능한 클래스 설계기법
+- 생성자에서 여러개를 못 만들게 막고 @classmethod 라는 데코레이터를 이용해서 객체를 생성함
+- 20년 전에는 직접 만들어쓰다가 현재는 별도의 라이브러리를 가져와 사용하는 방식으로 함
+
+커넥션 풀 사용법
+- Anaconda prompt 에서 pip install sqlalchemy 명령어 사용하여 설치
+
+- from sqlalchemy import create_engine , text
+- from sqlalchemy.exc import SQLAlchemyError
+
+# SQLAlchemy 가 PyMySQL 을 내부적으로 사용하며 Pool 지원
+engine = create_engine(
+    "mysql+pymysql://root:1234@localhost/mydb" ,
+    pool_size = 10 ,        # 최대 연결수
+    max_overflow = 5 ,      # 초과 시 추가 연결 수
+    pool_recycle = 3600     # 재활용 시간
+    )
+
+try :
+    conn = engine.connect()
+    print("데이터베이스 연결 성공")
+except SQLAlchemyError as e :
+    print("데이터베이스 연결 실패")
