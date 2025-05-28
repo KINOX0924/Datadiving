@@ -1,4 +1,5 @@
 # 커넥션 풀이 적용된 execute module
+# "mysql+pymysql://root:1234@localhost:3306/mydb"
 
 from sqlalchemy import create_engine , text
 from sqlalchemy.exc import SQLAlchemyError

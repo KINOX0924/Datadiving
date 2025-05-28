@@ -1,4 +1,4 @@
-import execute_module_pool
+import execute_module_re as mysql
 
 class StudentManager :
     def p_menu(self) :
@@ -27,7 +27,7 @@ class StudentManager :
     
     def showAllStudent(self) :
         show_all_query = "select * from tb_score"
-        recodes = execute_module_pool.executePrint(show_all_query)
+        recodes = mysql.executePrint(show_all_query)
         
         for recode in recodes :
             print(dict(recode))
@@ -36,7 +36,7 @@ class StudentManager :
         search_student_name = input("조회할 학생 이름 : ")
         
         show_sel_query = "select * from tb_score where sname like " + "'%" + search_student_name + "%'"
-        recodes = execute_module_pool.executePrint(show_sel_query)
+        recodes = mysql.executePrint(show_sel_query)
         
         for recode in recodes :
             print(dict(recode))
@@ -49,7 +49,7 @@ class StudentManager :
         student_information = [{'sname' : new_student_name , 'kor' : student_kor_score , 'eng' : student_eng_score , 'math' : student_math_score}]
         
         regi_student_query = "insert into tb_score (sname , kor , eng , math , regdate) values (:sname , :kor , :eng , :math , now())"
-        execute_module_pool.execute(regi_student_query , student_information)
+        mysql.execute(regi_student_query , student_information)
         
         print(f"[{new_student_name}] 님의 성적이 정상적으로 입력되었습니다.")     
     
@@ -63,7 +63,7 @@ class StudentManager :
         student_information        = [{'kor' : modify_student_kor_score , 'eng' : modify_student_eng_score , 'math' : modify_student_math_score , 'id' : select_student}]
         
         modify_student_query = "update tb_score set kor = :kor , eng = :eng , math = :math where id = :id"
-        execute_module_pool.execute(modify_student_query , student_information)
+        mysql.execute(modify_student_query , student_information)
         
         print("데이터가 정상적으로 수정되었습니다.")
     
@@ -74,7 +74,7 @@ class StudentManager :
         student_information = [{'id' : select_student}]
         
         delete_student_query = "delete from tb_score where id = :id"
-        execute_module_pool.execute(delete_student_query , student_information)
+        mysql.execute(delete_student_query , student_information)
         
         print("데이터가 정상적으로 삭제되었습니다.")
 
