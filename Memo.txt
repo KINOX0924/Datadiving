@@ -35,3 +35,10 @@
 사용해볼만한 파이썬 코드
 [1] .isdigit()
     문자열을 확인하여 전부 숫자라면 True / 아니라면 False
+
+
+MySQL 파일 추출
+mysqldump -u root -p (DB명) > (경로)\(파일명).sql
+
+MySQL 파일 복원
+mysql -u root -p (DB명) < (경로)\(파일명).sql
