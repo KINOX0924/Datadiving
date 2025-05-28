@@ -49,9 +49,7 @@ class StudentManager :
         student_information = [{'sname' : new_student_name , 'kor' : student_kor_score , 'eng' : student_eng_score , 'math' : student_math_score}]
         
         regi_student_query = "insert into tb_score (sname , kor , eng , math , regdate) values (:sname , :kor , :eng , :math , now())"
-        mysql.execute(regi_student_query , student_information)
-        
-        print(f"[{new_student_name}] 님의 성적이 정상적으로 입력되었습니다.")     
+        mysql.execute(regi_student_query , student_information)    
     
     def modifyStudent(self) :
         self.showAllStudent()
@@ -64,8 +62,6 @@ class StudentManager :
         
         modify_student_query = "update tb_score set kor = :kor , eng = :eng , math = :math where id = :id"
         mysql.execute(modify_student_query , student_information)
-        
-        print("데이터가 정상적으로 수정되었습니다.")
     
     def deleteStudent(self) :
         self.showAllStudent()
@@ -75,8 +71,6 @@ class StudentManager :
         
         delete_student_query = "delete from tb_score where id = :id"
         mysql.execute(delete_student_query , student_information)
-        
-        print("데이터가 정상적으로 삭제되었습니다.")
 
 if __name__ == "__main__" :
     manager = StudentManager()

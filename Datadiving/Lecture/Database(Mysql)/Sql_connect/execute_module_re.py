@@ -12,13 +12,19 @@ engine = create_engine(
 # engine.begin() 을 사용하여 트랜잭션의 원자성(다 되거나 , 하나도 안 되거나) 을 구현
 # 기존 sql_query = text(query) 를 바로 text 되어 execute 되도록 변경
 
-def execute(query , args = [{}]) :
-    with engine.begin() as connection :
-        connection.execute(text(query) , args)
+def execute(query , args = None) :
+    try :
+        with engine.begin() as connection :
+            connection.execute(text(query) , args)
+    except SQLAlchemyError as Error :
+        print(f"DB 접속 실패 또는 쿼리 실행 불가 \n>>>>> 오류 메세지 : {Error} <<<<<")
 
-def executePrint(query) :
-    with engine.begin() as connection :
-        data    = connection.execute(text(query))
-        recodes = data.mappings().all()
-        
-    return recodes
+def executePrint(query , args = None) :
+    try :
+        with engine.begin() as connection :
+            data    = connection.execute(text(query) , args)
+            recodes = data.mappings().all()
+            
+            return recodes
+    except SQLAlchemyError as Error :
+        print(f"DB 접속 실패 또는 쿼리 실행 불가 \n>>>>> 오류 메세지 : {Error} <<<<<")
