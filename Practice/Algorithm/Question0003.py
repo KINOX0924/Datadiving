@@ -22,7 +22,6 @@ def countNumber(number_list) :
             count_number_list[str(number)] = 1
         print(count_number_list)
 
-
 if __name__ == "__main__" :
     number_list = insertNumber()
     countNumber(number_list)

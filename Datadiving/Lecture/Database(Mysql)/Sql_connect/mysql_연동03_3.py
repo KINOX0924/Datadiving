@@ -10,6 +10,7 @@ class ScoreManager :
         recodes   = exe_module.executePrint(print_sql)
         
         for recode in recodes :
+            print(f"[아이디] | {recode["id"]}" , end = "\t")
             print(f"[이름] | {recode["sname"]}" , end = "\t")
             print(f"[국어] | {recode["kor"]} 점" , end = "\t")
             print(f"[영어] | {recode["eng"]} 점" , end = "\t")
@@ -26,9 +27,17 @@ class ScoreManager :
         eng   = input("영어 성적 입력 : ")
         math  = input("수학 성적 입력 : ")
         exe_module.execute(insert_sql , [{"sname" : sname , "kor" : kor , "eng" : eng , "math" : math}])
-
+    
+    def deleteStudent(self) :
+        self.output()
+        select_student_id = input("삭제할 학생 아이디 입력 : ")
+        
+        delete_sql = """
+                     delete from tb_score where id = :id
+                     """
+        exe_module.execute(delete_sql , [{"id" : select_student_id}])
 
 if __name__ == "__main__" :
     student_manager = ScoreManager()
-    student_manager.regiStudent()
+    student_manager.deleteStudent()
     student_manager.output()
