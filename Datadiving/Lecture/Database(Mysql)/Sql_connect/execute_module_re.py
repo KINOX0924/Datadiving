@@ -2,7 +2,7 @@ from sqlalchemy import create_engine , text
 from sqlalchemy.exc import SQLAlchemyError
 
 engine = create_engine(
-    "mysql+pymysql://root:1234@localhost:3306/mydb" ,   # "mysql+pymysql://계정:비밀번호@ip주소:포트주소/DB명"
+    "mysql+pymysql://root:1234@localhost:3306/sakila" ,   # "mysql+pymysql://계정:비밀번호@ip주소:포트주소/DB명"
     pool_size    = 10 ,                                 # 초기 엔진 연결자 수   
     max_overflow = 5 ,                                  # 초기 연결자 수를 초과했을 때마다 생성할 연결할 수
     pool_recycle = 3600                                 # 재활용 시간(사용자의 종료 후 남은 연결자를 삭제하기 전까지의 시간)
