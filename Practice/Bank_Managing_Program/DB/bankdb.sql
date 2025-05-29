@@ -53,7 +53,7 @@ CREATE TABLE `department` (
   PRIMARY KEY (`dept_number`),
   KEY `fk_department_region_number` (`region_number`),
   CONSTRAINT `fk_department_region_number` FOREIGN KEY (`region_number`) REFERENCES `region` (`region_number`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,6 +62,7 @@ CREATE TABLE `department` (
 
 LOCK TABLES `department` WRITE;
 /*!40000 ALTER TABLE `department` DISABLE KEYS */;
+INSERT INTO `department` VALUES (1,'이사회',NULL),(2,'개인금융팀',NULL),(3,'기업금융팀',NULL),(4,'투자금융팀',NULL),(5,'자산관리팀',NULL),(6,'재무팀',NULL),(7,'리스크관리팀',NULL),(8,'법무팀',NULL),(9,'인사팀',NULL),(10,'IT관리팀',NULL),(11,'마케팅팀',NULL),(12,'감사팀',NULL);
 /*!40000 ALTER TABLE `department` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,4 +139,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-29 12:40:02
+-- Dump completed on 2025-05-29 15:51:35
