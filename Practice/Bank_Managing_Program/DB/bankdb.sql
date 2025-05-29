@@ -35,7 +35,7 @@ CREATE TABLE `cp_rank` (
 
 LOCK TABLES `cp_rank` WRITE;
 /*!40000 ALTER TABLE `cp_rank` DISABLE KEYS */;
-INSERT INTO `cp_rank` VALUES ('C01','아르바이트');
+INSERT INTO `cp_rank` VALUES ('A01','지점장'),('A02','본부장'),('A03','전무'),('A04','이사'),('A05','사장'),('A06','대표'),('C01','아르바이트'),('C02','계약'),('F01','사원'),('F02','주임'),('F03','대리'),('F04','과장'),('F05','팀장'),('F06','차장'),('F07','부장');
 /*!40000 ALTER TABLE `cp_rank` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,4 +138,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-28 21:54:45
+-- Dump completed on 2025-05-29 12:40:02
