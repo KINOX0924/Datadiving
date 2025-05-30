@@ -1,0 +1,70 @@
+5월 30일 강의
+
+데이터베이스는 기본적으로 순차검색(Sequential 검색 - 순서대로 , 차례대로) 을 함
+처음부터 차례대로 읽어서 원하는 데이터가 나올때까지 검색함
+
+데이터베이스가 나오는 속도를 표기하는 방법으로 빅-0 표기법(0(n)) 을 사용함
+
+오라클의 경우도 순차검색을 하지만 병렬처리(데이터를 구간별로 나누고 , 데이터를 읽는 프로세스가 여러개 있어서 동시에 검색 -> 속도가 빠름)
+MySQL 의 경우는 병렬처리가 안되어 상대적으로 속도가 느림, 그래서 MySQL 에서 색인순차 검색(Index 검색) 을 생각해냄
+
+예를 들어 데이터가 1 ~ 100 만이 존재하면 각 구역을 나누어 검색을 하게 됨
+이 때 색인표가 구성되어 있어서 색인표를 먼저 찾고 그리고 해당 색인표에서 데이터를 찾는 방식으로 진행됨 = 0(log)
+
+[1] 색인표가 자동구성 되는 항목
+    - primary key : 프라이머리 키를 이용한 검색을 사람들이 많이 하기에 프라이머리 키는 무조건 Index(색인표) 가 만들어짐
+
+[2] 색인표를 사용자가 구성해야하는 항목
+    - where 조건절에서 자주 사용되는 필드
+    - order by 절
+    - join 절
+    * 색인표가 너무 많이 만들어지면 시스템 성능을 떨어뜨리게 됨(이 색인표를 만들어도 또 메모리를 잡아먹음)
+    * 색인표를 만들 필요가 없을 때 조건절이 명확하게 나누어질때 / 데이터의 총량이 만 건 이내일때
+    * 특히 오라클의 경우에는 100만건 이내는 더더욱 만들 필요가 없음 / 오히려 색인은 병렬처리가 안되어 시간이 더 걸리게 됨
+    * 데이터 분포도가 한 쪽으로 50% 가 넘어가는 값이 있는 경우 색인이 의미가 없음
+    * 심지어 색인을 잘못 만들면 옵티마이저(쿼리최적화) 가 싹 무시하고 감
+
+뷰(View)
+DB 구조가 엄청 복잡하고 여러 개의 테이블로부터 데이터를 조인해야하는 경우 쿼리 자체를 저장해놓고 테이블처럼 사용이 가능함
+조회용으로 주로 사용하며 뷰를 통해서 원본테이블에 데이터를 업데이트할 수는 있지만 거의 하지 않음(위험성이 높음)
+뷰 쿼리 기본 코드 : create view (뷰이름) as 조회쿼리;
+뷰 쿼리 기본 코드_2 : create or replace view (뷰이름) as 조회쿼리;
+* 동일한 이름이 뷰가 없으면 만들고, 있으면 수정하라(MySQL 버전5 부터 지원)
+
+Primary Key
+Foreign Key 를 만들려면 참조되는 테이블의 필드가 프라이머리 키이거나 유니크 조건을 만족해야함
+유니크 키 제약조건은 중복 불가이지만 Null 값은 허용함
+* 특정필드가 Primary Key 를 지정은 못하지만 중복되면 안될 때 유니크 키를 제약조건으로 대신함
+후보키 - 프라이머리 키 가능성이 있는 필드
+
+윈도우 함수(분석함수)
+- 분석용 함수로 그룹 함수를 대체하는 함수임
+- 그룹 함수를 좀 더 쉽게 사용하고 속도고 빠름
+
+기본 형식
+윈도우 함수(컬럼) over([partition by 컬럼] [order by 컬럼] [rows between ...])
+예시:)) select A.productid , A.orderid , sum(A.Quantity) over(partition by orderid) from orderdetails A order by A.orderid;
+
+윈도우 의미 : rows between 시작 위치 and 마지막 위치 (즉 윈도우(창문) 을 연 만큼의 범위만 함수를 실행한다는 의미로 윈도우 함수)
+* unbounded preceding : 처음부터
+* current row         : 현재행
+* N preceding         : 현재행에서 n 행 이전
+* N folling           : 현재행에서 n 행 이후
+* unbounded following : 맨 끝까지
+* rows between 안에 별도의 상기 지정이 없으면 기본값은 unbounded preceding ~ unbounded following 상태
+* 그룹함수와 윈도우 함수의 이름이 동일한 경우 over 의 유무로 구분함
+
+row_number() : 중복없이 순번을 부여하는 함수(주로 페이징 쿼리라고 함)
+* 주로 게시판 등에 많이 사용되며 primary key 로 auto_increment 의 단점은 중간에 데이터가 삭제되었을 경우 번호 중간중간에 누락이 생기게 됨
+* 이 번호를 일시적으로 붙여서 다시 보여주게 하는 함수
+* select A.orderid , row_number() over(order by A.orderid desc) as RNUM from orderdetails A;
+
+sum()        : 합계를 구하는 함수
+
+rank()       : 주로 석차를 구하는 함수 (중복값이 있으면 넘어감)
+dense_rank() : 마찬가지로 석차를 구하는 함수(중복값이 있으면 중복으로 표시하고 숫자 차례로 표시)
+* rank() 및 dense_rank() 에는 안에 필드값을 넣지 않고 over 에 order by 가 반드시 필요함
+* select A.orderid , A.Quantity , rank() over(order by A.Quantity desc) as RANKS , dense_rank() over(order by A.Quantity desc) as RANKS_2 from orderdetails A;
+
+ntile()      : 균등 분할
+* select A.orderid , ntile(4) over() grade from orderdetails A;
