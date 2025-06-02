@@ -46,3 +46,49 @@
 # [1] 연속된 메모리 공간
 # [2] 정적임 - 프로그램 실핸 전에 메모리 크기 확정, 위치 확정 / 수행 도중에 메모리 크기를 늘리거나 줄이거나 또는 위치 이동 불가능(파이썬, 자바도 이 성격 위배됨)
 # [3] 인덱싱으로 요소들에 접근할 수 있음
+# [4] 같은 타입이어야 함(파이썬은 값의 주소만 저장하기 때문에 리스트에 다양한 타입의 값을 넣을 수 있음)
+
+# 정수 배열에서 가장 큰 수 두 수를 찾기
+
+"""
+def findMax(number_list) :
+    for index in range(0 , len(number_list)) :
+        for index_2 in range(0 , len(number_list) - 1) :
+            if number_list[index] > number_list[index_2] :
+                number_list[index] , number_list[index_2] = number_list[index_2] , number_list[index]
+    
+    print(f"가장 큰 수 : {number_list[0]}")
+    print(f"두번째로 큰 수 : {number_list[1]}")
+
+if __name__ == "__main__" :
+    number_list = [3,-1,5,0,7,4,9,1]
+    findMax(number_list)
+"""
+
+# 펠린드롬
+
+word = "racecar"
+
+if word == word[::-1] :
+    print(True)
+else :
+    print(False)
+    
+print(word)
+print(word[len(word) - 1])
+    
+# 절반을 쪼개서 - 길이로 계산
+
+def palindromes(word) :
+    left_word = 0
+    right_word = len(word) - 1
+    
+    while left_word < right_word :
+        if word[left_word] != word[right_word] :
+            return False
+        left_word += 1
+        right_word -= 1
+    return True
+
+Result = palindromes(word)
+print(f"{Result}")
