@@ -25,3 +25,7 @@ def chkParent(parent_str) :
 if __name__ == "__main__" :
     parent_str = "(())"
     chkParent(parent_str)
+    
+    
+    
+    
