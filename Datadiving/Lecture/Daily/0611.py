@@ -114,6 +114,12 @@ if __name__ == "__main__" :
 * Bucket 의 크기는 대충 전체 키 값 개수의 1/2 에서 1/3 이 가장 적합함
 
 위와 같은 방식으로 만들면 충돌이 일어남
+
+
+- 처음 해시 테이블 구축 시간이 오래걸린다. 하지만 해시 테이블을 구축하고 나면 검색 속도가 매우 빠름
+- 해시 조인은 데이터가 대용량이고 배치처리(한번에 일감을 모아서 처리하는 방식) 방식에 유리함 - 해시 조인 <=> 온라인처리(실시간 처리)
+- 보통의 경우는 실시간 처리(일감이 소량으로 여러번 처리 될 경우) - Nested 조인
+- nested Loop join(for 문 돌림) - 실시간 처리 // hash join(해시 조인) - 배치 처리
 """
 
 """
@@ -121,7 +127,7 @@ if __name__ == "__main__" :
 - school 이라는 각 문자별로 unicode 만들어서 더해서 총합 만들기
 - 파이썬에서 문자의 unicode 는 ord 함수
 """
-
+"""
 # 노드
 # 노드를 만드는 클래스
 class Node :
@@ -164,8 +170,9 @@ class HeadNode :
                 if temp_node.next.key == key :
                     return (temp_node.next.key , temp_node.next.value)
                 temp_node = temp_node.next
-                
-            return -1
+            
+            print("찾는 값이 없습니다.")
+            return None
 
         def delValue(self , key) :
             temp_node = self.head
@@ -174,7 +181,7 @@ class HeadNode :
                     temp_node.next = temp_node.next.next
                     return
             
-            print("삭제할 값이 없습니다")
+            print("삭제할 값이 없습니다.")
             return
         
 # 키를 받아서 키를 해쉬코드로 변경하는 클래스
@@ -199,6 +206,7 @@ class HashTable :
         else :
             self.hash_table = [HeadNode() for _ in range(table_size)]
         self.divider = 100
+        print(self.hash_table)          #FIX 디버깅
     
     def insertHashData(self , key , value) :
         trans = TransHash()
@@ -222,3 +230,119 @@ if __name__ == "__main__" :
     
     Data = T1.searchHashData("cshool")
     print(Data)
+"""
+# map 은 list 의 요소에 앞에서 전달해준 수식 또는 함수를 적용
+# map , filter , range 등등들은 for 문 안에서 호출하거나 리스트로 감싸주어야 작동을 함
+"""
+6 6
+011111
+010001
+010101
+010100
+000110
+111110
+
+6 6
+0 1 1 1 1 1
+0 1 0 0 0 1
+0 1 0 1 0 1
+0 1 0 1 0 0
+0 0 0 1 1 0
+1 1 1 1 1 0
+"""
+
+
+
+# N , M = map(int , input().split())
+# print(N , M)
+# arr = []
+# for i in range(N) :
+#     arr.append(list(map(int , input().split())))
+"""
+N , M = ( 6, 6 )
+arr = [
+    [0, 1, 1, 1, 1, 1],
+    [0, 1, 0, 0, 0, 1],
+    [0, 1, 0, 1, 0, 1],
+    [0, 1, 0, 1, 0, 0],
+    [0, 0, 0, 1, 1, 0],
+    [1, 1, 1, 1, 1, 0]
+]
+    
+def printArray(arr , N) :
+    for i in range(0 , N) :
+        print(arr[i])
+        
+visited = [[False] * M for _ in range(N)]
+
+# 깊이우선탐색(DFS)
+def dfs( y , x ) :
+    # 매개변수로 전달받는 좌표는 현재의 위치값
+    visited[y][x] = True    # 방문했다는 표시
+    
+    # 현재 좌표로부터 4 방향 내지는 8방향을 확인해 볼 수 있음
+    dx = [-1 , 1 , 0 , 0]   # 좌우  // 대각선일 경우에는 dx = [-1, -1, -1, 0, 0, 1, 1, 1]
+    dy = [0 , 0 , -1 , 1]   # 상하  // 대각선일 경우에는 dy = [-1, 0, 1, -1, 1, -1, 0, 1]
+
+    for i in range(len(dx)) : 
+        # 새로운 좌표점을 찾음
+        # 새 좌표점이 벽일수도 있고 , 이미 방문했던 곳일수도 있음
+        nx = dx[i] + x
+        ny = dy[i] + y
+        
+        if not(0 <= nx < N and 0 <= ny < M) or arr[ny][nx] == 1 :
+            continue
+        if not visited[ny][nx] :    # 아직 방문하지 않았으면
+            dfs(ny , nx)
+    
+if __name__ == "__main__" :
+    printArray(arr , N)
+    printArray(visited , N)
+    
+    dfs(0 , 0)
+    printArray(visited , N)
+"""
+from collections import deque
+
+N , M = map(int , input().split())
+arr = []
+
+for i in range(N) :
+    temp = list(input())    # str -> list
+    temp = list(map(int , temp))
+    
+    arr.append(temp)
+    
+visited = [ [False] * M for _ in range(N) ]
+    
+def printArray(arr , N) :
+    for i in range(N) :
+        print(arr[i])
+
+# bfs 는 Queue 를 사용한 탐색 기법
+def bfs( y , x ) :
+    dx = [ -1 , 1 , 0 , 0 ]
+    dy = [ 0 , 0 , -1 , 1 ]
+    
+    visited[y][x] = True
+    
+    queue = deque()
+    queue.append((y,x))
+    
+    while queue :   # 큐가 빌때까지
+        y , x = queue.popleft()
+        for i in range(len(dx)) : 
+            nx = dx[i] + x
+            ny = dy[i] + y
+            
+            if not ( 0 <= nx < N and 0 <= ny < M ) or arr[ny][nx] == 1:
+                continue
+            if not visited[ny][nx] :
+                visited[ny][nx] = True
+                queue.append((ny,nx))
+
+if __name__ == "__main__" :
+    printArray(arr , N)
+    bfs(0 , 0)
+    
+    printArray(visited , N)
