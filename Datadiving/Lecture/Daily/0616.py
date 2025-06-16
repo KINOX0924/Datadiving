@@ -145,6 +145,7 @@ bfs(0,0)
 printArray(visited)
 """
 
+"""
 from collections import deque
 N = 7 # 행의 개수
 M = 7 # 열의 개수
@@ -217,7 +218,75 @@ print(solution(array , M , N))
 print("map")
 printArray(array)
 
-
 print("visited_map")
 printArray(visited)
+"""
 
+"""
+머지 정렬(병합 정렬)
+- 이미 정렬되어 있는 배열을 합쳐서 정렬함
+- DBMS 를 사용하지 않을 때는 file 로 작업을 함
+"""
+
+# a = [ 5 , 11 , 12 , 7 , 9 , 23 , 34 , 27 ]
+# b = [ 5 , 4 , 3 , 11 , 13 , 19 , 7, 9 , 23 , 27 , 34 , 33 , 29 , 35 , 37 , 40 , 45 ]
+
+b = [ 5 , 11 , 12 , 7 , 9 , 23 , 34 , 27 ]
+a = [ 5 , 4 , 3 , 11 , 13 , 19 , 7, 9 , 23 , 27 , 34 , 33 , 29 , 35 , 37 , 40 , 45 ]
+
+a.sort()
+b.sort()
+
+def merge(list1 , list2) :
+    if len(list1) < len(list2) :
+        merge_list = mergeSort1(list1 , list2)
+    else :
+        merge_list = mergeSort2(list1 , list2)
+    
+    print(merge_list)
+
+def mergeSort1(list1 , list2) :
+    merge_list = []
+    a_count = 0
+    b_count = 0
+    
+    while max(list1) not in merge_list :
+        if list1[a_count] == list2[b_count] :
+            merge_list.append(list1[a_count])
+            a_count += 1
+            b_count += 1
+        elif list1[a_count] < list2[b_count] :
+            merge_list.append(list1[a_count])
+            a_count += 1
+        elif list1[a_count] > list2[b_count] :
+            merge_list.append(list2[b_count])
+            b_count += 1
+    
+    for index in range(b_count , len(list2)) :
+        merge_list.append(list2[index])
+    
+    return merge_list
+
+def mergeSort2(list1 , list2) :
+    merge_list = []
+    a_count = 0
+    b_count = 0
+    
+    while max(list2) not in merge_list :
+        if list1[a_count] == list2[b_count] :
+            merge_list.append(list1[a_count])
+            a_count += 1
+            b_count += 1
+        elif list1[a_count] < list2[b_count] :
+            merge_list.append(list1[a_count])
+            a_count += 1
+        elif list1[a_count] > list2[b_count] :
+            merge_list.append(list2[b_count])
+            b_count += 1
+    
+    for index in range(a_count , len(list1)) :
+        merge_list.append(list1[index])
+                
+    return merge_list
+
+merge(a , b)
