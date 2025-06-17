@@ -23,7 +23,7 @@ class Eratosthenes :
     def __init__(self , N , K) :
         self.number = N
         self.count  = K
-        self.num_list = [ x for x in range(2 , N + 1) ]
+        self.num_list = [ x for x in range(2 , self.number + 1) ]
         
         print(self.num_list)    #TODO 디버깅
         
@@ -42,7 +42,7 @@ class Eratosthenes :
         print(self.num_list)    #TODO 디버깅
         print(delete_num_list)  #TODO 디버깅
     
-        return delete_num_list[K-1]
+        return delete_num_list[self.count - 1]
             
 
 if __name__ == "__main__" :
