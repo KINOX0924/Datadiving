@@ -1,0 +1,77 @@
+<!--
+HTML 이란
+Hyper Text Markup Language
+
+HTML 은 MS 에서 먼저 시도한 언어이며 문서가 너무 길면 드래그 해서 보기 쉽지 않음
+따라서 문서 중간에 링크를 두고 클릭하면 특정 위치로 이동하게 함
+-->
+
+<!--
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hello web</title>
+    </head>
+
+    <body>
+        이 부분이 쓰여진 곳이 화면에 보여질 부분입니다.
+    </body>
+</html>-->
+
+<!--
+HTML 보일러플렛을 사용하여 하기 코드를 생성
+
+태그(TAG) 는 여는 태그와 닫는 태그로 구성되어 있음
+<html>  : head 부터 style , body 까지 모든 태그를 가두는 가장 최외곽의 태그
+<head>  : 웹의 헤드 타이들 설정 및 meta 데이터 설정
+<style> : CSS 설정을 하는 구간
+<body>  : 사이트의 실질적인 모든 내용이 들어가는 구간
+
+<b>     : Bold Text - 글자를 두껍게 표현함 단, 음성 사용시 <b> 는 중요하게 생각하지 않음
+<strong>: 글자를 두껍게 표현함 단, 음성 사용시 <strong> 은 해당 단어를 중요하게 생각함. 따라서 최근에는 <b> 태그를 사용하지 않음
+
+<h1>    : 제목 태그는 <h1> ~ <h6> 까지 있음
+<p>     : 문단 태그
+<br/>   : 줄 바꿈 태그  * 단일 태그
+<span>  : 특정 영역을 본 태그에 관계없이 가두고 싶을 때 사용함
+
+CSS 속성
+(style = "color : ")            : 색상 변경
+(style = "border : px")         : 경계선 설정 및 경계선의 두께
+*경계선의 경우 글자가 몇개가 있든 설정된 태그의 width 전체의 길이값 만큼 적용됨
+(style = "font-weight : ")      : 글자의 굵기 변경
+(style = "background-color : ") : 태그 내 배경색의 변경
+(style = "font-family : ")      : 폰트 설정 ( , , , )
+(style = "font-size : ")        : 폰트 사이즈 설정
+
+-->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Head Tag</title>
+</head>
+
+<style>
+    h1 { 
+        border: 1px solid red;
+        background-color: tomato;
+        font-family: Operator Mono Lig Light;
+    }
+    p  { 
+        border: 1px solid red;
+        background-color: aqua;
+    }
+</style>
+
+<body>
+    <h1><span style="color: red;font-weight:bold;">Learn</span> HTML</h1>
+
+    <h1>TITLE ONE</h1>
+    
+    <p>HTML is the standard markup language for Web Pages.<br/>
+    With HTML you can create your own Website<br/>
+    HTML is easy to learn - You will enjoy it!</p>
+</body>
+</html>
