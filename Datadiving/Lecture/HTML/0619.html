@@ -72,11 +72,6 @@ HTML 에서 색상(정수) 를 저장하는데 필요한 공간은 4 byte 임
 [3] HSL : 채도 , 명도 , 투명도를 사용하여 색상을 표현함
 -->
 
-<!--
-HTML LINK
-
-
--->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -94,6 +89,23 @@ HTML LINK
     p  { 
         border: 1px solid red;
         background-color: aqua;
+    }
+    /*
+    body {
+        background-image: url(images/cat.jpg);
+    }
+    */
+
+    table {
+        border: 1px solid red;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        /* 여백을 자동으로 잡으라는 뜻 */
+    }
+
+    td {
+        border: 1px solid red;
     }
 </style>
 
@@ -128,6 +140,35 @@ HTML LINK
     <a id="P3"></a><p>HTML is the standard markup language for Web Pages.<br/>
     With HTML you can create your own Website<br/>
     HTML is easy to learn - You will enjoy it!</p></a>
+    
+    <h1>IMAGE</h1>
+    <p>
+        <!--
+        이미지는 BMP 형식(점을 찍어서 그림을 표현함 , 용량이 매우 큼) 을 주로 사용했는데,
+        용량이 너무 커서 웹에 이미지를 표현하기 쉽지 않음(모든 국가가 빠른 인터넷을 사용하는 것이 아님) -> 따라서 이미지를 압축하는 것을 시도함(jpeg , jpg)
+        압축 후에는 BMP 형식의 약 10 분의 1 정도로 용량이 압축됨
+
+        주로 사용하는 확장자
+        [1] jpg
+        [2] png
+        [3] gif
+        -->
+    </p>
+
+    <img src="images/bear.jpg" style="width : 200px">
+
+    <table>
+        <tr>
+            <td>1행 1열</td>
+            <td>1행 2열</td>
+            <td>1행 3열</td>
+        </tr>
+        <tr>
+            <td>2행 1열</td>
+            <td>2행 2열</td>
+            <td>2행 3열</td>
+        </tr>
+    </table>
 
     <!--
     <a href="../sample1.html">샘플1</a>
