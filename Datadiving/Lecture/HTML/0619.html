@@ -42,6 +42,12 @@ HTML 보일러플렛을 사용하여 하기 코드를 생성
 
 <img>    : <a href></a> 의 태그 안에 이미지를 넣을 수 있음
 <button> : 서버에 무언가를 전송할 때 사용하는 것
+<table>  : 테이블을 만드는 태그
+<tr>     : 테이블 태그 안에서 하나의 행을 만드는 태그
+<td>     : 테이블 태그 안에서 하나의 열을 만드는 태그
+<th>     : (강조) 테이블 태그 안에서 하나의 열을 만드는 태그
+(colspan) : 열 합치기
+(rowspan) : 행 합치기
 
 CSS 속성
 (style = "color : ")            : 색상 변경
@@ -51,6 +57,7 @@ CSS 속성
 (style = "background-color : ") : 태그 내 배경색의 변경
 (style = "font-family : ")      : 폰트 설정 ( , , , )
 (style = "font-size : ")        : 폰트 사이즈 설정
+(style = "padding : px px px px")   : 아이템과 테두리와의 간격 Left , right , top , bottom
 
 -->
 
@@ -72,6 +79,7 @@ HTML 에서 색상(정수) 를 저장하는데 필요한 공간은 4 byte 임
 [3] HSL : 채도 , 명도 , 투명도를 사용하여 색상을 표현함
 -->
 
+<!--
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -96,6 +104,10 @@ HTML 에서 색상(정수) 를 저장하는데 필요한 공간은 4 byte 임
     }
     */
 
+    table , td , tr {
+        border-collapse: collapse;
+    }
+
     table {
         border: 1px solid red;
         width: 80%;
@@ -106,6 +118,9 @@ HTML 에서 색상(정수) 를 저장하는데 필요한 공간은 4 byte 임
 
     td {
         border: 1px solid red;
+        padding: 5% 5% 5% 5%;
+        text-align: center;
+        background-color: chartreuse;
     }
 </style>
 
@@ -143,20 +158,19 @@ HTML 에서 색상(정수) 를 저장하는데 필요한 공간은 4 byte 임
     
     <h1>IMAGE</h1>
     <p>
-        <!--
-        이미지는 BMP 형식(점을 찍어서 그림을 표현함 , 용량이 매우 큼) 을 주로 사용했는데,
-        용량이 너무 커서 웹에 이미지를 표현하기 쉽지 않음(모든 국가가 빠른 인터넷을 사용하는 것이 아님) -> 따라서 이미지를 압축하는 것을 시도함(jpeg , jpg)
-        압축 후에는 BMP 형식의 약 10 분의 1 정도로 용량이 압축됨
-
-        주로 사용하는 확장자
-        [1] jpg
-        [2] png
+        이미지는 BMP 형식(점을 찍어서 그림을 표현함 , 용량이 매우 큼) 을 주로 사용했는데,<br/>
+        용량이 너무 커서 웹에 이미지를 표현하기 쉽지 않음(모든 국가가 빠른 인터넷을 사용하는 것이 아님) -> 따라서 이미지를 압축하는 것을 시도함(jpeg , jpg)<br/>
+        압축 후에는 BMP 형식의 약 10 분의 1 정도로 용량이 압축됨<br/>
+        <br/>
+        주로 사용하는 확장자<br/>
+        [1] jpg<br/>
+        [2] png<br/>
         [3] gif
-        -->
     </p>
 
     <img src="images/bear.jpg" style="width : 200px">
 
+    <h1>TABLE</h1>
     <table>
         <tr>
             <td>1행 1열</td>
@@ -170,10 +184,165 @@ HTML 에서 색상(정수) 를 저장하는데 필요한 공간은 4 byte 임
         </tr>
     </table>
 
-    <!--
+    <h1>MERGE TABLE ROWSPAN</h1>
+    <table>
+        <tr>
+            <td rowspan="2">1행 1열</td>
+            <td>1행 2열</td>
+            <td>1행 3열</td>
+        </tr>
+        <tr>
+            <td>2행 2열</td>
+            <td>2행 3열</td>
+        </tr>
+    </table>
+
+    <h1>MERGE TABLE COLSPAN</h1>
+    <table>
+        <tr>
+            <td colspan="3">1행 1열</td>
+        </tr>
+        <tr>
+            <td>2행 1열</td>
+            <td>2행 2열</td>
+            <td>2행 3열</td>
+        </tr>
+    </table>
+
     <a href="../sample1.html">샘플1</a>
     <a href="../sample2.html">샘플2</a>
     <a href="../sample3.html">샘플3</a>
+
+</body>
+</html>
+-->
+
+<!--
+테이블 구성 연습
+-->
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 소개 페이지</title>
+
+    <style>
+        table , tr , td {
+            border: 1px solid lightgray;
+            border-collapse: collapse;
+        }
+
+        table {
+            width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        td {
+            text-align: center;
+        }
+    </style>
+</head>
+-->
+
+<!--
+<body>
+    <table>
+        현재 웹 접근성에 따른 테이블 구조 표쥰
+        <colgroup>
+            <col style="width : 10%">
+            <col style="width : 40%">
+            <col style="width : 10%">
+            <col style="width : 40%">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>용도</th>
+                <th>중량</th>
+                <th>개수</th>
+                <th>가격</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="2">선물용</td>
+                <td>3 kg</td>
+                <td>11 ~ 13 과</td>
+                <td>35,000 원</td>
+            </tr>
+            <tr>
+                <td>3 kg</td>
+                <td>11 ~ 13 과</td>
+                <td>35,000 원</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
+-->
+
+<!--
+리스트 태그
+
+<ul> 태그는 O 형태로 리스트를 출력되는 것이고
+<ol> 태그는 숫자로 리스트를 출력하는 것
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리스트 연습</title>
+
+    <style>
+        ul {
+            list-style-type: circle;
+        }
+
+        div {
+            width: 500px;
+            margin: auto;
+            /* margin 은 태그와 태그의 사이를 의미함 */
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li>아이스 아메리카노</li>
+        <li>카페라떼</li>
+        <li>카푸치노</li>
+        <li>민트초코</li>
+    </ul>
+
+    <ol>
+        <li>아이스 아메리카노</li>
+        <li>카페라떼</li>
+        <li>카푸치노</li>
+        <li>민트초코</li>
+    </ol>
+
+    <dl>
+        <dt>커피</dt>
+            <dd>아이스 아메리카노</dd>
+            <dd>카페라떼</dd>
+            <dd>카푸치노</dd>
+        <dt>음료</dt>
+            <dd>민트초코</dd>
+            <dd>한라봉 주스</dd>
+            <dd>수박 주스</dd>
+    </dl>
+
+    <!--
+    div 태그를 사용할때 자동정렬을 하게 만들려면은 overflow 와 float 가 항상 따라다녀야 함
     -->
+    <div style="background-color: yellow;">
+        <h2>London</h2>
+        <p>London is the capital city of England.</p>
+        <p>London has over 9 million inhabitants.</p>
+    </div>
 </body>
 </html>
