@@ -4,8 +4,8 @@ import numpy as np
 
 class TesseractOCR :
     # 테서렉트 엔진을 사용하기 위한 엔진 모듈을 불러오는 코드
-    # pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-    tess.pytesseract.tesseract_cmd = r"D:\UTILL\Tesseract\tesseract.exe"
+    tess.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+    # tess.pytesseract.tesseract_cmd = r"D:\UTILL\Tesseract\tesseract.exe"
     
     def __init__(self , path) :
         self.image = cv2.imread(path)       # 영수증 이미지가 있는 경로와 이미지를 불러오는 코드
