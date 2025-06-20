@@ -21,7 +21,111 @@ DB 에서 데이터를 읽어서 새로운 HTML 페이지를 만들어서 클라
   파이썬 자체로는 별도의 WAS 프로그램이 없고, 내부에 파이썬 자체가 WAS 를 만들 수 있는 라이브러리를 제공함
   상기 작성된 장고 , 플라스크 , 패스트API 등드을 nginx 와 함께 배포함
 
-웹 클라이언트 - 브라우저
+웹 클라이언트 = 웹 브라우저
 
 FORM 태그
+
+HTML 은 사용자에게 보여지는 문서의 골격을 담당함
+폼 태그는 사용자의 입력 값을 웹 서버로 전달함 => 이 정보를 받는 것은 프로그래밍 언어임(자바(jsp) , C(php) , Python , Nodejs , asp 등)
+
+폼 태그는 보통 하나의 HTML 페이지에 하나만 둠
+
+서버로 정보를 전송하는 방법은 크게 두 가지가 있음
+서버와 클라이언트 간에 정보를 주고 받을 때는 우선 Head 정보와 구체적인 정보인 Body 정보를 지닌 선데이터가 전달됨
+[1] get 방식
+- get 방식은 보통 Head 정보만 보냄
+- 웹 브라우저마다 다르지만 2048 byte 이내의 정보를 보냄
+- 누구나 이 정보를 확인할 수 있어서 보안에 취약하고 한글의 경우 전송 시 자동으로 문자를 바꿔서 전송됨
+- 따라서 인코딩 작업을 해서 전송을 해야 하는 번거로움이 있음
+- 또한 특정 웹페이지에 접근할 수 있는 정보가 url 에 다 드러남 -> 링크를 get 방식으로 전송하면 바로 그 페이지로 이동됨
+
+- 관공서 공지사항 , 쇼핑몰 , 뉴스 기사 등 '누구나' 와서 봐야하는 것이 더 이득이 경우에는 get 방식이 더 좋음
+- 반대로 회원가입 페이지 등에서는 get 방식으로 보내면 url 에 ID 부터 PW 까지 전부 같이 보내지기에 절대 하면 안됨
+
+[2] post 방식
+- post 방식은 Head 와 Body 정보를 나누어서 같이 보냄
+- post 방식으로 전송 시 Head = http://www.daum.net/login.do 와 body = userid=littleconan password=1234 등으로 쪼개어져 전송됨
+- 이론상 무제한으로 정보를 전송하는 것이 가능하지만 , 파일첨부는 보통 20 ~ 30 Mb 정도로 제한하는 것이 좋음
+- 파일 전송이나 비죠석 중요한 정보들을 받아야할 경우에는 post 방식으로 전송해야함
+
+
+FORM 태그의 주요 속성
+[1] action = ""
+- 서버에서 이 요청을 받아서 처리해야할 웹페이지
+- 아무런 인자를 주지 않으면 현재 웹페이지를 도로 불러옴
+
+[2] method = "get" 또는 "post"
+- 전송 방식을 지정함
+
+* 아래의 input 태그들은 form 태그 안에 있을때만 전송이 되며 form 태그 밖에 있으면 아무런 기능도 없음
+[3] input 태그
+[3-1] input type = "text"       : 한 줄 정보를 보낼 때 (주로 아이디 등)
+[3-2] input type = "password"   : 패스워드를 전송할 때 (문자가 나타나지 않음)
+[3-3] input type = "radio"      : 한 번에 하나만 선택하여 선택한 정보를 보낼 때
+[3-4] input type = "checkbox"   : 한 번에 여러 개의 선택한 정보를 보낼 때
+[3-5] input type = "reset"      : form 태그 안에 입력된 모든 정보를 초기화함
+[3-6] input type = "submit"     : 서버로 정보를 '무조건' 전송하는 버튼
+* submit 버튼은 서버로 정보를 전송하기 전에 에러체크를 하려는 경우 불가능함
+* 따라서 submit 버튼은 보통 테스트용도나 무조건 정보를 보내야할 경우를 제외하면 사용하지 않음
+[3-7] input type = "button"     : 클릭 이벤트만 발생됨
+*<button>누르기</button> == input type = "submit"
+*<input type = "button" value = "누르기"> == <button type = "button">누르기</button>
+[3-8] input type = "textarea"   : 여러 줄의 텍스트를 보내고자 할 때 사용
+[3-9] input type = "select"     : 리스트 선택사항을 보내고자 할 때 사용
+
+FORM 태그 접근
+태그에 접근해서 값을 읽고 쓰려면 3가지 속성이 존재
+* 주로 웹페이지 안에서 이동하거나 할 때는 ID 가 필요하고 , 서버 전송 등을 할 때는 name 이 사용됨
+[1] id
+- 모든 태그에 사용 가능한 속성
+- id 는 여러개의 중복된 아이디가 존재할 수 있으나 자바스크립트로 접근할 때 가장 첫번째 것만 접근 가능 (배열 접근이 불가능)
+[2] class
+* id 와 class 는 서버와 관계가 없음
+[3] name
+- name 속성은 input 태그류(서버에 정보 전송이 가능한 것들만) 사용 가능
+- 배열 접근이 가능
+- name 속성이 서버로 데이터를 전송하는 데 사용함
+- name 속성이 key 가 되고 value 속성이 값이 되어 서버에 전달됨
+- 따라서 label 이 form 이 주요하게 사용됨
+<input type = "text" name = "user_id" value = "littleconan">
+<input type = "password" name = "password" value = "123456">
 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FORM PRACTICE</title>
+</head>
+<body>
+    <h2>FORM TAG</h2>
+    <form action="" method="post">
+        <label for="user_age1">10대</label>
+        <input type="radio" name="age" value = "1" id="user_age1"><br/>
+        <label for="user_age2">20대</label>
+        <input type="radio" name="age" value = "2" id="user_age2"><br/>
+        <label for="user_age3">30대</label>
+        <input type="radio" name="age" value = "3" id="user_age3"><br/>
+        <label for="user_age4">40대</label>
+        <input type="radio" name="age" value = "4" id="user_age4"><br/>
+        <input type="submit" value="보내기">
+    </form>
+
+    <!-- 디자인적 역할을 위해서 가급적 label 을 사용 권유 -->
+    <!--
+    <form action="" method="post">
+        
+        <label for="user_id">아이디</label>
+        <input type="text" name="user_id" id=""><br/>
+
+        <label for="user_password">비밀번호</label>
+        <input type="password" name="user_password" id=""><br/>
+
+        <label for="login_check">로그인 정보 저장</label>
+        <input type="checkbox" name="login_check" id="">
+        <input type="submit" value="보내기">
+    </form>
+    -->
+</body>
+</html>
