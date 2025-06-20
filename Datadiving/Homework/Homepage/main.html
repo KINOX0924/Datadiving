@@ -1,0 +1,202 @@
+<!-- 메인 페이지 -->
+ <!DOCTYPE html>
+ <html lang="ko">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAIN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html , body {
+            height: 100%;
+            font-family: sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .header {
+            height: 80px;
+            background-color: #eaeaea;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .icon {
+            width: 50px;
+            margin: 0px 10px 0px 0%;
+        }
+
+        .icon:hover {
+            opacity: 0.6;
+        }
+
+        .content {
+            display: flex;
+            flex: 1;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main_box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: left;
+        }
+
+        .main_box > p {
+            font-size: 22px;
+            padding-top: 2px;
+        }
+
+        .main_box > h1 {
+            font-size: 40px;
+            padding-top: 20px;
+        }
+
+        .p_msql_icon_img {
+            width: 200px;
+            padding-top: 15px;
+        }
+
+        .sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-top: 40px;
+            gap: 10px;
+        }
+
+        .sidebar_top:hover {
+            opacity: 0.5;
+            transform: translateY(-2px);
+        }
+
+        .main_content {
+            border: 2px solid #eee;
+            border-radius: 16px;
+            box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
+            width: 820px;
+            height: 150px;
+            padding: 15px;
+        }
+
+        .main_content_header {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 15px;
+        }
+
+        .main_content_header > img {
+            width: 30px;
+            margin-right: 10px;
+        }
+
+        .button_grid{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .button {
+            border: 2px solid #eee;
+            border-radius: 16px;
+            box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            height: 150px;
+        }
+
+        .button:hover {
+            opacity: 0.5;
+            transform: translateY(-2px);
+        }
+
+        .button_header {
+            display: flex;
+            flex-direction: row;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+
+        .button_icons {
+            width: 30px;
+            margin-right: 10px;
+        }
+        
+        .profile_img {
+            width: 500px;
+            border-radius: 16px;
+            box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+    </style>
+ </head>
+ <body>
+    <div class="container">
+        <div class="header">
+            <!-- 상단 메뉴 또는 로고 -->
+            <a href="https://github.com/KINOX0924/Mylab" target="_blank"><img src="images/git_hub_icon.png" alt="github_icon" class="icon"></a>
+            <a href="main.html" target="_self"><img src="images/home_icon.png" alt="home_icon" class="icon"></a>
+            <a href="https://longlife-talk.tistory.com/" target="_blank"><img src="images/tistory_icon.png" alt="tistory_icon" class="icon"></a>
+        </div>
+        <div class="content">
+            <div class="main">
+                <div class="main_box">
+                    <img src="images/profile_image.png" alt="profile_image" class="profile_img">
+                    <h1>경준오</h1>
+                    <p>사용자의 <strong>삶</strong>을 이롭게 만들기 위한<br/>임베디드 & IOT 데이터베이스 분석가를 희망합니다</p>
+                    <img src="images/python_mysql_icon.png" alt="python_mysql_icon" class="p_msql_icon_img">
+                </div>
+            </div>
+            <div class="sidebar">
+                <a href="" style="text-decoration: none; color: inherit;" class="sidebar_top">
+                    <div class="main_content">
+                        <div class="main_content_header">
+                            <img src="images/SeSAC_icon.png" alt="seSAC_icon">
+                            <h2>Now Study</h2>
+                        </div>
+                        <div class="main_content_body" style="text-align: left; display:flex; flex-direction:column;">
+                            <p style="font-size: 22px; margin-left: 10px;">SeSAC 의 데이터 AI 개발자 과정을 통해 <strong>파이썬 , MySQL , HTML</strong> 등 공부 진행 중</p>
+                            <p style="font-size: 22px; margin-left: 10px;">아직 미숙하고 부족한 점이 많지만 열심히 공부하고 있는 중</p>
+                        </div>
+                    </div>
+                </a>
+                <div class="button_grid">
+                    <a href="motivation.html" style="text-decoration: none; color: inherit;">
+                        <div class="button" style="padding: 15px;">
+                            <div class="button_header">
+                                <img src="images/repair_icon.png" alt="repair_icon" class="button_icons">
+                                <h3>DB Analyst</h3>
+                            </div>
+                                <div class="button_body" style="text-align: left; display:flex; flex-direction:column;">
+                                    <p style="font-size: 20px; margin-left: 10px;">빅데이터에 대한 관심은<br/>자동차 정비 관련 업무를 진행하면서 시작</p>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="button"></div>
+                    <div class="button"></div>
+                    <div class="button"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </body>
+ </html>
