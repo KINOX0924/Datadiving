@@ -1,0 +1,254 @@
+ <!-- 공부 중 페이지 -->
+ <!DOCTYPE html>
+ <html lang="ko">
+ <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CURRICULUM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html , body {
+            height: 100%;
+            font-family: sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .header {
+            height: 80px;
+            background-color: #eaeaea;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .icon {
+            width: 50px;
+            margin: 0px 10px 0px 0%;
+            border-radius: 50%;
+        }
+
+        .icon:hover {
+            opacity: 0.6;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5 , 1fr);
+            grid-template-rows: repeat(3 , 1fr);
+            gap: 20px;
+        }
+
+        .curriculum {
+            width: 330px;
+            height: 150px;
+            border: 2px solid #eee;
+            border-radius: 16px;
+            box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .content_header {
+            position: relative;
+            margin-top: -150px;
+            width: 1900px;
+            height: 300px;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .runner {
+            position: absolute;
+            left: 0px;
+            animation: runRight 2s forwards;
+            width: 250px;
+        }
+
+        .text {
+            position: relative;
+            opacity: 0;
+            font-size: 30px;
+            margin-top: 120px;
+            animation: fadeIn 1.2s ease-in forwards;
+            animation-delay: 0.4s;
+        }
+
+        .curri_body {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            margin-left: -7px;
+        }
+
+        .icons {
+            width: 130px;
+        }
+
+        @keyframes runRight {
+            to {
+                left : 100%;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+    </style>
+ </head>
+ <body>
+    <div class="container">
+        <div class="header">
+            <!-- 상단 메뉴 또는 로고 -->
+            <a href="https://github.com/KINOX0924/Mylab" target="_blank" style="border-radius: 50%;"><img src="images/git_hub_icon.png" alt="github_icon" class="icon"></a>
+            <a href="main.html" target="_self" style="border-radius: 50%;"><img src="images/home_icon.png" alt="home_icon" class="icon"></a>
+            <a href="https://longlife-talk.tistory.com/" target="_blank" style="border-radius: 50%;"><img src="images/tistory_icon.png" alt="tistory_icon" class="icon"></a>
+        </div>
+        <div class="content">
+            <div class="content_header">
+                <img src="images/running.gif" alt="runner_gif" class="runner">
+                <div class="text" style="font-size: 40px;">
+                    <p><strong>이러한 과정들을 공부하고 있습니다</strong></p>
+                </div>
+            </div>
+            <div class="grid">
+                <div class="curriculum" style="border-color: rgba(76, 189, 255, 1.0); box-shadow: 0px 0px 15px rgba(76, 189, 255, 1.0);">
+                    <div class="curri_body">
+                        <img src="images/python_icon.png" alt="python_icon" class="icons">
+                        <div class="body_text">
+                            <h1>PYTHON</h1>
+                            <p>AI/데이터 분야<br/>필수 언어 PYTHON</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="curriculum" style="border-color: rgba(76, 189, 255, 1.0); box-shadow: 0px 0px 15px rgba(76, 189, 255, 1.0);">
+                    <div class="curri_body">
+                        <img src="images/mysql_icon.png" alt="mysql_icon" class="icons" style="width: 110px; margin-left: 0px; margin-top: 10px; margin-right: 10px">
+                        <div class="body_text">
+                            <h1>MySQL</h1>
+                            <p>데이터베이스의 개념과<br/>SQL 의 기본 문법</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="curriculum" style="border-color: rgba(76, 189, 255, 1.0); box-shadow: 0px 0px 15px rgba(76, 189, 255, 1.0);">
+                    <div class="curri_body">
+                        <img src="images/git_icon.png" alt="git_icon" class="icons">
+                        <div class="body_text">
+                            <h1>GIT</h1>
+                            <p>개발자의 필수 협업툴<br/>GIT 과 GIT HUB</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="curriculum" style="border-color: rgba(76, 189, 255, 1.0); box-shadow: 0px 0px 15px rgba(76, 189, 255, 1.0);">
+                    <div class="curri_body">
+                        <img src="images/clean_code_icon.png" alt="clean_code_icon" class="icons" style="width: 90px; margin-left: 10px; margin-top: 25px; margin-right: 10px">
+                        <div class="body_text">
+                            <h2>CLEAN CODE</h2>
+                            <p>가독성과 유지보수를 위한<br/>실무적 코드작성 방법</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="curriculum" style="border-color: rgba(76, 189, 255, 1.0); box-shadow: 0px 0px 15px rgba(76, 189, 255, 1.0);">
+                    <div class="curri_body">
+                        <img src="images/algorithm_icon.png" alt="algorithm_icon" class="icons" style="width: 90px; margin-top :20px;">
+                        <div class="body_text">
+                            <h1>ALGORITHM</h1>
+                            <p>데이터 구조와 알고리즘 기본<br/>문제해결 능력 상승</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="curriculum" style="border-color: rgba(76, 189, 255, 1.0); box-shadow: 0px 0px 15px rgba(76, 189, 255, 1.0);">
+                    <div class="curri_body">
+                        <img src="images/server_icon.png" alt="server_icon" class="icons" style="width: 90px; margin-left: 10px; margin-top: 25px; margin-right: 15px">
+                        <div class="body_text">
+                            <h1>WEB</h1>
+                            <p>AI 서비스를 구현하기 위한<br/>웹서비스 웹서버</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="curriculum">
+                    <div class="curri_body">
+                        <img src="images/AI_icon.png" alt="AI_icon" class="icons" style="width: 80px; margin-left: 10px; margin-top: 30px; margin-right: 15px">
+                        <div class="body_text">
+                            <h1>머신러닝</h1>
+                            <p>데이터분석과 머신러닝을 위한<br/>NumPy , Pandas , 사이킷런</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="curriculum">
+                    <div class="curri_body">
+                        <img src="images/pytorch_icon.png" alt="pytorch_icon" class="icons" style="width: 70px; margin-left: 10px; margin-top: 30px; margin-right: 20px">
+                        <div class="body_text">
+                            <h2>딥러닝 , 파이토치</h2>
+                            <p>딥러닝 개념과 고급 기계학습<br/>NLP 수행과 하이퍼파라미터</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="curriculum">
+                    <div class="curri_body">
+                        <img src="images/resumei_icon.png" alt="resumei_icon" class="icons" style="width: 80px; margin-top: 28px; margin-right: 20px; margin-left: 10px;">
+                        <div class="body_text">
+                            <h1>취업교육</h1>
+                            <p>AI 개발자 취업을 위한<br/>각종 서류 작성과 모의면접</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="curriculum">
+                    <div class="curri_body">
+                        <img src="images/deep_learning_icon.png" alt="deep_learning_icon" class="icons" style="width: 90px; margin-top: 20px; margin-right: 20px; margin-left: 10px;">
+                        <div class="body_text">
+                            <h1>딥러닝</h1>
+                            <p>인공지능 활용<br/>챗GPT API 및 허깅페이스</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="curriculum">
+                    <div class="curri_body">
+                        <img src="images/project_icon.png" alt="project_icon" class="icons" style="width: 90px; margin-top: 22px; margin-right: 20px; margin-left: 10px;">
+                        <div class="body_text">
+                            <h2>파이널 프로젝트</h2>
+                            <p>파이널 프로젝트를 통해<br/>실무적인 역량을 발전</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="curriculum" style="grid-column: span 4; width: 1380px;">
+                    <div class="curri_body">
+                        <img src="images/job_icon.png" alt="job_icon" class="icons" style="width: 100px; margin-top: 15px; margin-right: 20px;">
+                        <div class="body_text">
+                            <h1>취업특강 & 취업 컨설팅</h1>
+                            <p>현직자들의 인공지능 , 취업 특장을 통해 AI 개발자로의 취업준비를 전략적으로 설계<br/>상시로 진행되는 담당매니저와의 1:1 그룹 취업컨설팅으로 이력서/자소서/포트폴리오 작성법에 대한 상담 진행</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </body>
+ </html>
