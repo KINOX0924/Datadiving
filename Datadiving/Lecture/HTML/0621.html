@@ -1,0 +1,100 @@
+<!-- 
+굴림    - 반각 문자 : 글씨의 원래의 자연스러운 모양에 따라 크기가 결정됨 , 글자마자 크기가 다름
+굴림체  - 전각 문자 : 글자마다 크기가 동일하게 되어 있음 , 따라서 웹에서는 주로 '체' 가 붙혀진 폰트를 사용함
+@굴림   - 글자가 세로로 누움
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Practice</title>
+    <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+    <!-- external style sheet -->
+    <link rel="stylesheet" href="mystyle.css">
+    
+    
+    <!-- internal style sheet -->
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&family=Noto+Sans+KR&display=swap');
+        .nanum-brush-script-regular {
+            font-family: "Nanum Brush Script", cursive;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 50px;
+        }
+        
+        /* 아래의 경우 selector 가 p 태그 */
+        p {
+            text-align: center;
+            color: blue;
+        }
+
+        /* 띄워쓰기 없이 사용 */
+        p#para1 {
+            text-align: left;
+            color: blueviolet;
+        }
+
+        #para2 {
+            text-align: right;
+            color: skyblue;
+        }
+
+        .para3 {
+            border: 1px solid #000;
+            color: yellow;
+            background-color: #000;
+        }
+
+        div {
+            width: 200px;
+            height: 200px;
+            display: inline-block;
+            background-color: green;
+            opacity: 0.3;
+        }
+
+        .un_style_ul > li {
+            border: 1px solid #222;
+            margin: 5px;
+            padding: 20px;
+            display:inline-block;
+        }
+    </style>
+</head>
+<body style="margin: -10px 0px 20px 0px">
+    <!-- inline style sheet -->
+    <h1 style="color: skyblue;">W3schools</h1>
+    <p id="para1">첫번째 문단입니다.</p>
+    <p id="para2">두번째 문단입니다.</p>
+    <p class="para3">세번째 문단입니다.</p>
+    <p class="para3">네번째 문단입니다.</p>
+    <p class="nanum-brush-script-regular">다섯번째 문단입니다.</p>
+
+    <div></div>
+    <div style="opacity: 0.6;"></div>
+    <div style="opacity: 0.9; background-image: url(images/bear.jpg);"></div>
+
+    <h1 style="border: 1px solid red; margin: 10px">제목</h1>
+    <h1 style="border: 1px solid red; margin: 10px">제목</h1>
+
+    <i class="fas fa-cloud"></i>
+    <i class="fas fa-heart"></i>
+    <i class="fas fa-car"></i>
+    <i class="fas fa-file"></i>
+    <i class="fas fa-bars"></i>
+
+    <h1>ROWS MENU</h1>
+    <nav style="width: 80%; margin: 50px auto;">
+        <ul style="list-style: None;" class="un_style_ul">
+            <li>회사 소개</li>
+            <li>문의 사항</li>
+            <li>자료실</li>
+            <li>상품공시실</li>
+        </ul>
+    </nav>
+</body>
+</html>

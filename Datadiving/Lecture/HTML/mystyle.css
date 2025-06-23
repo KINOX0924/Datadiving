@@ -1,0 +1,15 @@
+/*  
+    CSS 파일의 확장자는 css
+    파일을 여러개 만들어서 import 시켜서 사용할 수 있음    
+*/
+
+* {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 12px;
+    color: #222;
+}
+
+body{
+    background-color: aliceblue;
+    margin: 10px 10px;
+}
