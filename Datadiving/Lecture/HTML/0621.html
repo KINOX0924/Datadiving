@@ -96,5 +96,22 @@
             <li>상품공시실</li>
         </ul>
     </nav>
+
+    <img src="images/salad.jpg" alt="salad" style="display: none;" id="image1"><br/>
+    <button id="btnShow" type="button">보이기</button>
+    <button id="btnHide" type="button">감추기</button>
 </body>
 </html>
+<script>
+    document.getElementById("btnShow").addEventListener("click" ,
+        function(){
+                document.getElementById("image1").style.display = "block";
+        }
+    )
+
+    document.getElementById("btnHide").addEventListener("click" ,
+        function(){
+                document.getElementById("image1").style.display = "none";
+        }
+    )
+</script>
