@@ -89,6 +89,14 @@ FORM 태그 접근
 - 따라서 label 이 form 이 주요하게 사용됨
 <input type = "text" name = "user_id" value = "littleconan">
 <input type = "password" name = "password" value = "123456">
+
+
+
+hidden 태그
+- 정보를 숨겨서 서버로 보내기를 원할 때 사용
+- html 은 정보저장은 할 수 없음 , get 이든 post 든 정보는 전달하면 끝
+- 하지만 가끔 html 페이지에 숨김 정보를 가지고 다니면서 사용해야할 때가 있음
+- 브라우저에서 보이지 않음
 -->
 
 <!DOCTYPE html>
@@ -99,8 +107,8 @@ FORM 태그 접근
     <title>FORM PRACTICE</title>
 </head>
 <body>
-    <h2>FORM TAG</h2>
     <form action="" method="post">
+        <h1>FORM TAG</h1>
         <label for="user_age1">10대</label>
         <input type="radio" name="age" value = "1" id="user_age1"><br/>
         <label for="user_age2">20대</label>
@@ -109,8 +117,63 @@ FORM 태그 접근
         <input type="radio" name="age" value = "3" id="user_age3"><br/>
         <label for="user_age4">40대</label>
         <input type="radio" name="age" value = "4" id="user_age4"><br/>
-        <input type="submit" value="보내기">
+
+        <h1>직업 지원</h1>
+        <label for="job1">데이터분석가</label>
+        <input type="checkbox" name="job" value="1" id="job1">
+        <label for="job2">데이터개발자</label>
+        <input type="checkbox" name="job" value="2" id="job2">
+        <label for="job3">기획자</label>
+        <input type="checkbox" name="job" value="3" id="job3">
+        <label for="job4">웹서버개발자</label>
+        <input type="checkbox" name="job" value="4" id="job4">
+
+        <h1>차종 선택</h1>
+        <label for="cars">차종 선택</label>
+        <select name="cars" id="cars">
+            <option value="1">기아</option>
+            <option value="2">현대</option>
+            <option value="3">KGM</option>
+            <option value="4">르노</option>
+        </select>
+
+        <div style="display: flex; flex-direction:column;">
+        <label for="intro" >소개</label>
+        <textarea name="intro" id="intro" rows="10" cols="80"></textarea>
+        </div>
+
+        <input list="browsers">
+        <datalist id="browsers">
+            <option value="Edge">
+            <option value="Firefox">
+            <option value="Chrome">
+            <option value="Opera">
+            <option value="Safari">
+        </datalist>
+        <br/>   
+        <label for="gender">성별</label>
+        <input type="checkbox" name="gender" id="gender" checked>
+
+
+        <h1>readonly / disabled 속성</h1>
+        <!-- 둘 다 브라우저에서 데이터 입력을 못 받게 한다는 공통점이 있지만 disabled 는 아예 작동이 안되며 서버로 값 전달도 안됨 -->
+        <!-- disabled 속성은 주로 버튼을 아예 못 누르게 하고자 할 때 많이 사용하고 readonly 는 input 태그에 값을 입력 못하게 할 때 주로 사용 -->
+        <input type="text" name="key1" value="34" readonly><br/>
+        <input type="text" name="key2" value="54" disabled><br/>
+
+        <h1>number , range</h1>
+        <input type="number" id="quantity" name="quantity" min="0" max="100" step="10" value="30">
+        <input type="range" id="quantity" name="quantity" min="0" max="100" step="10" value="30">
+
+        <h1>phone</h1>
+        <input type="tel" name="phone" id="phone" placeholder="010-9999-9999" pattern="[0-9]{3}-[0-9]{3-4}-[0-9]{4}">
+
+        <br/>
+        <button>보내기</button>
     </form>
+    
+    <canvas id="myCanvas" width="300" height="150" style="border:1px solid #000">
+    </canvas>
 
     <!-- 디자인적 역할을 위해서 가급적 label 을 사용 권유 -->
     <!--
@@ -128,4 +191,18 @@ FORM 태그 접근
     </form>
     -->
 </body>
+
+<script>
+    // [1] 그림 전체에 대한 객체를 가져옴(캔버스)
+    // document : 파이썬의 self 같은 역할 / 현재 html 문서를 자바스크립에서 document 라고 부른다.
+    // document.getElementById("태그의 ID 값")
+    var c   = document.getElementById("myCanvas");
+
+    // [2] 객체 안에서 스케치북을 꼭 집어서 context
+    var ctx = c.getContext("2d");
+
+    ctx.moveTo(0,0);
+    ctx.lineTo(200,200);
+    ctx.stroke();
+</script>
 </html>
