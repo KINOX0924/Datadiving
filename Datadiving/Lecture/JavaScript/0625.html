@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // map 함수
+        // map 함수는 for 문 없이 배열의 모든 요소에 특정 동작을 수행함
+        // map 에 매개변수로 전달될 함수는 매개변수가 한여야 하고 반드시 값을 반환하는 함수여야 함
+        /*
+        let arr = [2,3,4,5,6,7,8,11,13];
+        result = arr.map( x => x*2 );
+        console.log(result);
+
+        let words = ["cloud","rainy","heavy","main","sub","apple","ace"];
+        result = words.map( x => x.toUpperCase() );
+        console.log(result);
+        result = words.map( x => x + " " + x.length );
+        console.log(result);
+        */
+
+        // map 함수 2차원
+        // map 에 전달할 콜백함수의 매개변수는 원래 3개까지 사용되고 보통은 2개만 사용함
+        // 배열의 요소 , 배열의 인덱스
+        /*
+        // x = 배열의 요소 , i = 배열의 인덱스
+        let arr = [
+            [1,2,3],
+            [4,5,6],
+            [7,8,9]
+        ];
+        arr.map( ( x , i ) => {
+            console.log(i , x);
+            return x;   // 반드시 반환값이 있어야함
+        });
+
+        result = arr.map( ( x , i ) => {
+            item = x.map( ( item , j ) => {
+                return item*2;
+            });
+            return x;   // 반드시 반환값이 있어야함
+        })
+        console.log(result);
+        */
+        
+        /*
+        // find , filter 와 유사하게 첫번째값 하나만 반환함
+        let arr = [2,3,4,5,6,7,8,11,13];
+        result  = arr.find( x => x % 2 == 0 );
+        console.log(result);
+
+        let words = ["cloud","rainy","heavy","main","sub","apple","ace"];
+        result = words.filter( x => x.indexOf("a") != -1);
+        console.log(result);
+
+        result = words.find( x => x.indexOf("a") != -1);
+        console.log(result);
+
+        // reduce : 누적시킬 때 사용
+        s = arr.reduce( (pre , initvalue) => {
+            return pre + initvalue;
+        });
+        console.log(s);
+        */
+
+        /*
+        // sort : 데이터를 '문자열' 로 바꾸어서 정렬
+        // sort 에 전달될 compare 함수는 매개변수가 2개가 필요함 arr[i] , arr[j]
+        arr.sort();
+        console.log(arr);
+
+        arr.sort( ( a , b ) => parseInt(a) - parseInt(b));
+        console.log(arr);
+
+        arr.sort( ( a , b ) => parseInt(b) - parseInt(a));
+        console.log(arr);
+
+        // 원본은 유지하면서 순서만 바꾸기
+        let arr = [2,3,4,5,6,7,8,11,13];
+
+        result = arr.toSorted( ( a , b ) => parseInt(a) - parseInt(b));
+        console.log(arr);
+        console.log(result);
+        */
+
+        /*
+        // 문제 1. value 속성으로 오름차순으로 정렬하기
+        var items = [
+            {name : "Edward" , value : 21},
+            {name : "Sharpe" , value : 37},
+            {name : "And" , value : 45},
+            {name : "The" , value : -12},
+            {name : "Magnetic" , value : 13},
+            {name : "Zeros" , value : 37}
+        ];
+
+        items.sort((a , b) => parseInt(a.value) - parseInt(b.value) );
+        items.forEach( item => { console.log(item.name , item.value) });
+
+        result = items.toSorted((a , b) => {
+            if (a.name > b.name)
+                return 1;
+            else if (a.name < b.name)
+                return -1;
+            else
+                return 0;
+        });
+        result.forEach( result => { console.log(result.name , result.value) });
+        */
+
+        /*
+        // 객체
+        // 자바스크립트에서 객체는 중괄호 {} 를 사용해서 만들며 중괄호 안에는 키와 값이 쌍으로 구성된 프로퍼티가 여러 개 있음
+        // 키 이름에 하이픈(-) 또는 특수문자를 넣을 경우에는 반드시 "" 또는 '' 로 감싸주어야 함
+
+        let user = {name : "홍길동" , kor : 90 , eng : 80 , mat : 80};
+        console.log(user.kor);
+        console.log(user["name"]);
+
+        // 새로운 필드 추가하기
+        user["total"] = user.kor + user.eng + user.mat;
+        user["avg"]   = user.total / 3;
+        console.log(user);
+
+        let students = [
+            {name : "A" , kor : 90 , eng : 80 , mat : 80},
+            {name : "B" , kor : 80 , eng : 85 , mat : 90},
+            {name : "C" , kor : 70 , eng : 90 , mat : 100},
+            {name : "D" , kor : 60 , eng : 95 , mat : 0},
+            {name : "E" , kor : 50 , eng : 100 , mat : 10},
+        ];
+
+        students.forEach( s => {
+            s.total = s.kor + s.eng + s.mat;
+            s.avg   = s.total / 3;
+        });
+
+        key = "B";
+
+        // 문제 1. B 학생 정보를 찾아서 출력하기
+        result = students.find( n => n.name == key);
+        console.log(result);
+
+        // 문제 2. reduce 사용해서 학생들 전체 평균 구하기
+        // 문제 폐기
+
+        // 문제 3. 총 점으로 내림차순 출력하기
+        result = students.sort((a,b) => parseInt(b.total) - parseInt(a.total));
+        console.log(result);
+        */
+
+        /*
+        // 함수 객체 추가하기
+        // this = 객체 자신을 말하며 아래와 같은 구조일때는 this 가 반드시 들어가야함
+        // 화살표 함수는 this 를 사용할 수 없기에 아래와 같은 식을 줄여서 사용할 수 없음
+        let person = {name : "홍길동" , age : 23 , phone : "010-0000-0000" , "display" : function(){console.log(`${this.name} ${this.age} ${this.phone}`)} , "setValue" : function(name , age){this.name = name; this.age = age} };
+
+        person.display();
+        person.setValue("임꺽정" , 33 , "011-0000-0011");
+        person.display();
+        */
+
+        // 객체 리터럴 , JSON
+        /*
+        객체 리터럴은 객체를 만들고 생성자와 함수를 저장 가능함
+        JSON 은 함수나 생성자는 없고 , 네트워크를 이용해서 정보를 주고 받을 때 사용함 ( 데이터 전송용 , 데이터만 )
+        */
+
+        /*
+        // 클래스
+        class Person{
+            // 생성자
+            constructor( name = "" , age = 0 ) {
+                this.name = name;
+                this.age  = age;
+            }
+
+            display(){
+                console.log(this.name , this.age);
+            }
+        };
+
+        let person = new Person("홍길동" , 23);
+        person.display();
+        */
+
+        /*
+        // 예외 처리 (JSON)
+        // 데이타 송수신 시 실제로는 JSON 데이터 객체를 주고 받는 것이 아니고 JSON 형태의 문자열을 주고 받음
+        // 따라서 파싱 작업을 해야함(파싱 = 원하는 데이터를 추출 또는 원상 복구 등의 의미로 쓰임)
+        // 객체리터럴은 '' "" 없어도 상관 없지만 JSON 은 키값에 반드시 "" 를 붙여야함
+        // JSON.parse <=> JSON.stringfy
+        //    복호화  <=>    부호화 
+        // 비정상 let json_data = "{bag json}";
+        let jsondata = '{"name" : "홍길동" , "age" : 23}';
+
+        try {
+            let user = JSON.parse(jsondata);
+            console.log(user.name);
+        }
+        catch(error) {
+            console.log("에러");
+        };
+        */
+
+        /*
+        // 동기식 1
+        function A(){
+            s = 0;
+            for(i=1; i<=100; i++){
+                setTimeout(() => {} , delay);
+                s += i;
+            }
+
+            console.log("합계" , s);
+        }
+
+        
+
+        function B(){
+            s = 0;
+            for(i=1; i<=10; i++){
+                console.log(i);
+            }
+        }
+
+        A();
+        B();
+        */
+
+        /*
+        // 동기식 2
+        let fs = require("fs");
+        // 외부 모듈 가지고 오기
+
+        try{
+            data = fs.readFileSync("../동기식1.js" , "utf-8");
+            console.log(data);
+        }
+        catch(error){
+            console.log(error);
+        }
+        console.log("completed");
+        */
+
+        /*
+        // 비동기식
+        // 함수가 시작을 하자마자 바로 리턴
+        // 시스템이 백그라운드에서 조용히 일을 함
+        // 시스템 입장에서는 일이 끝나면 알려줌
+        // 자바스크립트는 콜백 함수를 사용함
+        // 함수를 내가 만들고 호출은 시스템이 함
+        let fs = require("fs");
+
+        // 첫번째는 파일의 주소 , 두번째는 글자 형식 , 세번째는 매개변수가 읽어온 파일 내용
+        fs.readFile("../동기식1.js" , "utf-8" , function(error , data){
+            // 첫번째 매개변수는 혹시나 파일을 못 찾거나 읽으려고 했는데 권한이 없으면 오류가 전달됨
+             console.log(date);
+        });
+
+        console.log("completed");
+        */
+
+        /*
+        // 프로미스
+        // 동기식 함수를 비동기식으로 바꾸어주는 클래스
+        // resolve(value) : 일이 성공적으로 끝난 경우 , 그 결과를 나타내는 value 와 함께 호출
+        // reject(error)  : 에러 발생 시 에러 객체를 나타내는 error 와 함께 호출
+        // executor       : 개발자가 만드는 자동 수행되는 코드
+        let promise = new Promise(function(resolve , reject){
+            // executor
+            sum = 0;
+            for ( i = 1; i <=10; i++) {
+                sum += i;
+            }
+
+            resolve(sum);   // return 사용 불가
+            // reject("fail");
+        });                 // 이 때 리턴을 받는 것은 값 55 가 아니라 promise 객체임
+
+        promise
+        .then( (response) => {
+            console.log(response);
+            response = response * 100;
+            return response;
+        })
+        .then( (response) => {
+            console.log("프라미스체인" , response);
+        })
+        .catch(e => {
+            console.log(e);
+        })
+        .finally(() => {
+            console.log("completed");
+        })
+
+        console.log(promise);
+        */
+
+        // async 와 await
+        // 일반 함수 앞에 async 를 붙여주면 비동기개체로 전환하라는 의미
+        async function sigma(limit = 10) {
+            s = 0;
+            for(i=1; i<=limit; i++){
+                s += i;
+            }
+            return s;
+        }
+
+        console.log(sigma(100));
+
+        sigma(1000)
+        .then((r) => {
+            console.log("async" , r);
+        });
+
+        // 어떤 경우에 반드시 비동기로 처리해야하는 경우가 있는데
+        // await : 프라미스 객체가 일을 마무리하기를 기다림 -> 버전에 따라 호환성 다름
+        // await 명령어가 async 를 기다리는 것은 맞는데 이 구문 자체가 async 함수에서만 사용할 수 있음
+        async function main(){
+            let result = await sigma(100);
+            console.log("결과" , result);
+            console.log("엔딩.....");
+        }
+
+        main();
+        
+
+    </script>
+</body>
+</html>
