@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        /*
+        // DOM 트리 접근 4
+        // body 태그 상단에 script 를 작성하면 DOM 트리 작성 전에 실행되어서 문제가 발생됨
+        // 따라서 window.onload = (){} 를 사용하여 DOM 트리 완성 이후에 실행되도록 해야함
+        // window.onload 의 역할 : DOM 트리가 완성된 이후에 태그들이 메모리에 올라와서 개체로 다 전환되고 난 이후에 onload 이벤트를 발생시킴
+        window.onload = function(){
+            btnClass = document.getElementById("btnClass");
+            btnClass.addEventListener("click" , () => {
+                // 클래스명을 가져와서 작업 진행
+                title = document.getElementsByClassName("title");
+                title[0].style.color = "red";
+                title[1].style.color = "green";
+                title[2].style.color = "blue";
+                title[3].style.color = "yellow";
+            });
+
+            btnTag = document.getElementById("btnTag");
+            btnTag.addEventListener("click" ,  () => {
+                // 태그명을 가져와서 작업 진행
+                h1 = document.getElementsByTagName("h1");
+                h1[0].innerHTML = "파이썬";
+                h1[1].innerHTML = "넘파이";
+                h1[2].innerHTML = "판다스";
+                h1[3].innerHTML = "딥러닝";
+            });
+
+            btnQuery = document.querySelector("#btnQuery");
+            btnQuery.addEventListener("click" , () => {
+                // h1 태그 중에서 title 이라는 명을 가진 클래스를 가져와서 작업 진행
+                h1 = document.querySelectorAll(".title");
+                // 원래의 CSS 에서는 background-color(스네이크 표기법) 으로 표기하지만
+                // 자바스크립트에서는 하이픈(-) 을 사용할 수 없기에 backgroundColor(카멜 표기법) 으로 변경됨
+                h1[0].style.backgroundColor = "#ddd";
+                h1[1].style.backgroundColor = "#ccc";
+                h1[2].style.backgroundColor = "#bbb";
+                h1[3].style.backgroundColor = "#aaa";
+            });
+        };
+        */
+    </script>
+</head>
+<body>
+    <!-- 타이머 (setInterval) -->
+    <!--
+    <h1 id="clock"></h1>
+    <button type="button" id="btnCall">종료</button>
+    -->
+
+    <!-- 타이머 (setTimeout) -->
+    <!--
+    <button type="button" id="btnCall">함수가 3초 뒤에 호출</button>
+    -->
+
+    <!-- name 속성 활용하기 (배열 사용하기) -->
+    <!--
+    <h2>input 배열 사용하기</h2>
+    <input type="text" name="numbers" id="number1" value="1"><br/>
+    <input type="text" name="numbers" id="number2" value="2"><br/>
+    <input type="text" name="numbers" id="number3" value="3"><br/>
+    <input type="text" name="numbers" id="number4" value="4"><br/>
+    <input type="text" name="numbers" id="number5" value="5"><br/>
+    <input type="text" name="numbers" id="number6" value="6"><br/>
+    <input type="text" name="numbers" id="number7" value="7"><br/>
+    <input type="text" name="numbers" id="number8" value="8"><br/>
+    <input type="text" name="numbers" id="number9" value="9"><br/>
+    <input type="text" name="numbers" id="number10" value="10"><br/><br/>
+    <div id="result" style="background-color: lightgray; width: 170px; height: 20px;"></div>
+    <button type="button" id="btnAdd1">더하기 (name 접근)</button>
+    <button type="button" id="btnAdd2">더하기   (id 접근)</button>
+    -->
+
+    <!-- ul 태그에 li 추가/삭제 -->
+    <!--
+    <input type="text" name="product" id="product">
+    <button id="btnAdd">추가</button>
+    <button id="btnDel">삭제</button>
+
+    <ul id="coffee">
+        <li>카카오</li>
+    </ul>
+    -->
+
+    <!-- 테이블 추가/삭제 -->
+    <!--
+    <button id="btnAdd">추가</button>
+    <button id="btnDel">삭제</button>
+
+    <table style="width:70%">
+        <thead>
+            <th>품목</th>
+            <th>수량</th>
+            <th>단가</th>
+        </thead>
+        <tbody id="tbody">
+            <td><input type="text" name="product_name" id=""></td>
+            <td><input type="text" name="product_price" id=""></td>
+            <td><input type="text" name="product_count" id=""></td>
+        </tbody>
+    </table>
+    -->
+
+    <!-- 테이블에 행 추가 -->
+    <!--
+    <table style="width: 700px;">
+        <thead>
+            <th>유저 ID 번호</th>
+            <th>게시물 번호</th>
+            <th>타이틀</th>
+            <th>상태</th>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+    </table>
+    -->
+
+    <!-- oninput 이벤트 -->
+    <!--
+    <input type="text" name="" id="" oninput="goNumber2(this)">
+    -->
+
+    <!-- Key press 이벤트 -->
+    <!--
+    <input type="text" name="" id="" onkeypress="goNumber()">
+    -->
+
+    <!-- Keyup 이벤트 *잘 사용 안 함 -->
+    <!--
+    <p>영어 소문자로 입력하면 모두 대문자로 바꾸어줌</p>
+    Enter Your Name : <input type="text" name="" id="fname" onkeyup="myFunction()">
+    -->
+
+    <!-- onclick 이벤트 (this) -->
+    <!--
+    <button style="background-color:rgb(0, 255, 255);" onclick="changeBackground(this)">배경색</button><br/>
+    <button style="background-color:rgb(0, 255, 0);" onclick="changeBackground(this)">배경색</button><br/>
+    <button style="background-color:rgb(255, 0, 128);" onclick="changeBackground(this)">배경색</button><br/>
+    <button style="background-color:rgb(212, 255, 0);" onclick="changeBackground(this)">배경색</button><br/>
+    <button style="background-color:rgb(34, 0, 255);" onclick="changeBackground(this)">배경색</button><br/>
+    -->
+
+    <!-- DOM 트리 접근 4 -->
+    <!--
+    <h1 class="title">TITLE 1</h1>
+    <h1 class="title">TITLE 2</h1>
+    <h1 class="title">TITLE 3</h1>
+    <h1 class="title">TITLE 3</h1>
+    <button type="button" id="btnClass">클래스</button><br/>
+    <button type="button" id="btnTag">태그</button><br/>
+    <button type="button" id="btnQuery">쿼리 셀렉터(All)</button><br/>
+    -->
+
+    <!-- DOM 트리 접근 3 -->
+    <!--
+    x  : <input type="text" name="x" id="">  <br/>
+    y  : <input type="text" name="y" id="">  <br/>
+
+    <div style="border: 1px solid red; width: 300px; height: 20px;" id="result"></div>
+    <button type="button" id="btnAdd">계산</button>
+    -->
+
+    <!-- DOM 트리 접근 문제 -->
+    <!--
+    name : <input type="text" name="" id="name"> <br/>
+    kor  : <input type="text" name="" id="kor">  <br/>
+    eng  : <input type="text" name="" id="eng">  <br/>
+    mth  : <input type="text" name="" id="mth">  <br/>
+
+    <div style="border: 1px solid red; width: 300px; height: 20px;" id="result"></div>
+    <button type="button" id="btnAdd">총점 계산</button>
+    -->
+    <script>
+        /*
+        // 타이머 (setInterval)
+        window.onload = () => {
+            let timer1 = setInterval( () => {
+                today = new Date(); // 오늘 날짜 확인해서 today 변수에 넣기
+                document.querySelector("#clock").innerHTML = today.toLocaleTimeString();
+                // 컴퓨터의 시계가 1970년 1월 1일 0시부터 1초당 1씩 가산됨
+            } , 1000 );
+            
+            btnCall = document.querySelector("#btnCall");
+            btnCall.addEventListener("click" , () => {
+                clearInterval(timer1);
+            })
+        }
+        */
+
+        /*
+        // 타이머 (setTimeout)
+        window.onload = () => {
+            btnCall = document.querySelector("#btnCall");
+            btnCall.addEventListener("click" , () => {
+                setTimeout(() => {
+                    alert("타이머 활용하기");
+                } , 3000);
+            })
+        }
+        */
+
+        /*
+        // name 속성 활용하기 (배열 사용하기)
+        window.onload = () => {
+            let btnAdd1 = document.querySelector("#btnAdd1");
+            btnAdd1.addEventListener("click" , () => {
+                let numbers = document.getElementsByName("numbers");
+                sum_numbers = 0;
+                numbers.forEach( item => sum_numbers = sum_numbers + parseInt(item.value) );
+                document.querySelector("#result").innerHTML = sum_numbers;
+            })
+        }
+
+        window.onload = () => {
+            let btnAdd2 = document.querySelector("#btnAdd2");
+            btnAdd2.addEventListener("click" , () => {
+                sum_number = 0;
+
+                for(i=1; i<=10; i++){
+                    sum_number += parseInt(document.getElementById("number" + i).value);
+                }
+                document.querySelector("#result").innerHTML = sum_number;
+            })
+        }
+        */
+
+        /*
+        // ul 태그에 li 추가/삭제
+        window.onload = function(){
+            document.getElementById("btnAdd").addEventListener("click" , funAdd);
+            document.getElementById("btnDel").addEventListener("click" , funDel);
+        }
+
+        function funAdd() {
+            var coffee = document.getElementById("coffee");
+            var child  = document.createElement("li"); // 새로운 항목 추가
+
+            child.innerHTML = document.getElementById("product").value;
+            coffee.appendChild(child);
+        }
+
+        function funDel() {
+            var coffee = document.getElementById("coffee");
+            console.log(coffee.children.length);
+            if (coffee.children.length > 1)
+                coffee.removeChild(coffee.lastChild);
+            else
+                alerr("더 이상 삭제 불가");
+        }
+        */
+
+        // 테이블 셀 추가/삭제
+        /*
+        window.onload = function(){
+            document.getElementById("btnAdd").addEventListener("click" , funAdd);
+            document.getElementById("btnDel").addEventListener("click" , funDel);
+        }
+
+        function funAdd(){
+            var tbody   = document.querySelector("#tbody");
+            var row     = tbody.insertRow(tbody.rows.length);
+            var column1 = row.insertCell(0);
+            var column2 = row.insertCell(1);
+            var column3 = row.insertCell(2);
+
+            column1.innerHTML = "<input type='text' name='product_name' id=''>";
+            column2.innerHTML = "<input type='text' name='product_price' id=''>";
+            column3.innerHTML = "<input type='text' name='product_count' id=''>"; 
+        }
+
+        function funDel(){
+            var tbody = document.querySelector("#tbody");
+            if(tbody.rows.length > 1){
+                tbody.deleteRow(tbody.rows.length - 1);
+            }
+            else {
+                alert("더 이상 삭제 불가");
+            }
+        }
+        */
+
+        // 테이블에 행 추가
+        /*
+        let data = [
+            {"name" : "새우깡"   , "count" : 2 , "price" : 2000} ,
+            {"name" : "알새우칩" , "count" : 3 , "price" : 2500} ,
+            {"name" : "꿀꽈배기" , "count" : 4 , "price" : 3000} ,
+            {"name" : "자갈치"   , "count" : 5 , "price" : 3500} ,
+            {"name" : "양파링"   , "count" : 6 , "price" : 4000}
+        ];
+
+        function load(){
+            tbody = document.querySelector("#tbody");
+            data.forEach( item => {
+                row     = tbody.insertRow(tbody.rows.length);
+                column1 = row.insertCell(0);
+                column2 = row.insertCell(1);
+                column3 = row.insertCell(2);
+
+                column1.innerHTML = item.name;
+                column2.innerHTML = item.count;
+                column3.innerHTML = item.price;
+            });
+        };
+        */
+
+        /*
+        window.onload = () => {
+            // load();
+
+            fetch('https://jsonplaceholder.typicode.com/todos')
+            .then(response => response.json())
+            .then(json => json.forEach( item => {
+                    row = tbody.insertRow( tbody.rows.length );
+                    column1 = row.insertCell(0);
+                    column2 = row.insertCell(1);
+                    column3 = row.insertCell(2);
+                    column4 = row.insertCell(3);
+                    
+                    column1.innerHTML = item.userId;
+                    column2.innerHTML = item.id;
+                    column3.innerHTML = item.title;
+                    column4.innerHTML = item.completed;
+                })
+            );              
+        };
+        */
+
+        /*
+        // oninput 이벤트
+        // Keypress 이벤트에서는 복사/붙혀넣기로는 예외처리가 안되어서 oninput 이벤트를 현재는 주로 사용함
+        function goNumber2(me) {
+            // repalce 함수에 정규식을 넣을 수 있음
+            // 정규식 넣는 법 : replace(정규식 , " ") = 정규식 : /[^0-9]/ == /패턴/g * g가 전체를 의미
+            // 리턴값을 받아야 변경됨
+            me.value = me.value.replace(/[^0-9]/g , ""); // 0 ~ 9 를 제외한 모든 문자는 공백으로 바꾸라는 의미
+        };
+
+        // Keypress 이벤트
+        function goNumber() {
+            // 이벤트가 발생하면 발생한 이벤트에 대한 정보를 저장하는 객체가 있는데 그것이 event
+            console.log(event);
+
+            if(event.keyCode < 48 || event.keyCode > 57){
+                event.returnValue = false; // 조건식에 해당하는 key 들은 화면 출력을 막음 , 단 Ctrl + C/V 로 넣는 건 막을 수 없음
+            };
+        };
+        */
+
+        /*
+        // Keyup 이벤트 *잘 사용 안 함
+        function myFunction() {
+            var x = document.getElementById("fname");
+            x.value = x.value.toUpperCase();
+        };
+        */
+
+        /*
+        // onclick 이벤트 (this)
+        function changeBackground(me) {
+            document.getElementsByTagName("body")[0].style.backgroundColor = me.style.backgroundColor;
+        };
+        */
+
+        /*
+        // DOM 트리 접근 3
+        let btnAdd = document.querySelector("#btnAdd");
+        btnAdd.addEventListener("click" , () => {
+            x = document.getElementsByName("x")[0].value;   // 언제나 배열로 받아서 인덱스를 붙여주어야 함
+            y = document.getElementsByName("y")[0].value;
+
+            document.querySelector("#result").innerHTML = parseInt(x) + parseInt(y);
+        });
+        */
+
+        /*
+        // DOM 트리 접근 문제
+        let btnAdd = document.querySelector("#btnAdd");
+        btnAdd.addEventListener("click" , () => {
+            name = document.querySelector("#name").value;
+            kor  = document.querySelector("#kor").value;
+            eng  = document.querySelector("#eng").value;
+            mth  = document.querySelector("#mth").value;
+
+            document.querySelector("#result").innerHTML = name + "님의 총점은 " + (parseInt(kor) + parseInt(eng) + parseInt(mth)) + "점 입니다."
+        });
+        */
+    </script>
+</body>
+</html>

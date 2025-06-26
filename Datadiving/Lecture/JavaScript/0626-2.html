@@ -1,0 +1,198 @@
+<!-- Jquery 0626 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>가위바위보 게임</h1><br/>
+    <button type="button" class="RSP" id="scissors" value="1">가위</button>
+    <button type="button" class="RSP" id="rock"     value="2">바위</button>
+    <button type="button" class="RSP" id="paper"    value="3">보</button>
+
+    <div style="background-color: #aaa; width: 200px; height:50px;"><h1 id="result" style="text-align: center;">결과</h1></div>
+    <!-- 테이블 추가 -->
+    <!--
+    <table style="width: 1000px;" id="mytable">
+        <thead>
+            <th>유저 ID 번호</th>
+            <th>게시물 번호</th>
+            <th>타이틀</th>
+            <th>상태</th>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+    </table>
+    -->
+
+    <!-- hover -->
+    <!--
+    <h1>파랗게</h1>
+    <p id="p1">전체를 파랑게</p>
+    -->
+
+    <!-- 셀렉터 -->
+    <!--
+    <h1>누르세요</h1>
+    <h1 id="brown">BROWN</h1>
+    <h1 id="gold">GOLD</h1>
+    
+    <h1 class="blue">파란색 스타일</h1>
+    <h1 class="blue">파란색 스타일</h1>
+    <h1 class="blue">파란색 스타일</h1>
+
+    <h1 class="red">붉은색 스타일</h1>
+    <h1 class="red">붉은색 스타일</h1>
+    <h1 class="red">붉은색 스타일</h1>
+    -->
+
+    <!-- 숫자 더하고 빼기 -->
+    <!--
+    x : <input type="text" name="x" id="x"><br/>
+    y : <input type="text" name="y" id="y"><br/>
+
+    <div id="result"></div>
+    <button type="button" id="btnAdd">+</button>
+    <button type="button" id="btnSub">-</button>
+    -->
+
+    <!-- CDN 테스트 -->
+    <!--
+    <p id="ptag">눌러보세요</p>
+    -->
+
+    <script>
+        /*
+        computer = Math.ceil(Math.random()*3);
+        console.log(computer);
+        */
+
+        $(function() {
+            // 가위 : 1 , 바위 : 2 , 보 : 3
+            $(".RSP").click( () => {
+                computer = Math.ceil(Math.random()*3);
+                console.log(computer);
+            })
+
+            $("#scissors").click( () => {
+                if(computer == 2) {
+                    $("#result").html("패배");
+                }
+                else if(computer == 3) {
+                    $("#result").html("승리");
+                }
+                else {
+                    $("#result").html("무승부");
+                }
+            });
+
+            $("#rock").click( () => {
+                if(computer == 3) {
+                    $("#result").html("패배");
+                }
+                else if(computer == 1) {
+                    $("#result").html("승리");
+                }
+                else {
+                    $("#result").html("무승부");
+                }
+            });
+
+            $("#paper").click( () => {
+                if(computer == 1) {
+                    $("#result").html("패배");
+                }
+                else if(computer == 2) {
+                    $("#result").html("승리");
+                }
+                else {
+                    $("#result").html("무승부");
+                }
+            });
+
+        });
+
+        /*
+        // 테이블 추가
+        window.onload = () => {
+            // load();
+            fetch('https://jsonplaceholder.typicode.com/todos')
+            .then(response => response.json())
+            .then(json => json.forEach( item => {
+                    temp = `
+                        <tr>
+                            <td>${item.id}</td>
+                            <td>${item.userId}</td>
+                            <td>${item.title}</td>
+                            <td>${item.completed}</td>
+                        </tr>
+                    `;
+                    
+                    $("#mytable > tbody:last").append(temp);
+                })
+            );              
+        };
+        */
+
+        /*
+        // hover
+        $(function() {
+            $("#p1").hover( () => {
+                console.log("You entered P1!");
+            },
+            function() {
+                console.log("Bye! You noe leave P1!");
+            });
+        })
+        */
+
+        /*
+        // 셀렉터
+        // 이전에는 속성(style 등) 을 바꾸는 명령어가 attr 이었는데 지금은 prop 으로 변경됨
+        $(function() {
+            $("#brown").click( () => {
+                $("#brown").prop("style" , "color:brown");
+            });
+
+            $("#gold").click( () => {
+                $("#gold").prop("style" , "color:gold");
+            });
+
+            $(".blue").click( () => {
+                $(".blue").prop("style" , "color:blue");
+            });
+
+            $(".red").click( () => {
+                $(".red").prop("style" , "color:red");
+            });
+        })
+        */
+
+        /*
+        // 숫자 더하고 빼기
+        $(document).ready( () => {
+            $("#btnAdd").click( () => {
+                $("#result").html(parseInt($("#x").val()) + parseInt($("#y").val()))
+            })
+
+            $("#btnSub").click( () => {
+                $("#result").html(parseInt($("#x").val()) - parseInt($("#y").val()))
+            })
+        })
+        */
+
+        /*
+        // CDN 테스트
+        $(document).ready( () => {
+            $("#ptag").click( () => {
+                alert("이벤트 핸들러");
+            })
+        })
+        */
+    </script>
+</body>
+</html>
