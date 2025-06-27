@@ -10,5 +10,8 @@ urlpatterns = [
     path("test1" , views.test1) ,
     path("test2/<x>/<y>" , views.test2) ,
     # def text2(request , x , y) 에서의 매개변수의 명칭이 동일해야함
-    path("test3" , views.test3)
+    path("test3" , views.test3) ,
+    path("sigma/<number>" , views.sigma) ,
+    path("isLeap" , views.isLeap) ,
+    path("calc/<cals>/<a>/<b>" , views.calc)
 ]
