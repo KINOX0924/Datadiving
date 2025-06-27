@@ -37,10 +37,9 @@ def test3(request) :
 # 연습 문제 [1] : http://127.0.0.1:8000/guestbook/sigma/10
 # 1 ~ 10 까지의 합계를 반환하기
 def sigma(request , number) :
-    num     = request.GET.get("number")
     sum_num    = 0
     
-    for i in range(0 , int(num) + 1) :
+    for i in range(0 , int(number) + 1) :
         sum_num += i
 
     return HttpResponse(sum_num)
@@ -63,3 +62,41 @@ def calc(request , cals , a , b) :
         return HttpResponse(int(a) + int(b))
     elif cals == "sub" :
         return HttpResponse(int(a) - int(b))
+    
+# HTML 연동 작업
+# HTML 페이지와 연동하고 싶으면 return render() 를 사용
+# 앞의 Templates 를 생략해도 미리 settings 에 작성했기 때문에 기본적으로 Templates 에서 찾음
+def list(request) :
+    return render(request , "guestbook/guestbook_list.html" , {"title" : "HTML 연동하기" , "flowers" : flowers})
+
+# 객체 출력
+# DB 연동이 아직 안된 상태이니 list 로 데이터 전달
+flowers = ["개나리" , "장미" , "찔레꽃" , "무궁화" , "백합" , "작약" , "국화" , "진달래" , "튤립" , "연꽃"]
+
+# HTML 문서로 단순 이동 진행
+def write(request) :
+    return render(request , "guestbook/guestbook_write.html")
+
+def save(request) :
+    flower = request.POST.get("flower")
+    return HttpResponse(flower)
+
+# http://127.0.0.1:8000/guestbook/calwrite
+# http://127.0.0.1:8000/guestbook/calsave
+
+def calwrite(request) :
+    return render(request , "guestbook/guestbook_addwrite.html")
+
+def calsave(request) :
+    x = request.POST.get("x")
+    y = request.POST.get("y")
+    opcode = request.POST.get("opcode")
+    
+    if opcode == "add" :
+        return HttpResponse(f"{x} + {y} = {int(x) + int(y)}")
+    elif opcode == "sub" :
+        return HttpResponse(f"{x} - {y} = {int(x) - int(y)}")
+    elif opcode == "mul" :
+        return HttpResponse(f"{x} * {y} = {int(x) * int(y)}")
+    elif opcode == "div" :
+        return HttpResponse(f"{x} / {y} = {int(x) / int(y)}")

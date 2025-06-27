@@ -55,10 +55,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
+# HTML 파일을 둘 위치 지정
+import os
+# OS 라이브러리 - 윈도우 OS 를 제어할 수 있는 라이브러리
+# os.path.join(BASE_DIR , "templates") = c:/django_workspace1 "/" + templates
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [ os.path.join(BASE_DIR , "Templates") ],       # os.path.join(BASE_DIR , "Templates")
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

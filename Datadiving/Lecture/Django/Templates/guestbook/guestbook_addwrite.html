@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title></title>
+    </head>
+    <body>
+        <form name="myform" id="myfrom" action="/guestbook/calsave" method="post">
+            {%csrf_token%}
+            x : <input type="text" name="x" id="x"><br/>
+            y : <input type="text" name="y" id="y"><br/>
+
+            <select name="opcode">
+                <option value="add">+</option>
+                <option value="sub">-</option>
+                <option value="mul">*</option>
+                <option value="div">/</option>
+            </select>
+
+            <button type="button" id="btnSend">계산</button>
+        </form>
+
+        <script>
+            window.onload = () => {
+                btnSend = document.querySelector("#btnSend")
+                btnSend.addEventListener("click" , () => {
+                    x = document.querySelector("#x").value;
+                    if(x.trim() == ""){
+                        alert("x 값을 입력하세요.");
+                        document.querySelector("#x").focus();
+                        return false;
+                    }
+
+                    // form 개체를 가져와서 폼 객체를 통해 접근 가능함
+                    var frm = document.myform;  // 토큐먼트.폼이름 , document.forms[0]
+
+                    if(frm.y.value.trim() == ""){
+                        alert("y 값을 입력하세요.");
+                        frm.y.focus();
+                        return false;
+                    }
+
+                    if (frm.opcode.value.trim() == ""){
+                        alert("연산자를 선택하세요.");
+                        frm.opcode.focus();
+                        return false;
+                    }
+
+                    frm.action="/guestbook/calsave";
+                    frm.method="post";
+                    frm.submit();   // 서버로 전송하기
+                })
+            }
+        </script>
+    </body>
+</html>

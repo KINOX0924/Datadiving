@@ -13,5 +13,10 @@ urlpatterns = [
     path("test3" , views.test3) ,
     path("sigma/<number>" , views.sigma) ,
     path("isLeap" , views.isLeap) ,
-    path("calc/<cals>/<a>/<b>" , views.calc)
+    path("calc/<cals>/<a>/<b>" , views.calc) ,
+    path("list" , views.list) , 
+    path("write" , views.write) ,
+    path("save" , views.save) ,
+    path("calwrite" , views.calwrite) ,
+    path("calsave" , views.calsave)
 ]
