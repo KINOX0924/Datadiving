@@ -18,5 +18,9 @@ urlpatterns = [
     path("write" , views.write) ,
     path("save" , views.save) ,
     path("calwrite" , views.calwrite) ,
-    path("calsave" , views.calsave)
+    path("calsave" , views.calsave) ,
+    
+    # json 형식으로 응답
+    path("getData" , views.getData) ,
+    path("userinfo" , views.userinfo)
 ]

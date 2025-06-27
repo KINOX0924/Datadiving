@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse , JsonResponse
 # Create your views here.
+# JsonResponse : dict 타입을 json 으로 바꾸어서 응답하는 클래스
 
 def index(request) :
     return HttpResponse("guestbook")
@@ -100,3 +101,11 @@ def calsave(request) :
         return HttpResponse(f"{x} * {y} = {int(x) * int(y)}")
     elif opcode == "div" :
         return HttpResponse(f"{x} / {y} = {int(x) / int(y)}")
+ 
+# 데이터를 주는 경우   
+def getData(request) :
+    return JsonResponse({"name" : "홍길동" , "age" : 23 , "phone" : "010-0000-0000"} , json_dumps_params={'ensure_ascii' : False})
+# 한글 깨짐 문제 해결 : json_dumps_params={'ensure_ascii' : False}
+
+def userinfo(request) :
+    return render(request , "guestbook/userinfo.html")
