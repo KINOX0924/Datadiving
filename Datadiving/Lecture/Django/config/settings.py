@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "blog.apps.BlogConfig",                 # 사용자 정의
-    "guestbook.apps.GuestbookConfig",       # 사용자 정의
+    # "guestbook.apps.GuestbookConfig",       # 사용자 정의
     
     "django.contrib.admin",
     "django.contrib.auth",
@@ -84,8 +84,12 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.mysql" ,
+        "NAME": "mydb" ,
+        "USER" : "root" ,
+        "PASSWORD" : "1234" ,
+        "HOST" : "localhost" ,
+        "PORT" : "3306"
     }
 }
 

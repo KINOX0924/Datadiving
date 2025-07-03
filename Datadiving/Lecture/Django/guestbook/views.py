@@ -109,3 +109,18 @@ def getData(request) :
 
 def userinfo(request) :
     return render(request , "guestbook/userinfo.html")
+
+# HttpResponse  - 그냥 텍스트로 응답할 때 - 실제 개발 , 연습용
+# render        - html 문서와 파이썬 데이터를 하나로 묶어서 송신하면 새로운 html 문서를 만들어서 클라이언트로 반환함 (렌더링)
+#               - 이러한 동작은 렌더링이라 함
+# JsonResponse  - 데이터를 json 형태로 반환 , ui / ux (html 파트가 별도의 프레임워크로 만들어질 때 주로 사용)
+
+
+# Django 가 DB 에 연돌하려면 보통 sqlite3 를 사용함(로컬에서만 사용)
+# 단점 : 네트워크 지원을 하지 않음
+# 따라서 MySQL 연동을 위해서는 mysqlclient 라이브러리가 필요함
+
+"""
+[1] mysql 연동
+[2] Model 클래스를 만들어서 마이그레이션 테이블을 만드는 코드를 생성해야함
+"""
