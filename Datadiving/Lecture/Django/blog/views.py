@@ -2,6 +2,10 @@ from django.shortcuts import render
 from django.http import HttpRequest , HttpResponse , JsonResponse
 from .models import BlogModel as Blog
 from django.core import serializers
+from .forms import BlogForms
+from django.utils import timezone
+from django.shortcuts import redirect
+# . = 나랑 같은 디렉터명 , forms = 파일명
 # HttpRequest   : 클라이언트가 보낸 정보를 받아오는 객체
 # HttpResponse  : 서버가 클라이언트로 보낼 정보를 저장해서 클라이언트에서 전달될 객체
 
@@ -23,4 +27,22 @@ def index(request) :
 def getList(request) :
     raw_data = list(Blog.objects.values())
     return JsonResponse(raw_data , safe = False , json_dumps_params = {"ensure_ascii" : False})
+
+# blog_write html 페이지로 이동만 함
+def write(request) :
+    return render(request , "blog/blog_write.html")
+
+def save(request) :
+    form = BlogForms(request.POST)  # 여기서 직렬화가 이루어짐 , form.fieldList 에 있는 title 에 form 태그의 title 값이 차례대로 들어옴
+    blogModel = form.save(commit = False)
     
+    blogModel.wdate = timezone.now()
+    blogModel.hit = 0
+    blogModel.save()    # 확정
+    
+    # 보통 저장을 하고 나면 글목록으로 이동
+    # 어떤 경우에도 직업 blog_list 메서드를 호출해서는 안됨
+    # 글 등록 후에는 request 객체를 제거해야함(내용을 모두 비우고 정리 작업을 해야함)
+    # 클라이언트로부터 다시 list 요청이 온 것처럼 해야함
+    
+    return redirect("blog:blog_list")
