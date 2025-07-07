@@ -217,3 +217,236 @@ print("훈련셋 : " , model.score(X_train , y_train))
 print("테스트셋 : " , model.score(X_test , y_test))
 """
 
+"""
+# 선형 회귀분석
+import numpy as np
+
+# 특성(입력데이터) - 공부 시간
+X = [20,19,17,18,12,14,10,9,16,6,5,10,20,8,15]
+
+# 성적(출력데이터)
+y = [100,100,90,90,60,70,40,70,40,30,100,30,10,70,60]
+
+X = np.array(X)
+y = np.array(y)
+
+X = X.reshape(-1,1)
+print(X.shape)
+print(y.shape)
+
+# 데이터 쪼개기
+from sklearn.model_selection import train_test_split
+X_train , X_test , y_train , y_test = train_test_split(X , y , random_state = 1)
+
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+
+model.fit(X_train , y_train)
+y_pred = model.predict(X_test)
+
+print("훈련셋 : " , model.score(X_train , y_train))
+print("테스트셋 : " , model.score(X_test , y_test))
+print("기울기 : " , model.coef_)
+print("절편 : " , model.intercept_)
+
+y_pred2 = X_test * model.coef_ + model.intercept_
+print(y_test)
+print(y_pred)
+print(y_pred2)
+# 다중 회귀 분석의 경우가중치가 많음
+# 각 독립변수마다 별도의 가중치를 가져옴
+
+
+# Knn 이웃 알고리즘 회귀알고리즘
+from sklearn.neighbors import KNeighborsClassifier
+model = KNeighborsClassifier()
+
+model.fit(X_train , y_train)
+y_pred = model.predict(X_test)
+print("훈련셋 : " , model.score(X_train , y_train))
+print("테스트셋 : " , model.score(X_test , y_test))
+print(y_test)
+print(y_pred)
+"""
+
+"""
+# 더미 데이터 생성
+import mglearn
+X , y = mglearn.datasets.make_wave(n_samples = 30)
+
+print(X[:10])
+print(y[:10])
+"""
+
+"""
+# 다중 회귀 분석
+# 다중 회귀 분석은 공분산(특성 간에 서로 영향을 주고받는 것) 을 따져보고 필요 없는 특성은 제거해야함
+# R 은 기본적으로 필요 없는 특성을 제거해주는 것이 있지만 파이썬은 없어서 사용자가 직접 제거해야함
+# 보스톤 집값
+
+url = "https://lib.stat.cmu.edu/datasets/boston"
+import pandas as pd     # 다양한 유형의 데이터가 있을 때 처리 방법
+import numpy as np
+
+# 분리 문자가 공백이 아니고(\s+) , skiprows = 22 줄을 건너 뛰고 , header = 헤더가 없음)
+data_frame = pd.read_csv(url , sep = "\s+" , skiprows = 22 , header = None)
+print(data_frame.head(10))
+
+# np 에는 hstack 함수가 있음 , 수평방향으로 배열을 이어붙이는 함수
+# 짝수행에 홀수를 가져다 붙이면 됨
+X = np.hstack([data_frame.values[::2 , : ] , data_frame.values[1::2 , :2]])
+print(X.shape)
+
+# 이 열이 target
+# 행의 개수가 같아야 머신러닝 연산을 수행할 수 있음 , 결과가 입력한 데이터 개수만큼 있어야함
+y = data_frame.values[1::2 , 2]
+print(y.shape)
+
+from sklearn.model_selection import train_test_split
+X_train , X_test , y_train , y_test = train_test_split(X , y , random_state = 42)
+
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+
+model.fit(X_train , y_train)
+
+print("LinearRegression")
+print("훈련셋 : " , model.score(X_train , y_train))
+print("테스트셋 : " , model.score(X_test , y_test))
+print("기울기들 :" , model.coef_)
+print("절편 : " , model.intercept_)
+
+# 선형회귀분석 : 다중공선성문제 , 여러 특성간에 서로 너무 밀접해서 필요없는 요소들을 고려하지 않음
+# 특성의 개수가 많으면 많을수록 처리 능력이 떨어짐
+
+# 라쏘
+# 보스톤 데이터의 특성의 개수는 13개이고 가중치(기울기) 도 13개 나옴
+# 가중치가 너무 크거나 작으면 훈련 데이터셋에 초점이 맞추어짐(과대적합)
+# 따라서 가중치를 규제하는 알고리즘으로 라쏘는 가중치를 0 에 가깝게 하다가 불필요한 요소가 있으면 아예 0 으로 만들기도 함
+# 따라서 모델을 심플하게 만듬(L2 정규화)
+# 하이퍼 파라미터 alpha 라는 값이 있는데 이걸 0 으로 놓으면 규제를 아무것도 안하겠다는 의미(LinearRegression 과 똑같이 움직임)
+# 반대로 alpha 를 높이면 규제가 높아지는데 이 적절한 alpha 값을 찾는 것이 중요함
+
+from sklearn.linear_model import Lasso
+model = Lasso(alpha = 10)
+
+model.fit(X_train , y_train)
+
+print("Lasso")
+print("훈련셋 : " , model.score(X_train , y_train))
+print("테스트셋 : " , model.score(X_test , y_test))
+print("기울기들 :" , model.coef_)
+print("절편 : " , model.intercept_)
+
+# 리지
+# 라쏘가 비슷하지만 가중치를 완전히 0 으로 만드는 것은 불가능함(L1 정규화)
+
+from sklearn.linear_model import Ridge
+model = Ridge(alpha = 10)
+
+model.fit(X_train , y_train)
+
+print("Ridge")
+print("훈련셋 : " , model.score(X_train , y_train))
+print("테스트셋 : " , model.score(X_test , y_test))
+print("기울기들 :" , model.coef_)
+print("절편 : " , model.intercept_)
+
+# alpha 값이 적절해야함
+# 머신러닝 알고리즘은 하이퍼파라미터값을 사용자가 수작업으로 찾아야 함
+# 딥러닝은 자동으로 찾음
+"""
+
+"""
+# 로지스틱 회귀분석
+from sklearn.datasets import load_iris
+data = load_iris()
+
+X = data["data"]
+y = data["target"]
+
+from sklearn.model_selection import train_test_split
+
+X_train , X_test , y_train , y_test = train_test_split(X , y , random_state = 1234 , test_size = 0.3)
+print(X_train.shape)
+print(X_test.shape)
+
+import pandas as pd
+iris_df = pd.DataFrame(X , columns = data["feature_names"])
+
+import matplotlib.pyplot as plt 
+pd.plotting.scatter_matrix( iris_df , c = y , figsize = (15 , 15) , marker = 'o' , hist_kwds = {"bins" : 20} , s = 60 , alpha = 0.8)
+plt.show()
+
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression()
+
+model.fit(X_train , y_train)
+
+print("훈련셋 평가 : " , model.score(X_train , y_train))
+print("테스트셋 평가 : " , model.score(X_test , y_test))
+print("가중치 : " , model.coef_)
+print("절편 : " , model.intercept_)
+"""
+
+# 의사결정트리
+# 필연적으로 과대적합이 됨
+# 의사결정트리 알고리즘은 특성의 중요도 파악용으로 주로 사용함
+import numpy as np
+from sklearn.datasets import load_iris
+data = load_iris()
+
+X = data["data"]
+y = data["target"]
+
+from sklearn.model_selection import train_test_split
+
+X_train , X_test , y_train , y_test = train_test_split(X , y , random_state = 1234 , test_size = 0.3)
+print(X_train.shape)
+print(X_test.shape)
+
+import pandas as pd
+iris_df = pd.DataFrame(X , columns = data["feature_names"])
+
+import matplotlib.pyplot as plt 
+pd.plotting.scatter_matrix( iris_df , c = y , figsize = (15 , 15) , marker = 'o' , hist_kwds = {"bins" : 20} , s = 60 , alpha = 0.8)
+plt.show()
+
+from sklearn.tree import DecisionTreeClassifier
+model = DecisionTreeClassifier(random_state = 1)
+# 트리시작이 랜덤이어서 시드를 잡아주지 않으면 만들어질때마다 다르게 나옴
+
+model.fit(X_train , y_train)
+print("의사결정트리")
+print("훈련셋 평가 : " , model.score(X_train , y_train))
+print("테스트셋 평가 : " , model.score(X_test , y_test))
+print("특성 중요도 : " , model.feature_importances_)
+
+# 특성 중요도를 수평 막대 차트로 그리기
+import matplotlib.pyplot as plt
+def treeChart(model , feature_name) :
+    # 수평막대 개수 구하기 : 특성의 개수만큼 구하기
+    n_features = len(model.feature_importances_)
+    # barh = 수평막대그래프
+    
+    plt.barh(np.arange(n_features) , model.feature_importances_ , align = "center")
+    plt.xticks(np.arange(n_features) , feature_name) # y 축 눈금
+    plt.ylim(-1 , n_features) # 눈금 범위
+    plt.show()
+    
+treeChart(model , np.array(data["feature_names"]))
+
+
+# 랜덤포레스트
+# 의사결정트리를 랜덤하게 많이 만들어서 평균값을 따져서 예측함
+# 앙상블의 일종 , 잘못 구성하면 과대적합의 위험을 지니고 있음(트리 계열 알고리즘의 문제점)
+
+from sklearn.ensemble import RandomForestClassifier
+# max_depth : 트리의 최대 깊이를 설정
+# n_estimators : 트리의 개수(트리의 개수가 너무 작으면 과대적합이 일어나고 , 너무 많으면 시간이 많이 걸림)
+model = RandomForestClassifier(random_state = 0 , max_depth = 3 , n_estimators = 1000)
+model.fit(X_train , y_train)
+
+print("랜덤포레스트")
+print("훈련셋 평가 : " , model.score(X_train , y_train))
+print("테스트셋 평가 : " , model.score(X_test , y_test))
