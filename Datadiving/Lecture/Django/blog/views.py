@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpRequest , HttpResponse , JsonResponse
-from .models import BlogModel as Blog
+from .models import Blog
 from django.core import serializers
 from .forms import BlogForms
 from django.utils import timezone
@@ -30,7 +30,7 @@ def getList(request) :
 
 # blog_write html 페이지로 이동만 함
 def write(request) :
-    return render(request , "blog/blog_write.html")
+    return render(request , "blog_write.html")
 
 def save(request) :
     form = BlogForms(request.POST)  # 여기서 직렬화가 이루어짐 , form.fieldList 에 있는 title 에 form 태그의 title 값이 차례대로 들어옴

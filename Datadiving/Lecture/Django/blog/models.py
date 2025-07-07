@@ -12,7 +12,7 @@ from django.db import models
 # 이 모델 기반의 테이블을 만들고 싶으면 setting.py 파일에 INSTALLED_APPS = [ 'blog.apps.BoardConfig' , ] 앱등록을 해주어야 함
 # 파일 자체는 앱을 구축하면 자동으로 만들어줌
 
-class BlogModel(models.Model) :
+class Blog(models.Model) :
     title    = models.CharField("제목" , max_length = 200)
     contents = models.TextField("내용")
     writer   = models.CharField("작성자" , max_length = 50)
