@@ -34,7 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "blog.apps.BlogConfig",                 # 사용자 정의
     # "guestbook.apps.GuestbookConfig",       # 사용자 정의
-    
+    "score.apps.ScoreConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

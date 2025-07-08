@@ -24,9 +24,17 @@ def index(request) :
     return HttpResponse("Hello Django")
 
 # 직렬화 : 객체를 파일이나 네트워크로 출력하고자 하는 걸 직렬화라고 함
-def getList(request) :
+def getList2(request) :
     raw_data = list(Blog.objects.values())
     return JsonResponse(raw_data , safe = False , json_dumps_params = {"ensure_ascii" : False})
+
+def getList(request) :
+    raw_data = list(Blog.objects.values())
+    return render(request , "blog_list.html" , {"blogList" : raw_data})
+
+def view(request , id) :
+    blog = Blog.objects.get(id = id)
+    return render(request , "blog_view.html" , {"blog" : blog})
 
 # blog_write html 페이지로 이동만 함
 def write(request) :
