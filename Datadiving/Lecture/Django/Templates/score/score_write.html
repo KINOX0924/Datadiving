@@ -7,5 +7,27 @@
 </head>
 <body>
     <h1>write</h1>
+
+    <form name="myform" action="" method="post">
+        {% csrf_token %}
+        이름 : <input type="text" name="name" id="name"><br/>
+        국어 : <input type="text" name="kor" id="kor"><br/>
+        영어 : <input type="text" name="eng" id="eng"><br/>
+        수학 : <input type="text" name="mat" id="mat"><br/>
+
+        <button type="button" id="btnSend">등록</button>
+    </form>
 </body>
+<script>
+    //html DOM 구조가 완성되고 나면 onload 이벤트가 발생됨
+    window.onload = () => {
+        document.querySelector("#btnSend").addEventListener("click" , () => {
+                let frm = document.myform; //form 객체를 가져옴
+                frm.method = "post";
+                frm.action = "/score/save";
+                frm.submit();   // 서버 전송
+            }
+        );
+    }
+</script>
 </html>
