@@ -10,10 +10,13 @@
 
     <form name="myform" action="" method="post">
         {% csrf_token %}
-        이름 : <input type="text" name="name" id="name"><br/>
-        국어 : <input type="text" name="kor" id="kor"><br/>
-        영어 : <input type="text" name="eng" id="eng"><br/>
-        수학 : <input type="text" name="mat" id="mat"><br/>
+        {{form.as_p}}
+        <!-- 
+        html 서버로 전송시켜서 request 객체에 담고 , 모델에 담아서 DB 에 저장 , 
+        form 클래스가 이걸 대체 form 클래스에 있는 필드와 라벨을 보고 직접 태그를 생성함
+
+        p 태그로 감싸서 데이터를 입력으로 받을 것들만 지정하면 됨
+        -->
 
         <button type="button" id="btnSend">등록</button>
     </form>
