@@ -413,3 +413,384 @@ mape - Mean Absolute Percentage Error : 퍼센트로 따진거
 * 암환자 , 오차 측정을 줄이기 위해 중요함
 4) f1-score - 정밀도와 재현율의 조화 평균
 """
+
+"""
+# 캘리포이나 집값 회귀 분석 및 평가 예제
+import numpy as np
+import pandas as pd
+from sklearn.datasets import fetch_california_housing
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error , mean_squared_error , r2_score
+from sklearn.preprocessing import StandardScaler
+
+# 1. 캘리포니아 집값 데이터셋 로드
+housing = fetch_california_housing()
+print(type(housing))
+
+# 차트를 그리려면 numpy > 요소를 하나씩 그려야 해서 차트를 그리고 싶음
+# Dataframe : 데이터프레임 자체가 차트를 제공하기도 하고 , seaborn 차트 , plotly 차트(interactive 차트)
+# python 코드로 차트를 그리면 plotly 는 html 과 css 와 자바스크립트로 움직이는 차트가 만들어짐
+# 예전에는 R 언어만 지원했는데 현재 python
+# 넘파이 배열 , 컬럼명
+
+X = pd.DataFrame(housing.data , columns = housing.feature_names)
+y = pd.Series(housing.target , name = "houseval")
+
+print(X.head())
+print(X.columns)
+print(y[:10])
+
+# 2. 훈련셋 쪼개기 - numpy 2차원(dataframe) , 1차원(series)
+X_train , X_test , y_train , y_test = train_test_split(X , y , test_size = 0.2 , random_state = 42)
+
+# 3. 결측치와 이상치가 없다고 판단
+
+# 4. 스케일링 처리(표준화 , 정규화)
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)  # 비지도 학습 fit > transform
+X_test_scaled  = scaler.fit_transform(X_test)
+
+# 5. 선형회귀모델학습
+model = LinearRegression()
+model.fit(X_train_scaled , y_train)
+
+# 6. 테스트 데이터로 예측
+y_pred = model.predict(X_test_scaled)
+
+# 7. 회귀모델 평가지표
+mae = mean_absolute_error(y_test , y_pred)
+print("mae : 평균 절대 오차 = " , mae)
+
+mse = mean_squared_error(y_test , y_pred)
+print("mse : 평균 제곱 오차 = " , mse)
+
+rmse = np.sqrt(mse)
+print("rmse : 평균 제곱근 오차 = " , rmse)
+
+r2 = r2_score(y_test , y_pred)  # 평상시 score 함수와 동일함 , 결정계수는 1에 가까울 수록 좋음
+print("결정계수 = " , r2)
+print("모델 score = " , model.score(X_test_scaled , y_test))
+# 특성의 개수가 많아지면 결정 계수 값은 예측력하고는 상관없이 1에 가까워지며 좋아짐
+# 특성이 많아질때는 mae 나 mse 를 사용해야함 , mse 는 제곱이기 때문에 이상치에 영향을 많이 받음
+# 차트를 그릴떄는 dataframe 으로 변환하고 그리는 것이 좋음
+
+print("데이터 개수")    # 데이터 개수가 2만개가 넘음 , 차트를 그려보고 , 너무 오래 걸리면 데이터 샘플링 진행
+print(X.shape)
+
+X["hosuingval"] = y
+print(X.head())
+
+df_sample = X.sample(n = 2000 , random_state = 42)  # 데이터를 원하는 만큼 적당히 샘플링함
+print(df_sample.shape)
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+sns.pairplot(
+    df_sample , 
+    diag_kind = "kde" , # 대각선 히스토그램 밀도(부드럽게)
+    kind = "scatter" # 산포도
+    )
+plt.show()
+"""
+
+"""
+# 차트에 한글 지원하기
+# 차트 내부의 폰트를 변경시켜야함
+# 차트 그리기 전에 두개를 넣어주어야 함
+# plt.rcParams["font.family"] = "Gulim"    # 나눔고딕 폰트 이름 변경
+# plt.rcParams["axes.unicode_minus"] = False          # 마이너스 부호 깨짐 방지
+
+import matplotlib.font_manager as fm
+fm.fontManager.ttflist
+# tt = Truetype : 비트맵이 아닌 벡터 방식으로 확대, 축소해도 깨지지 않음
+# tt 방식 이전에는 비트맵 방식의 글꼴을 사용했는데 비트맵 방식은 글꼴 확대 시 깨짐
+
+fontlist = [font.name for font in fm.fontManager.ttflist]
+print(fontlist)
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 차트 그리기 전에 seaborn 차트도 동일하게 적용됨
+plt.rcParams["font.family"] = "Gulim"
+plt.rcParams["axes.unicode_minus"] = False
+
+iris = sns.load_dataset("iris")
+sns.pairplot(iris , hue = "species")
+plt.suptitle("iris 데이터셋 산포도 행렬")
+plt.show()
+"""
+
+"""
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix , classification_report
+
+plt.rcParams["font.family"] = "Gulim"
+plt.rcParams["axes.unicode_minus"] = False
+
+cancer = load_breast_cancer()
+X = pd.DataFrame(cancer.data , columns = cancer.feature_names)
+y = cancer.target
+
+y_changed = np.where(y == 0 , 1 , 0)
+
+print(y[:20])
+print(y_changed[:20])
+
+# 데이터가 불균형 셋인지 확인
+print(dict(zip(*np.unique(y_changed , return_counts = True))))
+
+# 데이터 쪼개기
+X_train , X_test , y_train , y_test = train_test_split(X , y_changed , random_state = 1)
+
+# 특성 스케일링
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.fit_transform(X_test)
+
+# 모델 학습
+model = LogisticRegression(random_state = 1 , solver = "liblinear")
+model.fit(X_train_scaled , y_train)
+
+y_pred = model.predict(X_test_scaled)
+
+# 양성을 예측한 것만 가져오기 , 악성에 대한 예측 확률 하나만 가져오기
+y_pred_proba = model.predict_proba(X_test_scaled)[: , 1]
+
+# 오차 행렬 구하기
+cm = confusion_matrix
+
+# 분류 리포트
+report = classification_report(y_test , y_pred , target_names = ["양성" , "악성"])
+print(report)
+
+
+# seaborn 차트를 이용한 시각화
+plt.figure(figsize = (7,6))
+sns.heatmap(cm , annot = True , fmt = "d" , cmap = "Blues" , cbar = False , xticklabels = ["양성" , "악성"] , yticklabels = ["양성" , "악성"])
+plt.xlabel("예측 클래스")
+plt.ylabel("실제 클래스")
+plt.title("오차행렬")
+plt.show()
+
+# ROC 곡선 , roc_curve 함수가 3개의 반환값을 줌
+fpr , tpr , thresholds = roc_curve(y_test , y_pred_proba)
+auc_score = roc_auc_score(y_test , y_pred_proba)
+plt.plot(fpr , tpr , color = "darkorange" , lw = 2 , label = f"ROC곡선(AUC : {auc_score})")
+plt.plot([0.1] , [0 , 1] , color = "navy" , linestyle = "--" , label = "기준점(AUC = 0.5)")
+plt.xlim([0.0 , 1.0])   # 눈금 범위
+plt.ylim([0.0 , 1.05])  # 눈금 범위
+plt.xlabel("False posigitve rate(FDR)")
+plt.ylabel("True posigitve rate(TPR)/Recall")
+
+plt.title("ROC 곡선")
+plt.legend(loc = "lower right") # 범주는 오른쪽 하단에
+plt.grid(True)
+plt.show()
+"""
+
+"""
+# 차트
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd 
+from matplotlib import font_manager, rc
+import seaborn as sns
+#font_manager - 폰트를 폰트객체화 
+#rc - 폰트를 지정할 영역 (차트영역)
+
+sns.set_style("darkgrid")
+# 한글 세팅(plt.rcParams) 이전에 선언되어야 하며, 세팅 이후에 선언되면 오류가 발생할 수 있음
+
+# font_name = font_manager.FontProperties(fname="c:/Windows/Fonts/Gulim.TTF").get_name()
+# font_name = font_manager.FontProperties(fname="./fonts/HYBDAM.TTF").get_name()
+# plt.rcParams["font.family"] = "Gulim"
+# plt.rcParmas["axes.unicode_minus"] = False
+
+# x = np.linspace(0 , 2 , 100)    # 구간을 나눈다. 0 ~ 2 사이를 100개로 쪼개서 값을 np.array 로 줌
+# print(x[:20])
+
+# 히스토그램 - 분포도(통계학적으로 중요함)
+# 히스토그램은 seaborn 의 displot 함수가 제공함
+# loc : float = ..., 평균
+# scale : float = ..., 표준편차
+# size : None = ... 개수
+x = np.random.normal(loc = 70 , scale = 20 , size = 500)
+x = np.random.normal(size = 1000)   # 정규분포가 되도록 데이터를 생성
+sns.displot(x , bins = 20 , kde = True , rug = False , label = "Histogram") # bins = 구간 개수 , kde = 커널 밀도 , rug = 러그 표시 여부
+sns.utils.axlabel("value" , "frequency")
+
+# x 축의 데이터 개수와 y 축의 데이터 개수는 반드시 일치해야 함
+# plt.plot(x , x , label = "Linear" , color = "g")
+# plt.plot(x , x**2 , label = "Two" , color = "b")
+# plt.plot(x , x**3 , label = "Three" , color = "r")
+plt.title("TITLE")
+plt.xlabel("X axis")
+plt.ylabel("Y axis")
+plt.show()
+"""
+
+"""
+# 인터렉티브 차트
+import plotly.graph_objects as go
+import pandas as pd
+import numpy  as np
+
+# 차트 그리는 함수 하나씩 만들어서 호출하기
+def create_scatter() :  # 산포도 그리는 함수
+    print("===== 산포도 =====")
+    df = pd.DataFrame({
+        "x_data" : [1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10] ,
+        "y_data" : [1 , 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9 , 10] ,
+        "size_data" : [10 , 10 , 40 , 20 , 50 , 60 , 10 , 10, 10 , 10]
+    })
+    
+    # 차트에 대한 기본 정보 , 데이터와 데이터를 출력할 때 marker 를 사용함
+    chart1 = go.Scatter(
+        x = df["x_data"] ,
+        y = df["y_data"] ,
+        mode = "markers" ,
+        marker = dict(size = df["size_data"] , color = " red" , opacity = 0.7 , line = dict(width = 1 , color = "DarkSlateGrey")) ,
+        name = "산포도"
+    )
+    
+    # 축에 대한 정보를 따로 생성함
+    layout = go.Layout(
+        title = "산점도" ,
+        xaxis = {"title" : "X축"} ,
+        yaxis = {"title" : "Y축"} ,
+        hovermode = "closest"
+        )
+    
+    fig = go.Figure(data = [chart1] , layout = layout)
+    fig.show()  # 브라우저가 작동
+    fig.write_html("산포도.html")
+    
+if __name__ == "__main__" :
+    create_scatter()
+"""
+
+"""
+# 텍스트 분석
+# + , - , * , / 연산이 가능하게 바꾸어주어야 함
+
+# sklearn 이 CounterVectorizer 라는 클래스를 제공함(RNN)
+from sklearn.feature_extraction.text import CountVectorizer
+vect = CountVectorizer()
+
+bards_words = ["I like star" , "red star, blue star" , "I like dog"]
+# 1. 학습해서 사전을 만들고
+vect.fit(bards_words)
+
+print("어휘사전 크기 : " , len(vect.vocabulary_))
+print("어휘사전 내용 : " , vect.vocabulary_)
+
+# 2. 사전을 바탕으로 벡터화
+bag_of_words = vect.transform(bards_words)
+print(bag_of_words)
+print(bag_of_words.toarray())
+"""
+
+"""
+# 로이터 뉴스 , IMDB 영화평론 사이트
+# 1. 토큰화 > 토큰을 나눔 > 단어로 나눔 > 바꿔서 처리 가능
+# 2. 어휘사전 구축 > 단어한테 고유 숫자를 줌 > 어휘사전이 충분히 커야함
+# 3. 단어 빈도수 계산
+# 4. 문서단어 행렬 : 단어 빈도수를 행렬로 표시함
+
+# 영화 학습
+from sklearn.datasets import load_files
+from sklearn.feature_extraction.text import CountVectorizer
+import pandas as pd
+import numpy  as np
+
+reviews_train = load_files("./csv_data/aclImdb/train")
+print(reviews_train["DESCR"])
+
+text_train = reviews_train.data
+y_train    = reviews_train.target
+
+# bunch 가 numpy 배열로 주니깐 Dataframe 으로 변경
+df = pd.DataFrame(text_train , columns = ["text"])
+
+df["target"] = y_train
+df.to_csv("./csv_data/imdb.csv" , encoding = "utf-8-sig" , index = False)
+print(df.head())
+
+# 벡터화
+# 일종의 비지도 학습 , fit 학습을 하고 transform 을 통해서 문장을 연산 가능한 벡터로 만들어서 반환
+vect = CountVectorizer().fit(text_train)
+X_train = vect.transform(text_train)
+
+# 컬럼명을 만듬
+feature_names = vect.get_feature_names_out()
+print("특성의 개수" , len(feature_names))
+print("특성 맨 앞 20개" , feature_names[:20])
+
+# 문자열 앞에 'b' 가 오는데 이것은 바이너리의 약자임
+# 즉, 쓸모 없는 데이터로 삭제가 필요함 => 쓸데없는 것들 바꿔치기(br 태그)
+text_train = [i.replace(b"<br/>" , b"") for i in text_train]
+
+vect = CountVectorizer().fit(text_train)
+X_train = vect.transform(text_train)
+
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression()
+model.fit(X_train , y_train)
+print(model.score(X_train , y_train))
+"""
+
+
+from sklearn.datasets import load_files 
+import pandas as pd 
+import numpy as np 
+from sklearn.feature_extraction.text import CountVectorizer 
+import matplotlib.pyplot as plt 
+import re #정규식 처리 하는 라이브러리 
+
+#파일을 읽는다 - 구분자가 탭키다 
+#keep_default_na - NaN 값을 None으로 바꾼다
+df_train = pd.read_csv("./csv_data/aclimdb/ratings_train.txt", delimiter="\t", keep_default_na=False)
+print( df_train.head() )
+text_train, y_train = df_train["document"].values, df_train["label"].values
+print( text_train[:3])
+print( y_train[:3])
+
+#text_traind을 벡터화하자 
+from konlpy.tag import Okt  #현재 가장 많이 사용하는 형태소 분리 알고리즘 
+okt = Okt() 
+stop_words = ["아", "..", "?", "있는" ]
+def okt_tokenizer(text):
+    #특수문자를 제거하기 (한글, 숫자, 영어, \s - 공백  )
+    text = re.sub(r"[^\uAC00-\uD7A3\s]", "", text)
+    temp = okt.morphs(text)
+    #제거할거 있으면 제거시켜서 보내기, 불필요한 단어나 한글자는 삭제시키고 나머지만 
+    temp = [word for word in temp if word not in stop_words and len(word)>=2]
+    return temp 
+
+for i in range(0, 10):
+    print( okt_tokenizer(text_train[i] ))
+
+#CountVectorizer의 tokenizer 매개변수에 우리가 토큰나이저 만들어서 주면된다. 
+#한글 토큰나이저로 바꿔치기를 한다. 경고는 무시해도 된다. 
+vect = CountVectorizer(tokenizer=okt_tokenizer).fit(text_train)
+
+feature_names = vect.get_feature_names_out() 
+print("특성의 개수 ", len(feature_names))
+print(feature_names[:20])
+
+X_train = vect.transform(text_train)
+
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression(solver='liblinear')
+model.fit(X_train, y_train)
+print( model.score(X_train, y_train))
